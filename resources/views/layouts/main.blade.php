@@ -152,20 +152,21 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
-        <small>Version 2.0</small>
+        @yield('title')
       </h1>
-      <ol class="breadcrumb">
+      <!--<ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li class="active">Dashboard</li>
-      </ol>
+      </ol>-->
     </section>
 
     <!-- Main content -->
     <section class="content">
       <!-- Info boxes -->
       <div class="row">
-          <div class="col-sm-12">dfs</div>
+          <div class="col-sm-12">
+            @yield('content')
+          </div>
       </div>
       <!-- /.row -->
     </section>

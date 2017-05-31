@@ -33,5 +33,8 @@
 <script src="{{ asset('cms/dist/js/pages/dashboard2.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('cms/dist/js/demo.js') }}"></script>
+
+
+@yield('scripts')
 </body>
 </html>
