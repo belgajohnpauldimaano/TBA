@@ -135,13 +135,13 @@
           </ul>
         </li> --}}
         
-        <li class="active treeview">
+        <li class="">
           <a href="#">
             <i class="fa fa-circle-o text-red"></i> <span>Dashboard</span>
           </a>
         </li>
-        <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Home Page Carousel</span></a></li>
-        <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> <span>Films</span></a></li>
+        <li><a href="{{ route('home_page_carousel') }}"><i class="fa fa-circle-o text-red"></i> <span>Home Page Carousel</span></a></li>
+        <li><a href="{{ route('film') }}"><i class="fa fa-circle-o text-yellow"></i> <span>Films</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
