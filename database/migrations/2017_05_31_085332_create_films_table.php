@@ -22,7 +22,8 @@ class CreateFilmsTable extends Migration
             $table->tinyInteger('rating');
             $table->tinyInteger('running_time');
             $table->string('sell_sheet', 50);
-            $table->string('genre_id');
+            $table->string('hash_tags', 100);
+            $table->integer('genre_id')->unsigned();
             $table->timestamps();
         });
     }
