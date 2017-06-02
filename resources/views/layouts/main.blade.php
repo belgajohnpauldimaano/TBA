@@ -165,6 +165,11 @@
       <!-- Info boxes -->
       <div class="row">
           <div class="col-sm-12">
+          <div class="row">
+              <div class="col-sm-12">
+                  <div class="js-messages_holder" style="display:none"></div>
+              </div>
+          </div>
             @yield('content')
           </div>
       </div>

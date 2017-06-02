@@ -35,5 +35,8 @@ Route::group(['prefix' => '/cms'], function () {
        
     Route::group(['prefix' => '/film'], function () {
         Route::get('/', 'FilmController@index')->name('film');
+        Route::post('/show_film_form', 'FilmController@show_film_form')->name('show_film_form');
+        Route::post('/save_film', 'FilmController@save_film')->name('save_film');
+        
     });
 });

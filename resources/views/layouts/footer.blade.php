@@ -35,5 +35,63 @@
 
 
 @yield('scripts')
+
+<script>
+        /* Func Name : image_list ()
+         * Desc : Reload Image List function from ajax response
+         * Params : nothing
+         * Return : HTML elements
+         */
+        function image_list () 
+        {
+            $('.js-image_container .overlay').removeClass('hidden');
+            $.ajax({
+                url : "{{ route('image_list') }}",
+                type : 'POST',
+                data : {_token : '{{ csrf_token() }}'},
+                success : function (data) {
+                    $('.js-image_container').html(data);
+                }
+            });
+        }
+
+        /* Func Name : show_message ( msg )
+         * Desc      : scroll on top and will show message
+         * Params    : msg - string - display message, type - string - type of error class * (success, info, warning, danger)
+         * Return    : HTML elements
+         */
+        function show_message (msg, type) 
+        {
+            $("html, body").animate({ scrollTop: 0 }, "slow"); 
+            var elem = '<div class="callout callout-'+ type +' ">'+
+                        '      <p>'+
+                                    msg
+                        '     </p>'+
+                        '</div>';
+            $('.js-messages_holder').html(elem).slideDown('slow', function (){
+                setTimeout(function () {
+                    $('.js-messages_holder').slideUp('slow');
+                }, 3000);
+            });
+        }
+
+        $('body').on('change', '.form-group input', function () {
+            $(this).parents('.form-group').children('.help-block').empty();
+            $(this).parents('.form-group').removeClass('has-error');
+        });
+
+        // Clear modal on hidden
+        $('body').on('hidden.bs.modal', '.modal', function (e) {
+            $('#js-modal_holder').empty();
+            if ($(this).data('id') !== undefined) // allow refresh of image list only if the modal upload was shown
+            {
+                image_list();
+            }
+        })
+        // disable click thumbnail with href = #
+        $('body').on('click', '.thumbnail, .js-edit_film', function (e){
+            e.preventDefault();
+        });
+</script>
 </body>
 </html>
