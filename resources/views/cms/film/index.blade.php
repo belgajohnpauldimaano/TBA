@@ -1,6 +1,7 @@
 @extends('layouts.main')
 
 @section ('styles')
+    <link rel="stylesheet" href="{{ asset('cms/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
 @endsection
 
@@ -49,8 +50,9 @@
                                                 </button>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="#" class="js-edit_film" data-id="{{ $data->id }}">Edit</a></li>
-                                                    <li role="separator" class="divider"></li>
-                                                    <li><a href="#">View</a></li>
+                                                    <li><a href="#" class="js-delete_film" data-id="{{ $data->id }}">Delete</a></li>
+                                                    {{-- <li role="separator" class="divider"></li>
+                                                    <li><a href="#">View</a></li> --}}
                                                 </ul>
                                                 </div>
                                             </td>
@@ -96,7 +98,30 @@
         
         $('body').on('submit', '#js-film_form', function (e) {
             e.preventDefault();
-            save_data($(this), "{{ route('save_film') }}");
+            save_data($(this), "{{ route('save_film') }}", "{{ route('fetch_record') }}", $('#js-content_holder'));
+        });
+        
+        $('body').on('click', '.js-delete_film', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            bootbox.confirm({
+                title: "Confirm",
+                message: "Are you sure you want to delete?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result)
+                    {
+                        delete_record("{{ route('delete_film') }}", "{{ route('fetch_record') }}", $('#js-content_holder'), id);
+                    }
+                }
+            });
         });
 
         /* Func Name : load_film_form_modal
@@ -120,11 +145,12 @@
                 success : function (data) {
                     $('#js-modal_holder').html(data);
                     $('#js-film_form_modal').modal({keyboard : false, backdrop : 'static'});
+                    
                 }
             });
         }
 
-        function save_data (form, route)
+        function save_data (form, route, fetch_route, elem)
         {
             var formData = new FormData(form[0]);
             $.ajax({
@@ -159,6 +185,37 @@
                     {
                         show_message (data.messages, 'success');
                         form.parents('.modal').modal('hide');
+                        fetch_record(fetch_route, elem, 1)
+                    }
+                }
+            });
+        }
+        function fetch_record (route, elem, page)
+        {
+            $.ajax({
+                url : route,
+                type : 'POST',
+                data : {_token : '{{ csrf_token() }}'},
+                success     : function (data) {
+                    $('.js-content_holder').html(data);
+                }
+            });
+        }
+        function delete_record (delete_route, fetch_route, elem, id)
+        {
+            $.ajax({
+                url : delete_route,
+                type : 'POST',
+                data : {_token : '{{ csrf_token() }}', id : id},
+                success     : function (data) {
+                    if (data.errCode == 1)
+                    {
+                        show_message (data.messages, 'danger');
+                    }
+                    else
+                    {
+                        show_message (data.messages, 'success');
+                        fetch_record(fetch_route, elem, 1)
                     }
                 }
             });

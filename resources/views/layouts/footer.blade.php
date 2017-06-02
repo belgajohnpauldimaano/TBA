@@ -13,6 +13,9 @@
 
 <!-- jQuery 2.2.3 -->
 <script src="{{ asset('cms/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
+
+<script src="{{ asset('cms/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js') }}"></script>
+
 <!-- Bootstrap 3.3.6 -->
 <script src="{{ asset('cms/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- FastClick -->
@@ -28,10 +31,8 @@
 <script src="{{ asset('cms/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <!-- ChartJS 1.0.1 -->
 <script src="{{ asset('cms/plugins/chartjs/Chart.min.js') }}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('cms/dist/js/pages/dashboard2.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('cms/dist/js/demo.js') }}"></script>
+
+<script src="{{ asset('cms/plugins/bootbox/bootbox.min.js') }}"></script>
 
 
 @yield('scripts')

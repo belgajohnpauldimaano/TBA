@@ -10,8 +10,18 @@ class FilmController extends Controller
 {
     public function index () 
     {
-        $Film = Film::with(['genre'])->get();
+        $Film = Film::with(['genre'])->where(function ($query) {
+            $query->where('release_status', '!=', 0);
+        })->get();
         return view('cms.film.index', ['Film' => $Film]);
+    }
+
+    public function fetch_record (Request $request)
+    {
+        $Film = Film::with(['genre'])->where(function ($query) use($request) {
+            $query->where('release_status', '!=', 0);
+        })->get();
+        return view('cms.film.partials.film_records', ['Film' => $Film]);
     }
 
     public function show_film_form (Request $request)
@@ -30,6 +40,7 @@ class FilmController extends Controller
         $film_status = Film::RELEASE_STATUS;
         return view('cms.film.partials.film_form', ['film_status' => $film_status, 'Film' => $Film, 'Genre' => $Genre])->render();
     }
+
 
     public function save_film (Request $request)
     {
@@ -80,7 +91,7 @@ class FilmController extends Controller
             $Film->rating           = $request->rating;
             $Film->running_time     = $request->running_time;
             $Film->sell_sheet       = $request->sellsheet;
-            //$Film->hash_tags        = $request->title;
+            $Film->hash_tags        = $request->hashtags;
             $Film->genre_id         = $genre_id;
             $Film->save();
 
@@ -96,9 +107,22 @@ class FilmController extends Controller
         $Film->rating           = $request->rating;
         $Film->running_time     = $request->running_time;
         $Film->sell_sheet       = $request->sellsheet;
-        //$Film->hash_tags        = $request->title;
+        $Film->hash_tags        = $request->hashtags;
         $Film->genre_id         = $genre_id;
         $Film->save();
         return response()->json(['errCode' => 0, 'messages' => 'Film successfully updated.']);
+    }
+
+    public function delete_film (Request $request)
+    {
+        if (!$request->has('id'))
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of entry.']);
+        }
+
+        $Film = Film::where('id', $request->id)->first();
+        $Film->release_status = 0;
+        $Film->save();
+        return response()->json(['errCode' => 0, 'messages' => 'Film successfully deleted.']);
     }
 }

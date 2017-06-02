@@ -12,7 +12,7 @@
 
             <div class="row">
                 <div class="col-sm-12">
-
+                
                     <div class="help-block text-center" id="general-error">
                         
                     </div>
@@ -25,7 +25,7 @@
                     
                     <div class="form-group">
                         <label for="">Genre <span class="text-red">*</span></label>
-                        <input type="text" data-provide="typeahead" name="genre" id="genre" class="form-control typeahead" placeholder="Genre" value="{{ ($Film ? $Film->genre->genre : '') }}">
+                        <input type="text" data-provide="typeahead" autoComplete="off" name="genre" id="genre" class="form-control typeahead" placeholder="Genre" value="{{ ($Film ? $Film->genre->genre : '') }}">
                         <div class="help-block text-center" id="genre-error"></div>
                     </div>
                     
@@ -80,6 +80,12 @@
                         </div>
                         <div class="help-block text-center" id="sellsheet-error"></div>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="">Hash Tags</label>
+                        <input type="text" name="hashtags" class="form-control input-md" id="hashtags" value="{{ ($Film ? $Film->hash_tags : '') }}" data-role="tagsinput" />
+                        <div class="help-block text-center" id="hashtags-error"></div>
+                    </div>
 
                 </div>
             </div>
@@ -96,6 +102,12 @@
 </div><!-- /.modal -->
 
 <script>
+    $("input[data-role=tagsinput]").tagsinput({
+        tagClass: function(item) {
+            return 'text-light-blue';
+        
+        }
+    });
     $('.date-picker').datepicker({ autoClose:true });
     var dd = [
         @if($Genre)
