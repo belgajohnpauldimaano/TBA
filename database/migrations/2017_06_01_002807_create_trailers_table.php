@@ -15,8 +15,10 @@ class CreateTrailersTable extends Migration
     {
         Schema::create('trailers', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('trailer_url');
             $table->string('image_preview', 50);
-            $table->tinyInteger('trailer_image_sorter');
+            $table->tinyInteger('trailer_image_sorter')->nullable();
+            $table->tinyInteger('trailer_show')->nullable();
             $table->integer('film_id')->unsigned();
             $table->timestamps();
         });

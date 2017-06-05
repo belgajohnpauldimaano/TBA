@@ -67,7 +67,6 @@ class HomeCarouselController extends Controller
     {
         foreach($request->order as $key => $val)
         {
-            echo $key . ' ' . $val . ' ' ;
             $Carousel = Carousel::where('id', $val)->first();
             $Carousel->carousels_sorter = $key + 1;
             $Carousel->save();

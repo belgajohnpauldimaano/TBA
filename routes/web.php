@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+        return redirect('cms/carousel');
 });
 
 Auth::routes();
@@ -37,8 +37,20 @@ Route::group(['prefix' => '/cms'], function () {
         Route::get('/', 'FilmController@index')->name('film');
         Route::post('/show_film_form', 'FilmController@show_film_form')->name('show_film_form');
         Route::post('/save_film', 'FilmController@save_film')->name('save_film');
-        Route::post('/fetch_record', 'FilmController@fetch_record')->name('fetch_record');
+        Route::post('/fetch_record', 'FilmController@fetch_record')->name('film_fetch_record');
         Route::post('/delete_film', 'FilmController@delete_film')->name('delete_film');
+        
+
+        Route::get('/{id}', 'FilmController@specific_film_index')->name('specific_film_index');
+        Route::group(['prefix' => '/trailer'], function () {
+            Route::post('/trailer_order_save', 'FilmController@trailer_order_save')->name('trailer_order_save');
+            Route::post('/show_hide_toggle', 'FilmController@show_hide_toggle')->name('show_hide_toggle');
+            Route::post('/delete_trailer', 'FilmController@delete_trailer')->name('delete_trailer');
+            Route::post('/film_trailer_fetch_record/{id}', 'FilmController@film_trailer_fetch_record')->name('film_trailer_fetch_record');
+            Route::post('/film_trailer_form_modal', 'FilmController@film_trailer_form_modal')->name('film_trailer_form_modal');
+            Route::post('/save_trailer/{id}', 'FilmController@save_trailer')->name('save_trailer');
+            
+        });
         
     });
 });

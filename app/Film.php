@@ -10,9 +10,14 @@ class Film extends Model
     const COMING_SOON       = 2;
     const FILM_CATALOGUE    = 3;
 
-    const RELEASE_STATUS = ['Current Line-up','Comming Soon','Film Catalogue'];
+    const RELEASE_STATUS = ['Current Line-up','Coming Soon','Film Catalogue'];
     public function genre ()
     {
         return $this->belongsTo(Genre::class, 'genre_id', 'id');
+    }
+
+    public function trailers ()
+    {
+        return $this->hasMany(Trailer::class, 'film_id', 'id');
     }
 }

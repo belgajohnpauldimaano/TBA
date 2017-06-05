@@ -17,8 +17,33 @@
                         </button>
                     </div>
                 </div>
+
                 <div class="box-body">
-                    <div class="js-content_holder">
+                    <div class="js-content_holder box" style="border-top:0">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <form id="frm_search_film">
+                                    <label for="">Search</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="search" id="js-search_film" placeholder="search">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-flat btn-primary">Search</button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-sm-8">
+                                
+                                <div class="pull-right">
+                                    {{ $Film->links() }}
+                                </div>
+                            </div>
+                        </div>
+                    
                         <table class="table table-bordered">
                             <tr>
                                 <th>Title</th>
@@ -51,6 +76,7 @@
                                                 <ul class="dropdown-menu">
                                                     <li><a href="#" class="js-edit_film" data-id="{{ $data->id }}">Edit</a></li>
                                                     <li><a href="#" class="js-delete_film" data-id="{{ $data->id }}">Delete</a></li>
+                                                    <li><a href="{{ route('specific_film_index', $data->id) }}" class="js-view_film" data-id="{{ $data->id }}">View</a></li>
                                                     {{-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">View</a></li> --}}
                                                 </ul>
@@ -65,6 +91,9 @@
                                 @endif
                             </tbody>
                         </table>
+                        <div class="pull-right">
+                            {{ $Film->links() }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,6 +107,7 @@
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('cms/plugins/Bootstrap-3-Typeahead/bootstrap3-typeahead.js') }}"></script>
     <script>
+
         $('body').on('click', '#js-btn_add', function () {
             load_film_form_modal();
         });
@@ -86,8 +116,6 @@
             var id = $(this).data('id');
             load_film_form_modal(id);
         });
-
-        
         
         $('body').on('click', '#js-sellsheet', function () {
             $('#sellsheet').click();
@@ -98,7 +126,7 @@
         
         $('body').on('submit', '#js-film_form', function (e) {
             e.preventDefault();
-            save_data($(this), "{{ route('save_film') }}", "{{ route('fetch_record') }}", $('#js-content_holder'));
+            save_data($(this), "{{ route('save_film') }}", "{{ route('film_fetch_record') }}", $('.js-content_holder'));
         });
         
         $('body').on('click', '.js-delete_film', function (e) {
@@ -118,11 +146,29 @@
                 callback: function (result) {
                     if (result)
                     {
-                        delete_record("{{ route('delete_film') }}", "{{ route('fetch_record') }}", $('#js-content_holder'), id);
+                        delete_record("{{ route('delete_film') }}", "{{ route('film_fetch_record') }}", $('.js-content_holder'), id);
                     }
                 }
             });
         });
+        
+        $('body').on('change', '#js-search_film', function () {
+            fetch_record_page_specific(1);
+        });
+        
+        $('body').on('submit', '#frm_search_film', function (e) {
+            e.preventDefault();
+            fetch_record_page_specific(1);
+        });
+
+        function fetch_record_page_specific (page)
+        {
+            var fetch_route = "{{ route('film_fetch_record') }}";
+            var elem = $('.js-content_holder');
+            $('.js-content_holder .overlay').removeClass('hidden');
+            fetch_record(fetch_route, elem, page, 'frm_search_film');
+        }
+
 
         /* Func Name : load_film_form_modal
          * Desc      : Load modal from ajax request
@@ -132,12 +178,10 @@
         function load_film_form_modal (id)
         {
             var data = {_token : '{{ csrf_token() }}'};
-
             if (id)
             {
                 data = {_token : '{{ csrf_token() }}', id : id};
             }
-
             $.ajax({
                 url : "{{ route('show_film_form') }}",
                 type : 'POST',
@@ -145,12 +189,11 @@
                 success : function (data) {
                     $('#js-modal_holder').html(data);
                     $('#js-film_form_modal').modal({keyboard : false, backdrop : 'static'});
-                    
                 }
             });
         }
 
-        function save_data (form, route, fetch_route, elem)
+        /*function save_data (form, route, fetch_route, elem)
         {
             var formData = new FormData(form[0]);
             $.ajax({
@@ -185,19 +228,38 @@
                     {
                         show_message (data.messages, 'success');
                         form.parents('.modal').modal('hide');
-                        fetch_record(fetch_route, elem, 1)
+                        fetch_record(fetch_route, elem, 1, '')
                     }
                 }
             });
         }
-        function fetch_record (route, elem, page)
+        
+
+        function fetch_record (route, elem, page, form)
         {
+            var formData;
+            if (form == '')
+            {
+                formData = new FormData();
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('page', page);
+            }
+            else
+            {
+                formData = new FormData($('#'+form)[0]);
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('page', page);
+            }
+
             $.ajax({
                 url : route,
                 type : 'POST',
-                data : {_token : '{{ csrf_token() }}'},
+                data : formData,
+                processData : false,
+                contentType : false,
                 success     : function (data) {
-                    $('.js-content_holder').html(data);
+                    elem.html(data);
+                    $('ul.pagination a').css('cursor','pointer');
                 }
             });
         }
@@ -215,10 +277,14 @@
                     else
                     {
                         show_message (data.messages, 'success');
-                        fetch_record(fetch_route, elem, 1)
+                        fetch_record(fetch_route, elem, 1, '')
                     }
                 }
             });
         }
+
+        $(function () {
+            $('ul.pagination a').css('cursor','pointer');
+        });*/
     </script>
 @endsection

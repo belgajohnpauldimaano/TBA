@@ -90,8 +90,102 @@
             }
         })
         // disable click thumbnail with href = #
-        $('body').on('click', '.thumbnail, .js-edit_film', function (e){
+        $('body').on('click', '.thumbnail, .dropdown-menu a, .js-edit_film', function (e){
             e.preventDefault();
+        });
+
+        function save_data (form, route, fetch_route, elem)
+        {
+            var formData = new FormData(form[0]);
+            $.ajax({
+                url : route,
+                type : 'POST',
+                data : formData,
+                processData : false,
+                contentType : false,
+                success     : function (data) {
+                    $('.help-block').empty();
+                    $('.form-group').removeClass('has-error');
+                    if (data.errCode == 1)
+                    {
+                        for(var err in data.messages)
+                        {
+                            if($('#'+err+'-error').length) // Checks if the element is exisiting
+                            {
+                                $('#'+err+'-error').html('<code>'+ data['messages'][err] +'</code>');
+                                $('#'+err+'-error').parents('.form-group').addClass('has-error');
+                            }
+                            else
+                            {
+                                $('#general-error').append('<code>'+ data['messages'][err] +'</code>');
+                            }
+                        }
+                    }
+                    else if (data.errCode == 2)
+                    {
+                        $('#general-error').html('<code>'+ data.messages +'</code>');
+                    }
+                    else
+                    {
+                        show_message (data.messages, 'success');
+                        form.parents('.modal').modal('hide');
+                        fetch_record(fetch_route, elem, 1, '')
+                    }
+                }
+            });
+        }
+        
+
+        function fetch_record (route, elem, page, form)
+        {
+            var formData;
+            if (form == '')
+            {
+                formData = new FormData();
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('page', page);
+            }
+            else
+            {
+                formData = new FormData($('#'+form)[0]);
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('page', page);
+            }
+
+            $.ajax({
+                url : route,
+                type : 'POST',
+                data : formData,
+                processData : false,
+                contentType : false,
+                success     : function (data) {
+                    elem.html(data);
+                    $('ul.pagination a').css('cursor','pointer');
+                }
+            });
+        }
+        function delete_record (delete_route, fetch_route, elem, id)
+        {
+            $.ajax({
+                url : delete_route,
+                type : 'POST',
+                data : {_token : '{{ csrf_token() }}', id : id},
+                success     : function (data) {
+                    if (data.errCode == 1)
+                    {
+                        show_message (data.messages, 'danger');
+                    }
+                    else
+                    {
+                        show_message (data.messages, 'success');
+                        fetch_record(fetch_route, elem, 1, '')
+                    }
+                }
+            });
+        }
+
+        $(function () {
+            $('ul.pagination a').css('cursor','pointer');
         });
 </script>
 </body>

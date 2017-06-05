@@ -23,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        return redirect('home_page_carousel');
+        //return view('home');
     }
 }
