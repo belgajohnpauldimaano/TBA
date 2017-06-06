@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
+//use Storage;
+use File;
+
 use App\Film;
 use App\Genre;
 use App\Trailer;
+use App\Poster;
+
 class FilmController extends Controller
 {
     public function index () 
@@ -14,6 +19,7 @@ class FilmController extends Controller
         $Film = Film::with(['genre'])->where(function ($query) {
             $query->where('release_status', '!=', 0);
         })->paginate(2);
+
         return view('cms.film.index', ['Film' => $Film]);
     }
 
@@ -146,10 +152,8 @@ class FilmController extends Controller
         return response()->json(['errCode' => 0, 'messages' => 'Film successfully deleted.']);
     }
 
-    /* SPECIFIC FILM
-     *
-     *
-     *
+    /* 
+     * SPECIFIC FILM
      */
 
      public function specific_film_index ($id) 
@@ -171,7 +175,8 @@ class FilmController extends Controller
             return redirect(route('film'));
         }
         
-        return view('cms.film.specific_film.film', ['Film' => $Film]);
+        $Poster = Poster::where('film_id', $id)->orderBy('poster_image_sorter', 'ASC')->get();
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster]);
      }
 
      public function trailer_order_save (Request $request) 
@@ -216,14 +221,14 @@ class FilmController extends Controller
      {
         if(!$request->has('id'))
         {
-            return response()->json(['errCode' => 1, 'message' => 'Invalid selection of trailer.']);
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of trailer.']);
         }
          
         $Trailer = Trailer::where('id', $request->id)->first();
         $Trailer->trailer_show = 0;
         $Trailer->save();
 
-        return response()->json(['errCode' => 0, 'message' => 'Trailers successfully deleted.']);
+        return response()->json(['errCode' => 0, 'messages' => 'Trailers successfully deleted.']);
 
      }
 
@@ -258,11 +263,17 @@ class FilmController extends Controller
 
         if(!$request->has('trailer_id')) 
         {
-                $rules['image_preview'] = 'required|mimes:jpg,jpeg,png';
-                $messages['image_preview.required'] = 'Image preview is a required field.';
-
+            $rules['image_preview'] = 'required|mimes:jpg,jpeg,png|dimensions:min_width=1600,min_height=900';
+            $messages['image_preview.required'] = 'Image preview is a required field.';
+            $messages['image_preview.dimensions'] = 'Image preview is should atleast 1600px width and 900px in height.';
         }
-         $validator = Validator::make($request->all(), $rules, $messages);
+        else
+        {   //ratio=16/9
+            $rules['image_preview'] = 'mimes:jpg,jpeg,png|dimensions:min_width=1600,min_height=900';
+            $messages['image_preview.dimensions'] = 'Image preview is should atleast 1600px width and 900px in height.';
+        }
+
+        $validator = Validator::make($request->all(), $rules, $messages);
         
 
         if ($validator->fails())
@@ -289,7 +300,7 @@ class FilmController extends Controller
             
             if($request->hasFile('image_preview'))
             {
-                $filename   =$Trailer->image_preview;
+                $filename   = $Trailer->image_preview;
                 $request->image_preview->move(public_path('content/film/trailers'), $filename);
             }
 
@@ -311,4 +322,119 @@ class FilmController extends Controller
 
         return response()->json(['errCode' => 0, 'messages' => 'Trailer successfully added.']);
      }
+
+
+     /* FILM POSTER
+      * 
+      *
+      *
+      */
+    public function film_poster ()
+    {
+        echo "fsad";
+        return ;
+    }
+
+    public function set_featured_image(Request $request)
+    {
+        if(!$request->has('id') || !$request->has('film_id'))
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of poster.']);
+        }
+
+        $Poster = Poster::where(['film_id' => $request->film_id, 'featured' => '1'])->first();
+        if($Poster)
+        {
+            $Poster->featured = 0;
+            $Poster->save();
+        }
+
+        $Poster = Poster::where(['id' => $request->id])->first();
+        if(!$Poster)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of poster.']);
+        }
+
+        $Poster->featured = 1;
+        $Poster->save();
+        return response()->json(['errCode' => 0, 'messages' => 'Poster successfully set as featured.']);
+    }
+
+    public function posters_order_save (Request $request)
+    {
+        foreach($request->order as $key => $val)
+        {
+            $Poster = Poster::where('id', $val)->first();
+            $Poster->poster_image_sorter = $key + 1;
+            $Poster->save();
+
+            echo json_encode($Poster);
+            echo "<br />";
+        }
+
+        return response()->json(['errCode' => 0, 'message' => 'Trailers successfully ordered.']);
+    }
+
+    public static function poster_image_modal (Request $request)
+    {
+        $Poster = Poster::where('film_id', $request->film_id)->orderBy('poster_image_sorter', 'ASC')->get();
+        return view('cms.film.specific_film.partials.film_poster_image_modal', ['Poster' => $Poster, 'film_id' => $request->film_id])->render();
+    }
+
+    public static function poster_image_upload (Request $request)
+    {
+        if($request->hasFile('photo'))
+        {
+            $filename = '';
+            $Poster =  new Poster();
+            
+            $photo = $request->file('photo');
+            $ext = $photo->getClientOriginalExtension();
+            $filename = str_random(40) . '.' . $ext;
+            $photo->move(public_path('content/film/posters'), $filename);
+
+            $Poster->label = $filename;
+            $Poster->featured = 0;
+            $Poster->film_id = $request->film_id;
+            $Poster->save();
+            
+            $initialPreview = [
+                asset('content/film/posters').'/'.$filename
+            ];
+            $initialPreviewConfig = [
+                ['caption' => "", 'size' => 0, 'width' => "120px", 'url' => route('poster_image_delete'), 'key' => $Poster->id, 'extra' => [' _token' => csrf_token() ] ]
+            ];
+            return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true]);
+        }
+        else
+        {
+             $initialPreview = [
+            ];
+            $initialPreviewConfig = [
+                []
+            ];
+            return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true]);
+        }
+    } 
+
+    public static function poster_image_delete (Request $request)
+    {
+        $Poster = Poster::where('id', $request->key)->first();
+        $Poster->delete();
+        
+        File::delete(public_path('content\\film\\posters\\' . $Poster->label));
+
+        $initialPreview = [
+        ];
+        $initialPreviewConfig = [
+            []
+        ];
+        return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true]);
+    }
+
+    public static function poster_image_fetch (Request $request)
+    {
+        $Poster = Poster::where('film_id', $request->film_id)->orderBy('poster_image_sorter', 'ASC')->get();
+        return view('cms.film.specific_film.partials.film_poster_image_fetch', ['Poster' => $Poster])->render();
+    } 
 }

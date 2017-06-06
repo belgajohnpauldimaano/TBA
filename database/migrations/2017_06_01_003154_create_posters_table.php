@@ -17,7 +17,7 @@ class CreatePostersTable extends Migration
             $table->increments('id');
             $table->string('label', 100);
             $table->tinyInteger('featured');
-            $table->tinyInteger('poster_image_sorter');
+            $table->tinyInteger('poster_image_sorter')->nullable();
             $table->integer('film_id')->unsigned();
             $table->timestamps();
         });

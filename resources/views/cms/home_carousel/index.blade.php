@@ -161,7 +161,9 @@
 
         
 
-
+        $('body').on('hidden.bs.modal', '#js-image_uploader_modal', function (e) {
+            image_list();
+        })
         
     </script>
 @endsection

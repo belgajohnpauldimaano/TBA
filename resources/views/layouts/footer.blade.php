@@ -43,33 +43,50 @@
          * Params : nothing
          * Return : HTML elements
          */
-        function image_list () 
+        function image_list (dataParams) 
         {
-            $('.js-image_container .overlay').removeClass('hidden');
+            var params = dataParams || { fetching_route : "{{ route('image_list') }}", targetElement : 'js-image_container', extra : '' };
+            $('.'+ params.targetElement +' .overlay').removeClass('hidden');
+            var data = {_token : '{{ csrf_token() }}'};
+            if (params.extra != '')
+            {
+                data = {_token : '{{ csrf_token() }}', film_id : params.extra};
+            }
+
             $.ajax({
-                url : "{{ route('image_list') }}",
+                url :  params.fetching_route, //"{{-- route('image_list') --}}",
                 type : 'POST',
-                data : {_token : '{{ csrf_token() }}'},
+                data : data,
                 success : function (data) {
-                    $('.js-image_container').html(data);
+                    //'.js-image_container'
+                    $('.' + params.targetElement).html(data);
                 }
             });
         }
 
         /* Func Name : show_message ( msg )
          * Desc      : scroll on top and will show message
-         * Params    : msg - string - display message, type - string - type of error class * (success, info, warning, danger)
+         * Params    : msg - string - display message, type - string - type of error class * (success, info, warning, danger), target - string - element of which the message will appear
          * Return    : HTML elements
          */
-        function show_message (msg, type) 
+        function show_message (msg, type, target) 
         {
+            var targetElem = 'js-messages_holder';
+            if (target != undefined)
+            {
+                if (target != '')
+                {
+                    targetElem = target;
+                }
+            }
+            
             $("html, body").animate({ scrollTop: 0 }, "slow"); 
             var elem = '<div class="callout callout-'+ type +' ">'+
                         '      <p>'+
                                     msg
                         '     </p>'+
                         '</div>';
-            $('.js-messages_holder').html(elem).slideDown('slow', function (){
+            $('.' + targetElem).html(elem).slideDown('slow', function (){
                 setTimeout(function () {
                     $('.js-messages_holder').slideUp('slow');
                 }, 3000);
@@ -84,18 +101,23 @@
         // Clear modal on hidden
         $('body').on('hidden.bs.modal', '.modal', function (e) {
             $('#js-modal_holder').empty();
-            if ($(this).data('id') !== undefined) // allow refresh of image list only if the modal upload was shown
-            {
-                image_list();
-            }
+            //if ($(this).data('id') !== undefined) // allow refresh of image list only if the modal upload was shown
+            //{
+            //}
         })
         // disable click thumbnail with href = #
-        $('body').on('click', '.thumbnail, .dropdown-menu a, .js-edit_film', function (e){
+        $('body').on('click', '.thumbnail, .js-edit_film', function (e){
             e.preventDefault();
         });
 
-        function save_data (form, route, fetch_route, elem)
+        function save_data (form, route, fetch_route, elem, extra)
         {
+            var extraData = { targetMessageElem : "" };
+            if(extra != undefined)
+            {
+                extraData.targetMessageElem = extra['targetMessageElem'];
+            }
+
             var formData = new FormData(form[0]);
             $.ajax({
                 url : route,
@@ -127,7 +149,8 @@
                     }
                     else
                     {
-                        show_message (data.messages, 'success');
+                        console.log(extraData);
+                        show_message (data.messages, 'success', extraData.targetMessageElem);
                         form.parents('.modal').modal('hide');
                         fetch_record(fetch_route, elem, 1, '')
                     }

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
+use File;
 
 use App\Carousel;
 use App\Film;
+
 class HomeCarouselController extends Controller
 {
     public function index ()
@@ -109,8 +111,11 @@ class HomeCarouselController extends Controller
 
     public function image_delete (Request $request) 
     {
-        $Carousel = Carousel::where('id', $request->key);
+        $Carousel = Carousel::where('id', $request->key)->first();
         $Carousel->delete();
+        
+        File::delete(public_path('content\\film\\posters\\' . $Poster->label));
+
         $initialPreview = [
         ];
         $initialPreviewConfig = [

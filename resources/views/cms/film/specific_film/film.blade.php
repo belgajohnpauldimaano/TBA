@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ asset('cms/plugins/iCheck/all.css') }}">
+    <link href="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/css/fileinput.css') }}" media="all" rel="stylesheet" type="text/css"/>
 @endsection
 
 @section ('content')
@@ -18,7 +19,6 @@
                 </div>
 
                 <div class="box-body">
-
                     <div class="row" id="js-film_primary_info">
 
                         <div class="col-sm-6">
@@ -92,6 +92,7 @@
                 </div>
 
             </div>
+            
 
             <div class="box box-success">
                 <div class="box-header with-border">
@@ -145,6 +146,40 @@
                 </div>
             </div>
 
+
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Poster</h3>
+                    <div class="box-tools">
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_poster_images">Manage Poster Image Uploads</button>
+                    </div>
+                </div>
+                <div class="box-body js-poster_content_holder box box-solid">
+                    <div class="overlay hidden">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <div class="js-poster_container row ">
+                        @if($Poster)
+                            @foreach($Poster as $data)
+                                <div class="col-xs-6 col-md-3">
+                                    <a href="#" class="thumbnail">
+                                        <img alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/posters/' . $data->label) }}" class="js-image_item margin">
+                                        @if($data->featured == 1)
+                                            <span class="badge">Featured</span>
+                                        @else
+                                            <span class="">&nbsp;</span>
+                                        @endif
+                                    </a>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <p class="text-primary">Note : Double click the poster to make it a featured poster</p>
+                </div>
+            </div>
+
         </div>
     </div>
     <div id="js-modal_holder"></div>
@@ -152,6 +187,7 @@
 
 @section('scripts')
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/js/fileinput.js') }}" type="text/javascript"></script>
     <!-- iCheck 1.0.1 -->
     <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
     <script>
@@ -192,7 +228,8 @@
             show_trailer_form_modal();
         });
 
-        $('body').on('click', '.js-edit_trailer', function () {
+        $('body').on('click', '.js-edit_trailer', function (e) {
+            e.preventDefault();
             var id = $(this).data(id);
             show_trailer_form_modal(id);
         });
@@ -279,12 +316,12 @@
             });
         }
 
-        function save_order (order, order_route)
+        function save_order (order, order_route, targetElem)
         {
             if (order.length < 1)
             {
                 var msg = 'No order has been change yet.';
-                show_message (msg, 'warning') 
+                show_message (msg, 'warning', targetElem) 
                 return;
             }
 
@@ -299,6 +336,62 @@
                 }
             });
         }
+
+
+        /*
+         *  POSTER JS
+         */
+         
+         $('.js-poster_container').sortable({ 
+            tolerance: 'pointer',
+            update : function (event, ui) {
+                var poster_order = [];
+
+                $('.js-poster_container .thumbnail img').each( function () {
+                    var id = $(this).data('id');
+                    poster_order.push(id);
+                });
+                
+                save_order(poster_order, "{{ route('posters_order_save') }}");
+            }
+        });
+
+         $('body').on('dblclick', '.js-image_item', function () {
+             var id = $(this).data('id');
+             $('.thumbnail').children('span').removeClass('badge').html('&nbsp;');
+             $(this).parents('.thumbnail').children('span').addClass('badge').text('Featured');
+
+             $.ajax({
+                 url : "{{ route('set_featured_image') }}",
+                 type : 'POST',
+                 data : { _token : "{{ csrf_token() }}", id : id, film_id : {{ $Film->id }} },
+                 success : function (data) {
+                 }
+             });
+         });
+
+         $('body').on('click', '.js-manage_poster_images', function () {
+            
+            $.ajax({
+                url : "{{ route('poster_image_modal') }}",
+                type : 'POST',
+                data : { _token : '{{ csrf_token() }}', film_id : {{ $Film->id }} } ,
+                success : function (data) {
+                    $('#js-modal_holder').html(data);
+                    $('#js-poster_image_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+            });
+         });
+         
+        // Clear modal on hidden
+        $('body').on('hidden.bs.modal', '#js-poster_image_modal', function (e) {
+            $('#js-modal_holder').empty();
+            if ($(this).data('id') !== undefined) // allow refresh of image list only if the modal upload was shown
+            {
+                var dataParams = { fetching_route : "{{ route('poster_image_fetch') }}", targetElement : 'js-poster_content_holder', extra : {{ $Film->id }} };
+                image_list(dataParams);
+            }
+        })
     </script>
 @endsection
 

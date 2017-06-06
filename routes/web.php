@@ -52,5 +52,15 @@ Route::group(['prefix' => '/cms'], function () {
             
         });
         
+        Route::group(['prefix' => '/poster'], function () {
+            //Route::get('/poster', 'FilmController@film_poster')->name('film_poster');
+            Route::post('/set_featured_image', 'FilmController@set_featured_image')->name('set_featured_image');
+            Route::post('/posters_order_save', 'FilmController@posters_order_save')->name('posters_order_save');
+            Route::post('/poster_image_modal', 'FilmController@poster_image_modal')->name('poster_image_modal');
+            Route::post('/poster_image_upload', 'FilmController@poster_image_upload')->name('poster_image_upload');
+            Route::post('/poster_image_delete', 'FilmController@poster_image_delete')->name('poster_image_delete');
+            Route::post('/poster_image_fetch', 'FilmController@poster_image_fetch')->name('poster_image_fetch');
+            
+        });
     });
 });
