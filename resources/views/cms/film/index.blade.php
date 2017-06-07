@@ -43,7 +43,7 @@
                                 </div>
                             </div>
                         </div>
-                    
+                        <br>
                         <table class="table table-bordered">
                             <tr>
                                 <th>Title</th>

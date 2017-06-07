@@ -12,6 +12,7 @@
     <div class="row">
         <div class="col-sm-12">
 
+            {{-- FILM BASIC INFO --}}
             <div class="box box-primary">
 
                 <div class="box-header with-border">
@@ -92,17 +93,22 @@
                 </div>
 
             </div>
+            {{-- FILM BASIC INFO --}}
             
 
+            {{-- TRAILER --}}
             <div class="box box-success">
                 <div class="box-header with-border">
                     <h3 class="box-title">Trailers</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-trailer_add_form"><i class="fa fa-plus"></i> Add</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-trailer_add_form"><i class="fa fa-plus"></i> Add Trailer</button>
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="js-content_holder_trailer">
+                    <div class="js-content_holder_trailer box box-solid">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
                         <table class="table table-bordered">
                             <tr>
                                 <th>Show in Trailers Page</th>
@@ -121,7 +127,7 @@
                                                     </label>
                                                 </td>
                                                 <td><img class="media-object" width="64" height="64" src="{{ asset('content/film/trailers/' . $trailer->image_preview) }}" alt="..."></td>
-                                                <td> <a href="{{$trailer->trailer_url}}" target="_blank">{{ str_limit($trailer->trailer_url, 60) }}</a></td>
+                                                <td> <a href="{{$trailer->trailer_url}}" target="_blank">{{ str_limit($trailer->trailer_url, 60) }}</a> </td>
                                                 <td>
                                                     <!-- Single button -->
                                                     <div class="btn-group">
@@ -143,10 +149,16 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="box-footer">
+                        <p>Note : </p>
+                        <p class="text-primary">Drag the row to arrange the order.</p>
+                    </div>
                 </div>
             </div>
+            {{-- TRAILER --}}
 
 
+            {{-- POSTER PREVIEW --}}
             <div class="box box-danger">
                 <div class="box-header with-border">
                     <h3 class="box-title">Poster</h3>
@@ -176,9 +188,69 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <p class="text-primary">Note : Double click the poster to make it a featured poster</p>
+                    <p>Note : </p>
+                    <p class="text-primary">Double click the poster to make it a featured poster.</p>
+                    <p class="text-primary">Drag the image posters to arrange the order.</p>
                 </div>
             </div>
+            {{-- POSTER PREVIEW --}}
+
+            {{-- AWARDS --}}
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Awards</h3>
+                    <div class="box-tools">
+                        <button class="btn btn-sm btn-flat btn-primary js-add_award"><i class="fa fa-plus"></i> Add Award</button>
+                    </div>
+                </div>
+                <div class="box-body js-award_content_holder box box-solid">
+                    <div class="overlay hidden">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>Image Title</td>
+                                <td>Image Preview</td>
+                                <td>Action</td>
+                            </tr>
+                        </thead>
+                        <tbody class="js-awards_sortable_container">
+                            @if($Award->count())
+                                @foreach($Award as $data)
+                                    <tr data-id="{{ $data->id }}">
+                                        <td>{{ $data->award_name }}</td>
+                                        <td> <img class="media-object" width="64" height="64" src="{{ asset('content/film/awards/' . $data->award_image) }}" alt="..."></td>
+                                        <td>
+                                            <!-- Single button -->
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Action <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a href="#" class="js-edit_award" data-id="{{ $data->id }}">Edit</a></li>
+                                                    <li><a href="#" class="js-delete_award" data-id="{{ $data->id }}">Delete</a></li>
+                                                    {{-- <li role="separator" class="divider"></li>
+                                                    <li><a href="#">View</a></li> --}}
+                                                </ul>
+                                            </div>  
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        @else
+                            <tr>
+                                <td colspan="3">No data found.</td>
+                            </tr>
+                        @endif
+                    </table>
+                </div>
+                <div class="box-footer">
+                    <p>Note : </p>
+                    <p class="text-primary">Drag the image to arrange the order.</p>
+                </div>
+            </div>
+            {{-- AWARDS --}}
 
         </div>
     </div>
@@ -392,6 +464,70 @@
                 image_list(dataParams);
             }
         })
+
+        /*
+         * AWARDS JS SCRIPT
+         */
+        $('.js-awards_sortable_container').sortable({ 
+            tolerance: 'pointer',
+            update : function (event, ui) {
+                var award_order = [];
+
+                $('.js-awards_sortable_container tr').each( function () {
+                    var id = $(this).data('id');
+                    award_order.push(id);
+                });
+                
+                save_order(award_order, "{{ route('film_award_order_save') }}");
+            }
+        });
+
+        $('body').on('click', '.js-add_award, .js-edit_award', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            show_award_form_modal(id);
+        });
+       
+        $('body').on('click', '#js-btn_award_image', function () {
+            $('#award_image').click();
+        });
+        
+        $('body').on('change', '#award_image', function () {
+            $('#js-text_award_image').val($('#award_image').val().replace(/.*(\/|\\)/, ''));
+        });
+
+        $('body').on('submit', '#js-frm_award', function (e) {
+            e.preventDefault();
+            save_data($(this), "{{ route('film_award_save', $Film->id) }}", "{{ route('film_awards_fetch', $Film->id) }}", $('.js-award_content_holder'));
+        });
+
+        function show_award_form_modal (id)
+        {
+            var data='';
+            if (id == '')
+            {
+                data = {_token:"{{ csrf_token() }}" };
+            }
+            else
+            {
+                data = {_token:"{{ csrf_token() }}", award_id:id};
+            }
+            
+            $.ajax({
+                url : "{{ route('film_award_form') }}",
+                type : 'POST',
+                data : data,
+                success : function (data) {
+                    $('#js-modal_holder').html(data);
+                    $('#js-award_form_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+            })
+        }
+        $('body').on('click', '.js-delete_award', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            delete_record ("{{ route('film_award_delete') }}", "{{ route('film_awards_fetch', $Film->id) }}", $('.js-award_content_holder'), id)
+        });
     </script>
 @endsection
 

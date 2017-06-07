@@ -11,6 +11,7 @@ use App\Film;
 use App\Genre;
 use App\Trailer;
 use App\Poster;
+use App\Award;
 
 class FilmController extends Controller
 {
@@ -50,7 +51,8 @@ class FilmController extends Controller
         }
         $Genre = Genre::all();
         $film_status = Film::RELEASE_STATUS;
-        return view('cms.film.partials.film_form', ['film_status' => $film_status, 'Film' => $Film, 'Genre' => $Genre])->render();
+        $RATINGS = Film::RATINGS; 
+        return view('cms.film.partials.film_form', ['film_status' => $film_status, 'Film' => $Film, 'Genre' => $Genre, 'RATINGS'=>$RATINGS])->render();
     }
 
 
@@ -176,7 +178,9 @@ class FilmController extends Controller
         }
         
         $Poster = Poster::where('film_id', $id)->orderBy('poster_image_sorter', 'ASC')->get();
-        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster]);
+        $Award  = Award::where('film_id', $id)->orderBy('award_image_sorter', 'ASC')->get();
+
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award]);
      }
 
      public function trailer_order_save (Request $request) 
@@ -263,7 +267,7 @@ class FilmController extends Controller
 
         if(!$request->has('trailer_id')) 
         {
-            $rules['image_preview'] = 'required|mimes:jpg,jpeg,png|dimensions:min_width=1600,min_height=900';
+            //$rules['image_preview'] = 'required|mimes:jpeg,png|dimensions:min_width=1600,min_height=900';
             $messages['image_preview.required'] = 'Image preview is a required field.';
             $messages['image_preview.dimensions'] = 'Image preview is should atleast 1600px width and 900px in height.';
         }
@@ -324,10 +328,8 @@ class FilmController extends Controller
      }
 
 
-     /* FILM POSTER
-      * 
-      *
-      *
+     /* 
+      * FILM POSTER
       */
     public function film_poster ()
     {
@@ -367,21 +369,18 @@ class FilmController extends Controller
             $Poster = Poster::where('id', $val)->first();
             $Poster->poster_image_sorter = $key + 1;
             $Poster->save();
-
-            echo json_encode($Poster);
-            echo "<br />";
         }
 
         return response()->json(['errCode' => 0, 'message' => 'Trailers successfully ordered.']);
     }
 
-    public static function poster_image_modal (Request $request)
+    public function poster_image_modal (Request $request)
     {
         $Poster = Poster::where('film_id', $request->film_id)->orderBy('poster_image_sorter', 'ASC')->get();
         return view('cms.film.specific_film.partials.film_poster_image_modal', ['Poster' => $Poster, 'film_id' => $request->film_id])->render();
     }
 
-    public static function poster_image_upload (Request $request)
+    public function poster_image_upload (Request $request)
     {
         if($request->hasFile('photo'))
         {
@@ -417,7 +416,7 @@ class FilmController extends Controller
         }
     } 
 
-    public static function poster_image_delete (Request $request)
+    public function poster_image_delete (Request $request)
     {
         $Poster = Poster::where('id', $request->key)->first();
         $Poster->delete();
@@ -432,9 +431,123 @@ class FilmController extends Controller
         return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true]);
     }
 
-    public static function poster_image_fetch (Request $request)
+    public function poster_image_fetch (Request $request)
     {
         $Poster = Poster::where('film_id', $request->film_id)->orderBy('poster_image_sorter', 'ASC')->get();
         return view('cms.film.specific_film.partials.film_poster_image_fetch', ['Poster' => $Poster])->render();
     } 
+
+    /*
+     *  FILM AWARDS
+     */
+    public function film_award_form (Request $request)
+    {
+        $Award = '';
+        if($request->award_id)
+        {
+            $Award = Award::where('id', $request->award_id)->first();
+        } 
+
+        return view('cms.film.specific_film.partials.film_award_form', ['Award' => $Award])->render();
+    }
+
+    public function film_award_save ($id, Request $request)
+    {
+        $rules = [
+            'award_title' => 'required',
+            'award_image' => 'required|mimes:jpeg,png'
+        ];
+        $messages = [
+            'award_title.required'  => 'Award title is required.',
+            'award_image.required'  => 'Award photo is required.',
+            'award_image.mimes'     => 'Award photo is invalid format it should be :jpeg,png.'
+        ];
+
+        if ($request->award_id)
+        {
+            $rules['award_image'] = 'mimes:jpeg,png';
+        }
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        
+        if ($validator->fails())
+        {
+            return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
+        }
+
+        if ($request->award_id) // this is for edit
+        {
+            $Award = Award::where('id', $request->award_id)->first();
+
+            if ($Award == NULL) // no award selected
+            {
+                return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of award.']); // return an error message
+            }
+
+            // award is existing
+
+            $Award->award_name = $request->award_title;
+            $Award->save();
+
+            if ($request->hasFile('award_image')) // check if there is new file uploaded
+            {
+                $filename = $Award->award_image;
+                $request->award_image->move(public_path('content/film/awards'), $filename); // upload the file
+            }
+
+            return response()->json(['errCode' => 0, 'messages' => 'Award information successfully editted.']); // return an success message
+        }
+
+        // this is for add
+
+        $ext = $request->award_image->getClientOriginalExtension(); // get the file extension name
+
+        $filename = str_random(40) . '.' . $ext; // generate random filename and append the extension
+
+        $request->award_image->move(public_path('content/film/awards'), $filename); // upload the file
+
+        $Award = new Award();
+        $Award->award_name = $request->award_title;
+        $Award->award_image = $filename;
+        $Award->film_id = $id;
+        $Award->save();
+        
+        return response()->json(['errCode' => 0, 'messages' => 'Award information successfully editted.']); // return an success message
+
+    }
+
+    public function film_award_order_save (Request $request)
+    {
+
+        foreach($request->order as $key => $val)
+        {
+            $Award = Award::where('id', $val)->first();
+            $Award->award_image_sorter = $key + 1;
+            $Award->save();
+        }
+
+        return response()->json(['errCode' => 0, 'message' => 'Awards successfully ordered.']);
+    }
+
+    public function film_awards_fetch ($id, Request $request)
+    {
+        $Award  = Award::where('film_id', $id)->orderBy('award_image_sorter', 'ASC')->get();
+        return view('cms.film.specific_film.partials.film_awards_data', ['Award' => $Award])->render();
+    }
+
+    public function film_award_delete (Request $request)
+    {
+        if(!$request->id)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of trailer.']);
+        }
+         
+        $Award = Award::where('id', $request->id)->first();
+        $Award->delete();
+
+        File::delete(public_path('content\\film\\awards\\' . $Award->award_image));
+
+        return response()->json(['errCode' => 0, 'messages' => 'Award successfully deleted.']);
+    }
+    
 }

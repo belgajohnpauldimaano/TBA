@@ -123,7 +123,8 @@
             e.preventDefault();
 
             var formData = new FormData( $(this)[0] );
-
+            
+            $('#carousel_image_details').parents('.box').children('.overlay').removeClass('hidden');
             $.ajax({
                 url : "{{ route('save_image_details') }}",
                 type : 'POST',
@@ -135,6 +136,8 @@
                     
                     $('.help-block').empty();
                     $('.form-group').removeClass('has-error');
+
+                    $('#carousel_image_details').parents('.box').children('.overlay').addClass('hidden');
                     if(data.errCode == 1)
                     {
                         for(var err in data.messages)

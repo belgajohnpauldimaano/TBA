@@ -1,3 +1,6 @@
+                                <div class="overlay hidden">
+                                    <i class="fa fa-refresh fa-spin"></i>
+                                </div>
                                 <table class="table table-bordered">
                                     <tr>
                                         <th>Show in Trailers Page</th>

@@ -1,6 +1,9 @@
 <div class="modal fade" id="js-film_form_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content box box-solid">
+        <div class="overlay hidden">
+            <i class="fa fa-refresh fa-spin"></i>
+        </div>
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title"> {{ ($Film ? 'Update Film' : 'Add Film') }} </h4>
@@ -9,7 +12,6 @@
         {{ csrf_field() }}
         <input type="hidden" name="id" value="{{ ($Film ? $Film->id : '') }}">
         <div class="modal-body">
-
             <div class="row">
                 <div class="col-sm-12">
                 
@@ -60,7 +62,19 @@
 
                     <div class="form-group">
                         <label for="">Rating</label>
-                        <input type="text" name="rating" id="rating" class="form-control" placeholder="Rating" value="{{ ($Film ? $Film->rating : '') }}">
+                        {{-- <input type="text" name="rating" id="rating" class="form-control" placeholder="Rating" value="{{ ($Film ? $Film->rating : '') }}"> --}}
+                        
+                        <select name="rating" id="rating" class="form-control">
+                            <option value="">Select a Rating</option>
+                            @foreach($RATINGS as $key => $val)
+                                @if($Film)
+                                    <option value="{{$key}}" {{ ($Film->rating == $key ? 'selected' : '') }}>{{$val}}</option>
+                                @else
+                                    <option value="{{$key}}">{{$val}}</option>
+                                @endif
+                            @endforeach
+                        </select>
+
                         <div class="help-block text-center" id="rating-error"></div>
                     </div>
 

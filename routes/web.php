@@ -62,5 +62,15 @@ Route::group(['prefix' => '/cms'], function () {
             Route::post('/poster_image_fetch', 'FilmController@poster_image_fetch')->name('poster_image_fetch');
             
         });
+
+        Route::group(['prefix' => '/awards'], function () {
+            Route::post('/film_award_order_save', 'FilmController@film_award_order_save')->name('film_award_order_save');
+            Route::post('/film_award_form', 'FilmController@film_award_form')->name('film_award_form');
+            Route::post('/film_awards_fetch/{id}', 'FilmController@film_awards_fetch')->name('film_awards_fetch');
+            Route::post('/film_award_save/{id}', 'FilmController@film_award_save')->name('film_award_save');
+            Route::post('/film_award_delete', 'FilmController@film_award_delete')->name('film_award_delete');
+            
+        });
+        
     });
 });

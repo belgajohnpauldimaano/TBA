@@ -117,7 +117,7 @@
             {
                 extraData.targetMessageElem = extra['targetMessageElem'];
             }
-
+            form.parents('.box').children('.overlay').removeClass('hidden');
             var formData = new FormData(form[0]);
             $.ajax({
                 url : route,
@@ -128,6 +128,8 @@
                 success     : function (data) {
                     $('.help-block').empty();
                     $('.form-group').removeClass('has-error');
+                    
+                    form.parents('.box').children('.overlay').addClass('hidden');
                     if (data.errCode == 1)
                     {
                         for(var err in data.messages)
@@ -150,7 +152,7 @@
                     else
                     {
                         console.log(extraData);
-                        show_message (data.messages, 'success', extraData.targetMessageElem);
+                        //show_message (data.messages, 'success', extraData.targetMessageElem);
                         form.parents('.modal').modal('hide');
                         fetch_record(fetch_route, elem, 1, '')
                     }
@@ -174,7 +176,7 @@
                 formData.append('_token', '{{ csrf_token() }}');
                 formData.append('page', page);
             }
-
+            elem.children('.overlay').removeClass('hidden');;
             $.ajax({
                 url : route,
                 type : 'POST',
@@ -200,7 +202,7 @@
                     }
                     else
                     {
-                        show_message (data.messages, 'success');
+                        //show_message (data.messages, 'success');
                         fetch_record(fetch_route, elem, 1, '')
                     }
                 }

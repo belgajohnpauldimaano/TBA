@@ -17,7 +17,8 @@ class CreateAwardsTable extends Migration
             $table->increments('id');
             $table->string('award_name', 100);
             $table->string('award_image');
-            $table->tinyInteger('award_image_sorter');
+            $table->tinyInteger('award_image_sorter')->nullable();
+            $table->integer('film_id')->unsigned();
             $table->timestamps();
         });
     }
