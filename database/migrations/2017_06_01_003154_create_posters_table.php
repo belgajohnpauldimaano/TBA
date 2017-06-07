@@ -15,7 +15,7 @@ class CreatePostersTable extends Migration
     {
         Schema::create('posters', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('label', 100);
+            $table->string('label');
             $table->tinyInteger('featured');
             $table->tinyInteger('poster_image_sorter')->nullable();
             $table->integer('film_id')->unsigned();

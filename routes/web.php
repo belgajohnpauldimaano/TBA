@@ -14,7 +14,12 @@
 Route::get('/', function () {
         return redirect('cms/carousel');
 });
-
+Route::get('/gen', function () {
+    
+    $t=time();
+    echo($t . "<br>");
+    echo(date("Y-m-d",$t));
+});
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -69,6 +74,13 @@ Route::group(['prefix' => '/cms'], function () {
             Route::post('/film_awards_fetch/{id}', 'FilmController@film_awards_fetch')->name('film_awards_fetch');
             Route::post('/film_award_save/{id}', 'FilmController@film_award_save')->name('film_award_save');
             Route::post('/film_award_delete', 'FilmController@film_award_delete')->name('film_award_delete');
+            
+        });
+        Route::group(['prefix' => '/photo'], function () {
+            Route::post('/film_photo_fetch/{id}', 'FilmController@film_photo_fetch')->name('film_photo_fetch');
+            Route::post('/film_photo_single_upload_form_modal', 'FilmController@film_photo_single_upload_form_modal')->name('film_photo_single_upload_form_modal');
+            Route::post('/film_photo_single_save/{id}', 'FilmController@film_photo_single_save')->name('film_photo_single_save');
+            Route::post('/film_photo_order_save', 'FilmController@film_photo_order_save')->name('film_photo_order_save');
             
         });
         

@@ -33,19 +33,26 @@ class HomeCarouselController extends Controller
     {
         if($request->hasFile('photo'))
         {
+            $validator = Validator::make($request->all(), [
+                'photo' => 'required|mimes:png,jpeg'
+            ],[
+                'photo.required'  => 'Photo is required.',
+                'photo.mimes'     => 'File format should be :png,jpeg.'
+            ]);
+
             $filename = '';
             $Carousel = new Carousel();
-            foreach($request->file('photo') as $photo)
-            {
-                $ext = $photo->getClientOriginalExtension();
+            // foreach($request->file('photo') as $photo)
+            // {
+                $ext = $request->photo->getClientOriginalExtension();
                 $filename = str_random(40) . '.' . $ext;
-                $photo->move(public_path('content/carousel'), $filename);
+                $request->photo->move(public_path('content/carousel'), $filename);
 
                 $Carousel->image = $filename;
                 $Carousel->url = '';
                 $Carousel->caption = '';
                 $Carousel->save();
-            }
+            //}
             $initialPreview = [
                 asset('content/carousel').'/'.$filename
             ];
@@ -114,7 +121,7 @@ class HomeCarouselController extends Controller
         $Carousel = Carousel::where('id', $request->key)->first();
         $Carousel->delete();
         
-        File::delete(public_path('content\\film\\posters\\' . $Poster->label));
+        File::delete(public_path('content\\film\\carousel\\' . $Carousel->image));
 
         $initialPreview = [
         ];

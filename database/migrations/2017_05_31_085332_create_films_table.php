@@ -22,7 +22,7 @@ class CreateFilmsTable extends Migration
             $table->tinyInteger('rating')->nullable();
             //$table->tinyInteger('rating')->nullable();
             $table->string('running_time', 100)->nullable();
-            $table->string('sell_sheet', 50)->nullable();
+            $table->string('sell_sheet')->nullable();
             $table->string('hash_tags', 100)->nullable();
             $table->integer('genre_id')->unsigned();
             $table->timestamps();

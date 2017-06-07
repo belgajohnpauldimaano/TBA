@@ -12,7 +12,7 @@ use App\Genre;
 use App\Trailer;
 use App\Poster;
 use App\Award;
-
+use App\Photo;
 class FilmController extends Controller
 {
     public function index () 
@@ -112,7 +112,7 @@ class FilmController extends Controller
             if ($request->has('sellsheet'))
             {
                 $ext        = $request->sellsheet->getClientOriginalExtension();
-                $filename   = str_random(40) . '.' . $ext;
+                $filename   = str_random(100).  '.' . $ext;
                 $request->sellsheet->move(public_path('content/sell_sheets'),$filename);
             }
 
@@ -179,8 +179,9 @@ class FilmController extends Controller
         
         $Poster = Poster::where('film_id', $id)->orderBy('poster_image_sorter', 'ASC')->get();
         $Award  = Award::where('film_id', $id)->orderBy('award_image_sorter', 'ASC')->get();
+        $Photo  = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->get();
 
-        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award]);
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo]);
      }
 
      public function trailer_order_save (Request $request) 
@@ -267,7 +268,7 @@ class FilmController extends Controller
 
         if(!$request->has('trailer_id')) 
         {
-            //$rules['image_preview'] = 'required|mimes:jpeg,png|dimensions:min_width=1600,min_height=900';
+            $rules['image_preview'] = 'required|mimes:jpeg,png|dimensions:min_width=1600,min_height=900';
             $messages['image_preview.required'] = 'Image preview is a required field.';
             $messages['image_preview.dimensions'] = 'Image preview is should atleast 1600px width and 900px in height.';
         }
@@ -312,7 +313,7 @@ class FilmController extends Controller
         }
 
         $ext        = $request->image_preview->getClientOriginalExtension();
-        $filename   = str_random(40) . '.' . $ext;
+        $filename   = str_random(100) . '.' . $ext;
 
         $Trailer = new Trailer();
         $Trailer->trailer_url   = $request->url;
@@ -389,7 +390,7 @@ class FilmController extends Controller
             
             $photo = $request->file('photo');
             $ext = $photo->getClientOriginalExtension();
-            $filename = str_random(40) . '.' . $ext;
+            $filename   = str_random(100) . '.' . $ext;
             $photo->move(public_path('content/film/posters'), $filename);
 
             $Poster->label = $filename;
@@ -502,7 +503,7 @@ class FilmController extends Controller
 
         $ext = $request->award_image->getClientOriginalExtension(); // get the file extension name
 
-        $filename = str_random(40) . '.' . $ext; // generate random filename and append the extension
+        $filename   = str_random(100). '.' . $ext; // generate random filename and append the extension
 
         $request->award_image->move(public_path('content/film/awards'), $filename); // upload the file
 
@@ -549,5 +550,97 @@ class FilmController extends Controller
 
         return response()->json(['errCode' => 0, 'messages' => 'Award successfully deleted.']);
     }
-    
+
+    public function film_photo_fetch ($id, Request $request)
+    {
+        $Photo  = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->get();
+        return view('cms.film.specific_film.partials.film_photo_data', ['Photo' => $Photo])->render();
+    }
+
+    public function film_photo_single_upload_form_modal (Request $request)
+    {
+        $Photo = '';
+        if($request->photo_id)
+        {
+            $Photo = Photo::where('id', $request->photo_id)->first();
+        } 
+        return view('cms.film.specific_film.partials.film_photo_single_upload_form_modal', ['Photo' => $Photo])->render();
+    }
+
+    public function film_photo_order_save (Request $request)
+    {
+        foreach($request->order as $key => $val)
+        {
+            $Photo = Photo::where('id', $val)->first();
+            $Photo->photo_sorter = $key + 1;
+            $Photo->save();
+        }
+
+        return response()->json(['errCode' => 0, 'message' => 'Awards successfully ordered.']);
+    }
+
+    public function film_photo_single_save ($id, Request $request) 
+    {
+        
+        $rules = [
+            'title'         => 'required',
+            'image_filename'    => 'required|mimes:jpeg,png'
+        ];
+        $messages = [
+            'title.required'        => 'Image title is required.',
+            'image_filename.required'   => 'Film photo is required.',
+            'image_filename.mimes'      => 'Film photo is invalid format it should be :jpeg,png.'
+        ];
+
+        if ($request->photo_id)
+        {
+            $rules['image_filename'] = 'mimes:jpeg,png';
+        }
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        
+        if ($validator->fails())
+        {
+            return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
+        }
+
+        if ($request->photo_id) // this is for edit
+        {
+            $Photo = Photo::where('id', $request->photo_id)->first();
+
+            if ($Photo == NULL) // no award selected
+            {
+                return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of award.']); // return an error message
+            }
+
+            // award is existing
+
+            $Photo->title = $request->title;
+            $Photo->save();
+
+            if ($request->hasFile('image_filename')) // check if there is new file uploaded
+            {
+                $filename = $Photo->filename;
+                $request->image_filename->move(public_path('content/film/photos'), $filename); // upload the file
+            }
+
+            return response()->json(['errCode' => 0, 'messages' => 'Photo information successfully editted.']); // return an success message
+        }
+
+        // this is for add
+
+        $ext = $request->image_filename->getClientOriginalExtension(); // get the file extension name
+
+        $filename   = str_random(100) . '.' . $ext; // generate random filename and append the extension
+
+        $request->image_filename->move(public_path('content/film/photos'), $filename); // upload the file
+
+        $Photo = new Photo();
+        $Photo->title       = $request->title;
+        $Photo->filename    = $filename;
+        $Photo->film_id     = $id;
+        $Photo->save();
+        
+        return response()->json(['errCode' => 0, 'messages' => 'Photo information successfully editted.']); // return an success message
+    }
 }

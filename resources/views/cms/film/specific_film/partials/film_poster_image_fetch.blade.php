@@ -5,14 +5,14 @@
                         @if($Poster)
                             @foreach($Poster as $data)
                                 <div class="col-xs-6 col-md-3">
-                                    <a href="#" class="thumbnail">
-                                        <img alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/posters/' . $data->label) }}" class="js-image_item margin">
+                                    <div href="#" data-id="{{ $data->id }}" class="thumbnail">
+                                        <img alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/posters/' . $data->label) }}" style="cursor:pointer" class="js-image_item margin">
                                         @if($data->featured == 1)
-                                            <span class="badge">Featured</span>
+                                            <span class="badge bg-red">Featured</span>
                                         @else
                                             <span class="">&nbsp;</span>
                                         @endif
-                                    </a>
+                                    </div>
                                 </div>
                             @endforeach
                         @endif

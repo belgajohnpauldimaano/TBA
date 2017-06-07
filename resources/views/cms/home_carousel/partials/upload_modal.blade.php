@@ -7,7 +7,7 @@
       </div>
       <div class="modal-body">
             <div class="form-group aa" id="upload-container">
-                <input id="file-uploader" name="photo[]" class="" type="file" multiple data-preview-file-type="any">
+                <input id="file-uploader" name="photo" class="" type="file" multiple data-preview-file-type="any">
             </div>
       </div>
       <div class="modal-footer">
@@ -41,7 +41,10 @@
         //showUpload: false,
         showCaption: false,
         browseClass: "btn btn-primary",
-        fileType: "any",
+        fileType: "image",
+        allowedFileExtensions : ['jpg', 'png'],
+        allowedFileTypes : ['image'],
+        allowedPreviewTypes : ['image'],
         previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
         overwriteInitial: false,
         initialPreviewAsData: true,

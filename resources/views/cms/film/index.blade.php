@@ -158,9 +158,10 @@
         
         $('body').on('submit', '#frm_search_film', function (e) {
             e.preventDefault();
+            //js-film_form_modal
             fetch_record_page_specific(1);
         });
-
+        
         function fetch_record_page_specific (page)
         {
             var fetch_route = "{{ route('film_fetch_record') }}";
@@ -168,7 +169,6 @@
             $('.js-content_holder .overlay').removeClass('hidden');
             fetch_record(fetch_route, elem, page, 'frm_search_film');
         }
-
 
         /* Func Name : load_film_form_modal
          * Desc      : Load modal from ajax request

@@ -174,14 +174,14 @@
                         @if($Poster)
                             @foreach($Poster as $data)
                                 <div class="col-xs-6 col-md-3">
-                                    <a href="#" class="thumbnail">
-                                        <img alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/posters/' . $data->label) }}" class="js-image_item margin">
+                                    <div href="#" data-id="{{ $data->id }}" class="thumbnail">
+                                        <img alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/posters/' . $data->label) }}" style="cursor:pointer" class="js-image_item margin">
                                         @if($data->featured == 1)
-                                            <span class="badge">Featured</span>
+                                            <span class="badge bg-red">Featured</span>
                                         @else
                                             <span class="">&nbsp;</span>
                                         @endif
-                                    </a>
+                                    </div>
                                 </div>
                             @endforeach
                         @endif
@@ -251,6 +251,41 @@
                 </div>
             </div>
             {{-- AWARDS --}}
+
+            {{-- PHOTOS --}}
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Film Photos</h3>
+                    <div class="box-tools">
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_photo_single"><i class="fa fa-plus"></i> Add Photo</button>
+                        {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
+                    </div>
+                </div>
+                <div class="box-body js-film_photo_content_holder box box-solid">
+                    <div class="overlay hidden">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <div class="js-photo_container row ">
+                        @if($Photo)
+                            @foreach($Photo as $data)
+                                <div class="col-xs-6 col-md-3">
+                                    <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
+                                        <img alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
+                                        <span class="caption text-center">
+                                        <h4>{{ $data->title }}</h4>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <p>Note : </p>
+                    <p class="text-primary">Double click the poster to edit data.</p>
+                    <p class="text-primary">Drag the image posters to arrange the order.</p>
+                </div>
+            </div>
+            {{-- PHOTOS --}}
 
         </div>
     </div>
@@ -428,10 +463,11 @@
             }
         });
 
-         $('body').on('dblclick', '.js-image_item', function () {
+         $('body').on('dblclick', '.js-image_item', function (e) {
+             e.preventDefault();
              var id = $(this).data('id');
-             $('.thumbnail').children('span').removeClass('badge').html('&nbsp;');
-             $(this).parents('.thumbnail').children('span').addClass('badge').text('Featured');
+             $('.thumbnail').children('span').removeClass('badge bg-red').html('&nbsp;');
+             $(this).parents('.thumbnail').children('span').addClass('badge bg-red').text('Featured');
 
              $.ajax({
                  url : "{{ route('set_featured_image') }}",
@@ -527,6 +563,73 @@
             e.preventDefault();
             var id = $(this).data('id');
             delete_record ("{{ route('film_award_delete') }}", "{{ route('film_awards_fetch', $Film->id) }}", $('.js-award_content_holder'), id)
+        });
+
+        /*
+         * FILM PHOTO
+         */
+         
+        $('.js-photo_container').sortable({ 
+            tolerance: 'pointer',
+            update : function (event, ui) {
+                var photo_order = [];
+
+                $('.js-photo_container .thumbnail img').each( function () {
+                    var id = $(this).data('id');
+                    photo_order.push(id);
+                });
+                
+                save_order(photo_order, "{{ route('film_photo_order_save') }}");
+            }
+        });
+
+        $('body').on('click', '.js-manage_photo_single', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            show_photo_single_form_modal(id);
+        });
+
+        function show_photo_single_form_modal (id)
+        {
+            var data='';
+            if (id == '')
+            {
+                data = {_token:"{{ csrf_token() }}" };
+            }
+            else
+            {
+                data = {_token:"{{ csrf_token() }}", photo_id:id};
+            }
+
+            $.ajax({
+                url : "{{ route('film_photo_single_upload_form_modal') }}",
+                type : 'POST',
+                data : data,
+                success : function (data){
+                    $('#js-modal_holder').html(data);
+                    $('#js-film_photo_single_form_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+            });
+        }
+
+        $('body').on('click', '#js-btn_image_filename', function () {
+            $('#image_filename').click();
+        });
+        
+        $('body').on('change', '#image_filename', function () {
+            $('#js-text_image_filename').val($('#image_filename').val().replace(/.*(\/|\\)/, ''));
+        });
+
+        $('body').on('submit', '#js-frm_film_photo', function (e) {
+            e.preventDefault();
+            save_data($(this), "{{ route('film_photo_single_save', $Film->id) }}", "{{ route('film_photo_fetch', $Film->id) }}", $('.js-film_photo_content_holder'));
+        });
+
+        $('body').on('dblclick', '.js-film_photo_item', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            console.log(id);
+            show_photo_single_form_modal(id);
         });
     </script>
 @endsection

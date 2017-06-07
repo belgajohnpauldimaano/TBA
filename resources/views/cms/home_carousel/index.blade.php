@@ -24,9 +24,17 @@
                                 @if($Carousel)
                                     @foreach($Carousel as $image)
                                         <div class="col-xs-6 col-md-3">
-                                            <a href="#" class="thumbnail">
+                                            <div data-id="{{ $image->id }}" class="thumbnail js-image_item" style="cursor:pointer">
                                                 <img data-id="{{ $image->id }}" src="{{ asset('content/carousel/') }}/{{$image->image}}" class="js-image_item margin">
-                                            </a>
+                                                <span class="caption text-center">
+                                                    <h4>{{ $image->caption }}</h4>
+                                                    <p>
+                                                        @if($image->url)
+                                                            <a href="{{ $image->url }}" target="_blank">View the link</a>
+                                                        @endif
+                                                    </p>
+                                                </span>
+                                            </div>
                                         </div>
                                     @endforeach
                                 @endif
