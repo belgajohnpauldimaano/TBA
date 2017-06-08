@@ -29,9 +29,9 @@ class FilmController extends Controller
         
         $png_url = "product-".time().".png";
         $path = public_path('cms') .'\\'. $png_url;
-        echo $path;
-        file_put_contents($path,$image);
-        //Image::make($image->getRealPath())->save($path);
+        //echo $path;
+        file_put_contents($path, base64_decode($base64_str));
+        //Image::make(file_get_contents(base64_decode($request->imgData)))->save($path);
         return;
     }
 
