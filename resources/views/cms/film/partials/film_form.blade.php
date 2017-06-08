@@ -27,7 +27,9 @@
                     
                     <div class="form-group">
                         <label for="">Genre <span class="text-red">*</span></label>
-                        <input type="text" data-provide="typeahead" autoComplete="off" name="genre" id="genre" class="form-control typeahead" placeholder="Genre" value="{{ ($Film ? $Film->genre->genre : '') }}">
+                        {{-- <input type="text" data-provide="typeahead" autoComplete="off" name="genre" id="genre" class="form-control typeahead" placeholder="Genre" value="{{ ($Film ? $Film->genre->genre : '') }}"> --}}
+                        <input type="text" autoComplete="off" name="genre" id="genre" class="form-control tokenfield-typeahead" placeholder="Genre" value="{{ ($Film ? $Film->genre : '') }}">
+                        
                         <div class="help-block text-center" id="genre-error"></div>
                     </div>
                     
@@ -97,7 +99,7 @@
                     
                     <div class="form-group">
                         <label for="">Hash Tags</label>
-                        <input type="text" name="hashtags" class="form-control input-md" id="hashtags" value="{{ ($Film ? $Film->hash_tags : '') }}" data-role="tagsinput" />
+                        <input type="text" name="hashtags" class="form-control input-md typeahead" id="hashtags" value="{{ ($Film ? $Film->hash_tags : '') }}" data-role="tagsinput" />
                         <div class="help-block text-center" id="hashtags-error"></div>
                     </div>
 
@@ -116,20 +118,52 @@
 </div><!-- /.modal -->
 
 <script>
-    $("input[data-role=tagsinput]").tagsinput({
+    /*$("input[data-role=tagsinput]").tagsinput({
         tagClass: function(item) {
             return 'text-light-blue';
         
         }
-    });
+    });*/
+
     $('.date-picker').datepicker({ autoClose:true });
-    var dd = [
+
+    /*var dd = [
+        {{--@if($Genre)
+            @foreach ($Genre as $data)
+                {value: '{{ $data->genre }}'},
+            @endforeach
+        @endif --}}
+    ];*/
+    
+    var engine = new Bloodhound({
+        local: [
+            @if($Genre)
+                @foreach ($Genre as $data)
+                    {value: '{{ $data->genre }}'},
+                @endforeach
+            @endif 
+        ],
+        datumTokenizer: function(d) {
+            return Bloodhound.tokenizers.whitespace(d.value);
+        },
+        queryTokenizer: Bloodhound.tokenizers.whitespace
+    });
+
+    engine.initialize();
+    $('#genre').tokenfield({
+        typeahead: [null, { source: engine.ttAdapter() }]
+    });
+
+    $('#hashtags').tokenfield();
+
+    /*var dd = [
         @if($Genre)
             @foreach ($Genre as $data)
-                '{{ $data->genre }}',
+                '{{-- $data->genre --}}',
+                {value: '{{ $data->genre }}'}
             @endforeach
         @endif 
-    ];
+    ];*/
 
-    $('.typeahead').typeahead({ source:dd });
+    //$('.typeahead').typeahead({ source:dd });
 </script>

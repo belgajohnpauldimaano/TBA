@@ -3,9 +3,12 @@
 @section ('styles')
     <link rel="stylesheet" href="{{ asset('cms/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/tokenfield-bootstrap/css/bootstrap-tokenfield.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/tokenfield-bootstrap/css/tokenfield-typeahead.css') }}">
 @endsection
 
 @section ('content')
+    
     <div class="row">
         <div class="col-sm-12">
             <div class="box box-primary">
@@ -19,6 +22,7 @@
                 </div>
 
                 <div class="box-body">
+                
                     <div class="js-content_holder box" style="border-top:0">
                         <div class="overlay hidden">
                             <i class="fa fa-refresh fa-spin"></i>
@@ -61,7 +65,7 @@
                                     @foreach($Film as $data)
                                         <tr>
                                             <td>{{ $data->title }}</td>
-                                            <td>{{ ($data->genre ? $data->genre->genre : 'No Genre') }}</td>
+                                            <td>{{ $data->genre }}</td>
                                             <td>{{ $data->running_time }}</td>
                                             <td>{{ $data::RELEASE_STATUS[1] }}</td>
                                             <td>{{ Date('l, jS \of F Y', strtotime($data->release_date)) }}</td>
@@ -70,13 +74,14 @@
                                             <td>
                                                 <!-- Single button -->
                                                 <div class="btn-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Action <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu">
                                                     <li><a href="#" class="js-edit_film" data-id="{{ $data->id }}">Edit</a></li>
                                                     <li><a href="#" class="js-delete_film" data-id="{{ $data->id }}">Delete</a></li>
                                                     <li><a href="{{ route('specific_film_index', $data->id) }}" class="js-view_film" data-id="{{ $data->id }}">View</a></li>
+                                                    <li><a href="#" class="js-quote_film" data-id="{{ $data->id }}">View Quote</a></li>
                                                     {{-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">View</a></li> --}}
                                                 </ul>
@@ -106,6 +111,10 @@
 @section ('scripts')
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('cms/plugins/Bootstrap-3-Typeahead/bootstrap3-typeahead.js') }}"></script>
+    <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="{{ asset('cms/plugins/tokenfield-bootstrap/bootstrap-tokenfield.js') }}"></script>
+    <script src="{{ asset('cms/plugins/tokenfield-bootstrap/typeahead.bundle.js') }}"></script>
+    
     <script>
 
         $('body').on('click', '#js-btn_add', function () {
@@ -193,6 +202,13 @@
             });
         }
 
+        /*
+         * QUOTE JS SCRIPT
+         */
+        function load_quote_form_modal ()
+        {
+
+        }
         /*function save_data (form, route, fetch_route, elem)
         {
             var formData = new FormData(form[0]);

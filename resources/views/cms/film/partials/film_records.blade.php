@@ -10,6 +10,7 @@
                                         </span>
                                     </div>
                                 </form>
+                                <br>
                             </div>
                             <div class="col-sm-8">
                                 
@@ -38,7 +39,7 @@
                                 @foreach($Film as $data)
                                     <tr>
                                         <td>{{ $data->title }}</td>
-                                        <td>{{ ($data->genre ? $data->genre->genre : 'No Genre') }}</td>
+                                        <td>{{ $data->genre }}</td>
                                         <td>{{ $data->running_time }}</td>
                                         <td>{{ $data::RELEASE_STATUS[1] }}</td>
                                         <td>{{ Date('l, jS \of F Y', strtotime($data->release_date)) }}</td>
@@ -54,6 +55,7 @@
                                                     <li><a href="#" class="js-edit_film" data-id="{{ $data->id }}">Edit</a></li>
                                                     <li><a href="#" class="js-delete_film" data-id="{{ $data->id }}">Delete</a></li>
                                                     <li><a href="{{ route('specific_film_index', $data->id) }}" class="js-view_film" data-id="{{ $data->id }}">View</a></li>
+                                                    <li><a href="#" class="js-quote_film" data-id="{{ $data->id }}">View Quote</a></li>
                                                     {{-- <li role="separator" class="divider"></li>
                                                     <li><a href="#">View</a></li> --}}
                                                 </ul>

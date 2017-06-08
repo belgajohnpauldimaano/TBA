@@ -16,7 +16,8 @@ class CreateFilmsTable extends Migration
         Schema::create('films', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->string('synopsis')->nullable();
+            $table->string('genre', 100);
+            $table->text('synopsis')->nullable();
             $table->tinyInteger('release_status');
             $table->date('release_date')->nullable();
             $table->tinyInteger('rating')->nullable();
@@ -24,7 +25,7 @@ class CreateFilmsTable extends Migration
             $table->string('running_time', 100)->nullable();
             $table->string('sell_sheet')->nullable();
             $table->string('hash_tags', 100)->nullable();
-            $table->integer('genre_id')->unsigned();
+            //$table->integer('genre_id')->unsigned();
             $table->timestamps();
         });
     }

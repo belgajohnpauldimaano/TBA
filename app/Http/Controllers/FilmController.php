@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator;
 //use Storage;
 use File;
+use Image;
 
 use App\Film;
 use App\Genre;
@@ -15,6 +16,25 @@ use App\Award;
 use App\Photo;
 class FilmController extends Controller
 {
+
+    public function sample_upload (Request $request) {
+        //echo "fsadf";
+        
+        
+        //get the base-64 from data
+        $base64_str = substr($request->imgData, strpos($request->imgData, ",")+1);
+        
+        //decode base64 string
+        $image = base64_decode($base64_str);
+        
+        $png_url = "product-".time().".png";
+        $path = public_path('cms') .'\\'. $png_url;
+        echo $path;
+        file_put_contents($path,$image);
+        //Image::make($image->getRealPath())->save($path);
+        return;
+    }
+
     public function index () 
     {
         $Film = Film::with(['genre'])->where(function ($query) {
@@ -26,13 +46,13 @@ class FilmController extends Controller
 
     public function fetch_record (Request $request)
     {
-        $Film = Film::with(['genre'])->where(function ($query) use($request) {
+        $Film = Film::where(function ($query) use($request) {
             $query->where('title', 'LIKE', '%'. $request->search .'%');
             $query->where('release_status', '!=', 0);
         })
-        ->orWhereHas('genre', function ($query) use($request) {
-            $query->where('genre', 'LIKE', '%'. $request->search .'%');
-        })
+        // ->orWhereHas('genre', function ($query) use($request) {
+        //     $query->where('genre', 'LIKE', '%'. $request->search .'%');
+        // })
         ->paginate(2);
         return view('cms.film.partials.film_records', ['Film' => $Film, 'request_data' => $request]);
     }
@@ -78,27 +98,42 @@ class FilmController extends Controller
             return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
         }
 
-        $genre_id = '';
-
-        $Genre = Genre::where('genre', $request->genre)->first();
-
-        if($Genre) // has a genre in genres table
-        {
-            $genre_id = $Genre->id;
-        }   
-        else // no genre in genres table so we need to add new genre base on use input
-        {
-            $Genre = new Genre();
-            $Genre->genre = $request->genre;
-            $Genre->save();
-            $genre_id = $Genre->id;
+        $genre_arr = explode(',', $request->genre);
+        
+        foreach($genre_arr as $val)
+        {   
+            $Genre = Genre::where('genre', trim($val))->first();
+            
+            if(!$Genre) // no genre in genres table so we need to add new genre base on use input
+            {
+                $Genre = new Genre();
+                $Genre->genre = trim($val);
+                $Genre->save();
+            }
         }
+
+        // $genre_id = '';
+
+        // $Genre = Genre::where('genre', $request->genre)->first();
+
+        // if($Genre) // has a genre in genres table
+        // {
+        //     $genre_id = $Genre->id;
+        // }   
+        // else // no genre in genres table so we need to add new genre base on use input
+        // {
+        //     $Genre = new Genre();
+        //     $Genre->genre = $request->genre;
+        //     $Genre->save();
+        //     $genre_id = $Genre->id;
+        // }
 
         if($request->has('id')) // has id then it is updating of record
         {
 
             $Film                   = Film::where('id', $request->id)->first();
             $Film->title            = $request->title;
+            $Film->genre            = $request->genre;
             $Film->synopsis         = $request->synopsis;
             $Film->release_status   = $request->release_status;
             $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : NULL);
@@ -106,7 +141,6 @@ class FilmController extends Controller
             $Film->running_time     = $request->running_time;
             $Film->sell_sheet       = $request->sellsheet;
             $Film->hash_tags        = $request->hashtags;
-            $Film->genre_id         = $genre_id;
             $Film->save();
             
             if ($request->has('sellsheet'))
@@ -122,6 +156,7 @@ class FilmController extends Controller
         // adding of record
         $Film                   = new Film();
         $Film->title            = $request->title;
+        $Film->genre            = $request->genre;
         $Film->synopsis         = $request->synopsis;
         $Film->release_status   = $request->release_status;
         $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : NULL);
@@ -129,7 +164,6 @@ class FilmController extends Controller
         $Film->running_time     = $request->running_time;
         $Film->sell_sheet       = $request->sellsheet;
         $Film->hash_tags        = $request->hashtags;
-        $Film->genre_id         = $genre_id;
         $Film->save();
 
         if ($request->has('sellsheet'))

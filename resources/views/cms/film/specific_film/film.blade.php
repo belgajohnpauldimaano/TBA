@@ -287,6 +287,35 @@
             </div>
             {{-- PHOTOS --}}
 
+            {{-- QUOTE --}}
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Film Quote</h3>
+                    <div class="box-tools">
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_photo_single"><i class="fa fa-pencil"></i> Update Quote</button>
+                        {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
+                    </div>
+                </div>
+                <div class="box-body js-film_photo_content_holder box box-solid">
+                    <div class="overlay hidden">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <div class="box-body">
+                        <blockquote>
+                            <p>The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.</p>
+                            <small></small>
+                        </blockquote>
+                    </div>
+                </div>
+                {{-- <div class="box-footer">
+                    <p>Note : </p>
+                    <p class="text-primary">Double click the poster to edit data.</p>
+                    <p class="text-primary">Drag the image posters to arrange the order.</p>
+                </div> --}}
+            </div>
+            {{-- QUOTE --}}
+
+
         </div>
     </div>
     <div id="js-modal_holder"></div>
@@ -294,7 +323,7 @@
 
 @section('scripts')
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script src="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/js/fileinput.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/js/fileinput.js') }}"></script>
     <!-- iCheck 1.0.1 -->
     <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
     <script>
