@@ -10,10 +10,17 @@
                                             <div data-id="{{ $image->id }}" class="thumbnail js-image_item" style="cursor:pointer">
                                                 <img data-id="{{ $image->id }}" src="{{ asset('content/carousel/') }}/{{$image->image}}" class="js-image_item margin">
                                                 <span class="caption text-center">
-                                                    <h4>{{ $image->caption }}</h4>
+                                                    @if($image->caption)
+                                                        <h4>{{ $image->caption }}</h4>
+                                                    @else
+                                                        <h4>No Caption Addedd</h4>
+                                                    @endif
+
                                                     <p>
                                                         @if($image->url)
                                                             <a href="{{ $image->url }}" target="_blank">View the link</a>
+                                                        @else
+                                                            <p>No Link Added</p>
                                                         @endif
                                                     </p>
                                                 </span>

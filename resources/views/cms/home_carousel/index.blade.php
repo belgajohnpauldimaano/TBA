@@ -9,6 +9,19 @@
 @section ('content')
     <div class="row">
         <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12 conatiner">
+
+                    <div class="callout callout-success">
+                        <h4>Instructions</h4>
+                        <li>Drag & drop thumbnails to re-order slides in the HOME PAGE. Click SAVE ORDER when done.</li>
+                        <li>Click MANAGE CAROUSEL to add or remove image/s.</li>
+                        <li>Click the TRASH ICON in the MANAGE PHOTOS MODAL to remove the image/s.</li>
+                        <li>Double-click an image to add a caption and YouTube URL. The YouTube URL is a required field; and slides without a URL will not appear in the website.</li>
+
+                    </div>
+                </div>
+            </div>
             <ul class="timeline">
                 <li>
                     <div class="timeline-item">
@@ -27,10 +40,17 @@
                                             <div data-id="{{ $image->id }}" class="thumbnail js-image_item" style="cursor:pointer">
                                                 <img data-id="{{ $image->id }}" src="{{ asset('content/carousel/') }}/{{$image->image}}" class="js-image_item margin">
                                                 <span class="caption text-center">
-                                                    <h4>{{ $image->caption }}</h4>
+                                                    @if($image->caption)
+                                                        <h4>{{ $image->caption }}</h4>
+                                                    @else
+                                                        <h4>No Caption Addedd</h4>
+                                                    @endif
+
                                                     <p>
                                                         @if($image->url)
                                                             <a href="{{ $image->url }}" target="_blank">View the link</a>
+                                                        @else
+                                                            <p>No Link Added</p>
                                                         @endif
                                                     </p>
                                                 </span>
@@ -44,7 +64,7 @@
 
                         <div class="timeline-footer">
                             <button class="btn btn-flat btn-primary" id="js-show_modal_uploader">Manage Uploads</button>
-                            <button class="btn btn-flat btn-primary js-reorder_toggle" data-type="1" id="js-save_reorder_image">Save Reorder</button>
+                            <button class="btn btn-flat btn-primary js-reorder_toggle" data-type="1" id="js-save_reorder_image">Save Order</button>
                         </div>
                     </div>
                 </li>
@@ -54,8 +74,12 @@
                 <div class="col-sm-12 conatiner">
 
                     <div class="callout callout-success">
-                        <h4>Note</h4>
-                        <p>Double click image to manage details.</p>
+                        <h4>Requirements</h4>
+                        <ul>
+                            <li>Accepted File Types: JPG / JPEG / PNG</li>
+                            <li>Maximum File Size: 1 MB</li>
+                            <li>Required Dimensions: 1600 x 900 pixels (width x height)</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -176,5 +200,6 @@
             image_list();
         })
         
+        $('.home_page_carousel').addClass('active');
     </script>
 @endsection

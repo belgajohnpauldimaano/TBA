@@ -52,6 +52,8 @@
     });
     $("#file-uploader").fileinput({
         //showUpload: false,
+        maxImageWidth: 1200,
+        minImageWidth: 600,
         showCaption: false,
         browseClass: "btn btn-primary",
         fileType: "image",
@@ -81,6 +83,9 @@
         dragIcon : '',
         dragClass : '',
         showClose : '',
-
+        maxFileCount: 10,
+        browseOnZoneClick: true,
+        maxFileSize : 1024,
+        msgSizeTooLarge : 'File should not exceeds 1MB in size.'
     });
 </script>

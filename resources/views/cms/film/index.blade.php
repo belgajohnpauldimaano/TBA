@@ -2,9 +2,9 @@
 
 @section ('styles')
     <link rel="stylesheet" href="{{ asset('cms/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
-    <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/plugins/tokenfield-bootstrap/css/bootstrap-tokenfield.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/plugins/tokenfield-bootstrap/css/tokenfield-typeahead.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
 @endsection
 
 @section ('content')
@@ -51,9 +51,9 @@
                         <table class="table table-bordered">
                             <tr>
                                 <th>Title</th>
-                                <th>Genre</th>
+                                <th>Genre/s</th>
                                 <th>Running Time</th>
-                                <th>Release Status</th>
+                                <th>Film Status</th>
                                 <th>Release Date</th>
                                 <th>Rating</th>
                                 <th>Synopsis</th>
@@ -66,10 +66,10 @@
                                         <tr>
                                             <td>{{ $data->title }}</td>
                                             <td>{{ $data->genre }}</td>
-                                            <td>{{ $data->running_time }}</td>
-                                            <td>{{ $data::RELEASE_STATUS[1] }}</td>
+                                            <td>{{ ($data->running_time ? $data->running_time . ' mins.' : 'Not yet set')  }}</td>
+                                            <td>{{ ($data->release_status ? $data::RELEASE_STATUS[$data->release_status] : 'Not yet set') }}</td>
                                             <td>{{ Date('l, jS \of F Y', strtotime($data->release_date)) }}</td>
-                                            <td>{{ $data->rating }}</td>
+                                            <td>{{ ( $data->rating ? $RATINGS[$data->rating] : 'Not yet set' ) }}</td>
                                             <td>{{ str_limit($data->synopsis, $limit=20, $end = '...') }}</td>
                                             <td>
                                                 <!-- Single button -->
@@ -109,11 +109,11 @@
 @endsection
 
 @section ('scripts')
-    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('cms/plugins/Bootstrap-3-Typeahead/bootstrap3-typeahead.js') }}"></script>
     <script type="text/javascript" src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
     <script src="{{ asset('cms/plugins/tokenfield-bootstrap/bootstrap-tokenfield.js') }}"></script>
     <script src="{{ asset('cms/plugins/tokenfield-bootstrap/typeahead.bundle.js') }}"></script>
+    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
     
     <script>
 
@@ -202,6 +202,7 @@
             });
         }
 
+        $('.film').addClass('active');
         /*
          * QUOTE JS SCRIPT
          */

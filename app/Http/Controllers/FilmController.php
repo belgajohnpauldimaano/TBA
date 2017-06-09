@@ -37,24 +37,35 @@ class FilmController extends Controller
 
     public function index () 
     {
-        $Film = Film::with(['genre'])->where(function ($query) {
-            $query->where('release_status', '!=', 0);
-        })->paginate(2);
-
-        return view('cms.film.index', ['Film' => $Film]);
+        $Film = Film::where(function ($query) {
+            $query->where('release_status', '=', NULL);
+            $query->orWhere('release_status', '>', 0);
+        })
+        ->orderBy('title', 'asc')
+        ->orderBy('release_date', 'DESC')
+        ->paginate(2);
+        $RATINGS = Film::RATINGS;
+        return view('cms.film.index', ['Film' => $Film, 'RATINGS' => $RATINGS]);
     }
 
     public function fetch_record (Request $request)
     {
         $Film = Film::where(function ($query) use($request) {
             $query->where('title', 'LIKE', '%'. $request->search .'%');
-            $query->where('release_status', '!=', 0);
+            $query->where(function ($q) {
+                //$q->where('release_status', '!=', 0);
+                $q->where('release_status', '=', NULL);
+                $q->orWhere('release_status', '>', 0);
+            });
         })
         // ->orWhereHas('genre', function ($query) use($request) {
         //     $query->where('genre', 'LIKE', '%'. $request->search .'%');
         // })
+        ->orderBy('title', 'asc')
+        ->orderBy('release_date', 'DESC')
         ->paginate(2);
-        return view('cms.film.partials.film_records', ['Film' => $Film, 'request_data' => $request]);
+        $RATINGS = Film::RATINGS;
+        return view('cms.film.partials.film_records', ['Film' => $Film, 'request_data' => $request, 'RATINGS' => $RATINGS]);
     }
 
     public function show_film_form (Request $request)
@@ -82,13 +93,15 @@ class FilmController extends Controller
             'title'     => 'required',
             'genre'     => 'required',
             'sellsheet' => 'mimes:pdf',
-            'release_status' => 'required'
+            'release_status'    => 'digits_between:min:1,3',
+            'running_time'      => 'digits_between:1,1000'
         ];
         $messages = [
             'title.required' => 'Film title is required field.',
             'genre.required' => 'Film genre is required field.',
             'sellsheet.mimes' => 'Sell sheet should be in pdf file format.',
-            'release_status.required' => 'Releas status is required field.'
+            'release_status.digits_between' => 'Releas status is required field.',
+            'running_time.digits_between'          => 'Please provide a valid running time in minutes.'
         ];;
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -130,12 +143,11 @@ class FilmController extends Controller
 
         if($request->has('id')) // has id then it is updating of record
         {
-
             $Film                   = Film::where('id', $request->id)->first();
             $Film->title            = $request->title;
             $Film->genre            = $request->genre;
             $Film->synopsis         = $request->synopsis;
-            $Film->release_status   = $request->release_status;
+            $Film->release_status   = ($request->release_status != '' ? $request->release_status : NULL);
             $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : NULL);
             $Film->rating           = $request->rating;
             $Film->running_time     = $request->running_time;
@@ -158,7 +170,7 @@ class FilmController extends Controller
         $Film->title            = $request->title;
         $Film->genre            = $request->genre;
         $Film->synopsis         = $request->synopsis;
-        $Film->release_status   = $request->release_status;
+        $Film->release_status   = ($request->release_status != '' ? $request->release_status : NULL);
         $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : NULL);
         $Film->rating           = $request->rating;
         $Film->running_time     = $request->running_time;
@@ -214,8 +226,9 @@ class FilmController extends Controller
         $Poster = Poster::where('film_id', $id)->orderBy('poster_image_sorter', 'ASC')->get();
         $Award  = Award::where('film_id', $id)->orderBy('award_image_sorter', 'ASC')->get();
         $Photo  = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->get();
-
-        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo]);
+        $RATINGS = Film::RATINGS;
+        $RELEASE_STATUS = Film::RELEASE_STATUS;
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS]);
      }
 
      public function trailer_order_save (Request $request) 

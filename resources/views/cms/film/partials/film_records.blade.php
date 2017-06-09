@@ -25,9 +25,9 @@
                         <table class="table table-bordered">
                         <tr>
                             <th>Title</th>
-                            <th>Genre</th>
+                            <th>Genre/s</th>
                             <th>Running Time</th>
-                            <th>Release Status</th>
+                            <th>Film Status</th>
                             <th>Release Date</th>
                             <th>Rating</th>
                             <th>Synopsis</th>
@@ -40,10 +40,10 @@
                                     <tr>
                                         <td>{{ $data->title }}</td>
                                         <td>{{ $data->genre }}</td>
-                                        <td>{{ $data->running_time }}</td>
-                                        <td>{{ $data::RELEASE_STATUS[1] }}</td>
+                                        <td>{{ ($data->running_time ? $data->running_time . ' mins.' : 'Not yet set')  }}</td>
+                                        <td>{{ ($data->release_status ? $data::RELEASE_STATUS[$data->release_status] : 'Not yet set') }}</td>
                                         <td>{{ Date('l, jS \of F Y', strtotime($data->release_date)) }}</td>
-                                        <td>{{ $data->rating }}</td>
+                                        <td>{{ ( $data->rating ? $RATINGS[$data->rating] : 'Not yet set' ) }}</td>
                                         <td>{{ str_limit($data->synopsis, $limit=20, $end = '...') }}</td>
                                         <td>
                                             <!-- Single button -->

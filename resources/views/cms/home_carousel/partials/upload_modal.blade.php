@@ -7,7 +7,7 @@
       </div>
       <div class="modal-body">
             <div class="form-group aa" id="upload-container">
-                <input id="file-uploader" name="photo" class="" type="file" multiple data-preview-file-type="any">
+                <input id="file-uploader" name="photo" class="" type="file" data-allowedFileExtensions='["jpg", "png"]' multiple >
             </div>
       </div>
       <div class="modal-footer">
@@ -39,13 +39,15 @@
     });
     $("#file-uploader").fileinput({
         //showUpload: false,
+        minImageWidth: 1600,
+        minImageHeight: 900,
         showCaption: false,
         browseClass: "btn btn-primary",
         fileType: "image",
-        allowedFileExtensions : ['jpg', 'png'],
+        allowedFileExtensions : ["jpg", "png"],
         allowedFileTypes : ['image'],
         allowedPreviewTypes : ['image'],
-        previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+        previewFileIcon: "<i class='glyphicon glyphicon-file'></i>",
         overwriteInitial: false,
         initialPreviewAsData: true,
         initialPreview: [
@@ -68,6 +70,9 @@
         dragIcon : '',
         dragClass : '',
         showClose : '',
-
+        maxFileCount: 10,
+        browseOnZoneClick: true,
+        maxFileSize : 1024,
+        msgSizeTooLarge : 'File should not exceeds 1MB in size.'
     });
 </script>

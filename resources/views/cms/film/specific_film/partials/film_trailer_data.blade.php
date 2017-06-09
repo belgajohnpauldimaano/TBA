@@ -3,8 +3,8 @@
                                 </div>
                                 <table class="table table-bordered">
                                     <tr>
-                                        <th>Show in Trailers Page</th>
-                                        <th>Image</th>
+                                        <th>Featured</th>
+                                        <th>Preview Image</th>
                                         <th>URL</th>
                                         <th>Actions</th>
                                     </tr>
@@ -15,10 +15,10 @@
                                                     <tr data-id="{{$trailer->id}}">
                                                         <td>
                                                             <label>
-                                                                <input type="checkbox" class="minimal-green js-check_hide_show" {{ ($trailer->trailer_show == 1 ? 'checked' : '') }} > Show/Hide
+                                                                <input type="checkbox" class="minimal-green js-check_hide_show" {{ ($trailer->trailer_show == 1 ? 'checked' : '') }} > 
                                                             </label>
                                                         </td>
-                                                        <td><img class="media-object" width="64" height="64" src="{{ asset('content/film/trailers/' . $trailer->image_preview) }}" alt="..."></td>
+                                                        <td><img class="media-object" width="160" height="90" src="{{ asset('content/film/trailers/' . $trailer->image_preview) }}" alt="..."></td>
                                                         <td> <a href="{{$trailer->trailer_url}}" target="_blank">{{ str_limit($trailer->trailer_url, 60) }}</a></td>
                                                         <td>
                                                             <!-- Single button -->

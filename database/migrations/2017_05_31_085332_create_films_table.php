@@ -18,7 +18,7 @@ class CreateFilmsTable extends Migration
             $table->string('title');
             $table->string('genre', 100);
             $table->text('synopsis')->nullable();
-            $table->tinyInteger('release_status');
+            $table->tinyInteger('release_status')->nullable();
             $table->date('release_date')->nullable();
             $table->tinyInteger('rating')->nullable();
             //$table->tinyInteger('rating')->nullable();

@@ -12,6 +12,7 @@
         {{ csrf_field() }}
         <input type="hidden" name="id" value="{{ ($Film ? $Film->id : '') }}">
         <div class="modal-body">
+                        <div class="pull-left"> <span class="text-red">All fields with an asterisk (*) are required.</span></div>
             <div class="row">
                 <div class="col-sm-12">
                 
@@ -26,7 +27,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="">Genre <span class="text-red">*</span></label>
+                        <label for="">Genre/s <span class="text-red">*</span></label>
                         {{-- <input type="text" data-provide="typeahead" autoComplete="off" name="genre" id="genre" class="form-control typeahead" placeholder="Genre" value="{{ ($Film ? $Film->genre->genre : '') }}"> --}}
                         <input type="text" autoComplete="off" name="genre" id="genre" class="form-control tokenfield-typeahead" placeholder="Genre" value="{{ ($Film ? $Film->genre : '') }}">
                         
@@ -34,7 +35,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="">Running Time</label>
+                        <label for="">Running Time (in mins.)</label>
                         <input type="text" name="running_time" id="running_time" class="form-control" placeholder="Running Time" value="{{ ($Film ? $Film->running_time : '') }}">
                         <div class="help-block text-center" id="running_time-error"></div>
                     </div>
@@ -46,9 +47,10 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="">Release Status</label>
+                        <label for="">Film Status</label>
                         <select name="release_status" id="release_status" class="form-control">
-                            <option disabled>Select Release Status</option>
+                            <option value="">Select Release Status</option>
+                            <?php array_shift($film_status); ?>
                             @foreach ($film_status as $key => $value)
                                 <option value="{{ $key + 1 }}">{{ $value }}</option>
                             @endforeach
@@ -108,7 +110,6 @@
 
         </div>
         <div class="modal-footer">
-            <div class="pull-left"> <span class="text-red">fields with asterisk(*) are required.</span></div>
             <button type="button" class="btn btn-flat btn-default" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-flat btn-primary">Save changes</button>
         </div>

@@ -31,29 +31,27 @@
                                 </h3>
                             </div>
                             
-                            <div class="">
-                                <label for="">Synopsis</label>
-                                <h5 class="margin">
-                                    {{ ($Film->synopsis != NULL ? $Film->synopsis : 'None') }}
-                                    The quick brown fox jumps over the lazy dog
-                                </h5>
-                            </div>
-                            
                             <div>
                                 <label for="">Genre</label>
                                 <h5 class="margin">
-                                    {{ ($Film->genre != NULL ? $Film->genre->genre : 'None') }}
+                                    {{ ($Film != NULL ? $Film->genre : 'Not yet set') }}
                                 </h5>
                             </div>
-                            
+
                             <div>
                                 <label for="">Running Time</label>
                                 <h5 class="margin">
-                                    {{ ($Film->running_time != NULL ? $Film->running_time : 'None') }}
+                                    {{ ($Film->running_time != NULL ? $Film->running_time : 'Not yet set') }}
+                                </h5>
+                            </div>
+
+                            <div class="">
+                                <label for="">Synopsis</label>
+                                <h5 class="margin">
+                                    {{ ($Film->synopsis != NULL ? $Film->synopsis : 'Not yet populated') }}
                                 </h5>
                             </div>
                             
-
                         </div>
 
                         <div class="col-sm-6">
@@ -61,14 +59,30 @@
                             <div>
                                 <label for="">Release Status</label>
                                 <h5 class="margin">
-                                    {{ ($Film->release_status != NULL ? $Film->release_status : 'None') }}
+                                    {{ ($Film->release_status != NULL ? $RELEASE_STATUS[$Film->release_status] : 'Not yet set') }}
                                 </h5>
                             </div>
                             
                             <div>
                                 <label for="">Release Date</label>
                                 <h5 class="margin">
-                                    {{ ($Film->release_date != NULL ? Date('l, jS \of F Y', strtotime($Film->release_date)) : 'None') }}
+                                    {{ ($Film->release_date != NULL ? Date('d F Y', strtotime($Film->release_date)) : 'Not yet set') }}
+                                    {{-- ($Film->release_date != NULL ? Date('l, jS \of F Y', strtotime($Film->release_date)) : 'Not yet set') --}}
+                                </h5>
+                            </div>
+                            
+                            <div>
+                                <label for="">Ratings</label>
+                                <h5 class="margin">
+                                    {{ ( $Film->rating ? $RATINGS[$Film->rating] : 'Not yet set' ) }}
+                                </h5>
+                            </div>
+
+                            
+                            <div>
+                                <label for="">Sell Sheet</label>
+                                <h5 class="margin">
+                                    {{ ($Film->sell_sheet != NULL ? $Film->sell_sheet : 'None uploaded') }}
                                 </h5>
                             </div>
 
@@ -111,8 +125,8 @@
                         </div>
                         <table class="table table-bordered">
                             <tr>
-                                <th>Show in Trailers Page</th>
-                                <th>Image</th>
+                                <th>Featured</th>
+                                <th>Preview Image</th>
                                 <th>URL</th>
                                 <th>Actions</th>
                             </tr>
@@ -123,10 +137,10 @@
                                             <tr data-id="{{$trailer->id}}">
                                                 <td>
                                                     <label>
-                                                        <input type="checkbox" class="minimal-green js-check_hide_show" {{ ($trailer->trailer_show == 1 ? 'checked' : '') }} > Show/Hide
+                                                        <input type="checkbox" class="minimal-green js-check_hide_show" {{ ($trailer->trailer_show == 1 ? 'checked' : '') }} > 
                                                     </label>
                                                 </td>
-                                                <td><img class="media-object" width="64" height="64" src="{{ asset('content/film/trailers/' . $trailer->image_preview) }}" alt="..."></td>
+                                                <td><img class="media-object" width="160" height="90" src="{{ asset('content/film/trailers/' . $trailer->image_preview) }}" alt="..."></td>
                                                 <td> <a href="{{$trailer->trailer_url}}" target="_blank">{{ str_limit($trailer->trailer_url, 60) }}</a> </td>
                                                 <td>
                                                     <!-- Single button -->
@@ -150,8 +164,13 @@
                         </table>
                     </div>
                     <div class="box-footer">
-                        <p>Note : </p>
-                        <p class="text-primary">Drag the row to arrange the order.</p>
+                        <div class="callout callout-success">
+                            <h5>Instructions : </h5>
+                            <ol>
+                                <li>Tick/untick the checkbox to show/hide the trailer in the Trailers Page of the website, respectively.</li>
+                                <li>Drag the row to arrange the order of the trailers of how it will appear in the website.</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -163,7 +182,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Poster</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-manage_poster_images">Manage Poster Image Uploads</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_poster_images">Manage Posters</button>
                     </div>
                 </div>
                 <div class="box-body js-poster_content_holder box box-solid">
@@ -188,9 +207,14 @@
                     </div>
                 </div>
                 <div class="box-footer">
-                    <p>Note : </p>
-                    <p class="text-primary">Double click the poster to make it a featured poster.</p>
-                    <p class="text-primary">Drag the image posters to arrange the order.</p>
+                    <div class="callout callout-success">
+                        <h5>Instructions : </h5>
+                        <ol>
+                            <li>Double-click on a poster to use it as the Main Poster for the film.</li>
+                            <li>Drag & drop posters to re-order as to how it would appear when viewing as a gallery.Click MANAGE POSTERS to add or remove image/s.</li>
+                            <li>Click the TRASH ICON in the MANAGE POSTERS MODAL to remove the image/s.</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
             {{-- POSTER PREVIEW --}}
@@ -660,6 +684,8 @@
             console.log(id);
             show_photo_single_form_modal(id);
         });
+        
+        $('.film').addClass('active');
     </script>
 @endsection
 

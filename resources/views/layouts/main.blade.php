@@ -6,7 +6,7 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="{{ route('index') }}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>T</b>BA</span>
       <!-- logo for regular state and mobile devices -->
@@ -135,13 +135,13 @@
           </ul>
         </li> --}}
         
-        <li class="">
+        <li class="dashboard">
           <a href="#">
             <i class="fa fa-circle-o text-red"></i> <span>Dashboard</span>
           </a>
         </li>
-        <li><a href="{{ route('home_page_carousel') }}"><i class="fa fa-circle-o text-red"></i> <span>Home Page Carousel</span></a></li>
-        <li><a href="{{ route('film') }}"><i class="fa fa-circle-o text-yellow"></i> <span>Films</span></a></li>
+        <li class="home_page_carousel"><a href="{{ route('home_page_carousel') }}"><i class="fa fa-circle-o text-red"></i> <span>Home Page Carousel</span></a></li>
+        <li class="film"><a href="{{ route('film') }}"><i class="fa fa-circle-o text-yellow"></i> <span>Films</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

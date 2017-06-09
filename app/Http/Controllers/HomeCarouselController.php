@@ -57,7 +57,7 @@ class HomeCarouselController extends Controller
                 asset('content/carousel').'/'.$filename
             ];
             $initialPreviewConfig = [
-                ['caption' => "ss.fgasd", 'size' => 329892, 'width' => "120px", 'url' => route('image_delete'), 'key' => $Carousel->id, 'extra' => [' _token' => csrf_token() ] ]
+                ['caption' => "", 'size' => 0, 'width' => "120px", 'url' => route('image_delete'), 'key' => $Carousel->id, 'extra' => [' _token' => csrf_token() ] ]
             ];
             return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true]);
         }

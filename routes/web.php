@@ -12,10 +12,10 @@
 */
 
 use Illuminate\Http\Request;
-//use Image;
+
 Route::get('/', function () {
         return redirect('cms/carousel');
-});
+})->name('index');
 Route::get('/gen', function () {
     
     $t=time();
