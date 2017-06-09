@@ -50,8 +50,8 @@ Route::group(['prefix' => '/cms'], function () {
         Route::post('/save_film', 'FilmController@save_film')->name('save_film');
         Route::post('/fetch_record', 'FilmController@fetch_record')->name('film_fetch_record');
         Route::post('/delete_film', 'FilmController@delete_film')->name('delete_film');
+        Route::post('/film_synopsis_save', 'FilmController@film_synopsis_save')->name('film_synopsis_save');
         
-
         Route::get('/{id}', 'FilmController@specific_film_index')->name('specific_film_index');
         Route::group(['prefix' => '/trailer'], function () {
             Route::post('/trailer_order_save', 'FilmController@trailer_order_save')->name('trailer_order_save');
@@ -87,6 +87,13 @@ Route::group(['prefix' => '/cms'], function () {
             Route::post('/film_photo_single_upload_form_modal', 'FilmController@film_photo_single_upload_form_modal')->name('film_photo_single_upload_form_modal');
             Route::post('/film_photo_single_save/{id}', 'FilmController@film_photo_single_save')->name('film_photo_single_save');
             Route::post('/film_photo_order_save', 'FilmController@film_photo_order_save')->name('film_photo_order_save');
+            
+        });
+        
+        Route::group(['prefix' => '/quote'], function () {
+            Route::post('/film_quote_form_modal', 'FilmController@film_quote_form_modal')->name('film_quote_form_modal');
+            Route::post('/film_quote_save', 'FilmController@film_quote_save')->name('film_quote_save');
+            Route::post('/film_quote_fetch/{id}', 'FilmController@film_quote_fetch')->name('film_quote_fetch');
             
         });
         

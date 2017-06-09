@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ asset('cms/plugins/iCheck/all.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css') }}">
     <link href="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/css/fileinput.css') }}" media="all" rel="stylesheet" type="text/css"/>
 @endsection
 
@@ -44,24 +45,18 @@
                                     {{ ($Film->running_time != NULL ? $Film->running_time : 'Not yet set') }}
                                 </h5>
                             </div>
-
-                            <div class="">
-                                <label for="">Synopsis</label>
-                                <h5 class="margin">
-                                    {{ ($Film->synopsis != NULL ? $Film->synopsis : 'Not yet populated') }}
-                                </h5>
-                            </div>
                             
-                        </div>
-
-                        <div class="col-sm-6">
-                        
                             <div>
                                 <label for="">Release Status</label>
                                 <h5 class="margin">
                                     {{ ($Film->release_status != NULL ? $RELEASE_STATUS[$Film->release_status] : 'Not yet set') }}
                                 </h5>
                             </div>
+
+                        </div>
+
+                        <div class="col-sm-6">
+                        
                             
                             <div>
                                 <label for="">Release Date</label>
@@ -90,18 +85,37 @@
                                 <label for="">Hash Tags</label>
                                 <h5 class="margin">
                                     @if($Film->hash_tags != NULL)
-                                        <?php
-                                            $hash_tags_arr = explode(',', $Film->hash_tags);
+                                       <?php
+                                            //$hash_tags_arr = explode(',', $Film->hash_tags);
                                         ?>
-                                        @foreach($hash_tags_arr as $val)
-                                            <p class="text-light-blue">{{ $val }}</p>
-                                        @endforeach
+                                            <span class="text-light-blue">{{ $Film->hash_tags }}</span>
+                                        {{-- @foreach($hash_tags_arr as $val)
+                                            <span class="text-light-blue">{{ $val }}</span>
+                                        @endforeach --}}
                                     @endif
                                 </h5>
                             </div>
 
                         </div>
-
+                        <div class="col-sm-12">
+                            <div class="box box-solid js-film_synopsis_holder">
+                                <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
+                                <div class="box-body">
+                                    <div class="">
+                                        <label for="">Synopsis</label> <button class="btn btn-flat btn-primary btn-sm pull-right js-update_sysnopsis" data-edit="false"><i class="fa fa-pencil"></i> Update Synopsis</button>
+                                    </div>
+                                    <br>
+                                    <blockquote class="js-film_synopsis_content_holder">
+                                        <p>
+                                            {!! ($Film->synopsis != NULL ? $Film->synopsis : 'Not yet populated') !!}
+                                        </p>
+                                    </blockquote>
+                                    <div class="js-synopsis_editor" style="display:none">
+                                        <textarea placeholder="Write synopsis" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" name="js-synopsis_textarea" id="js-synopsis_textarea" cols="30" rows="10" class="js-wysiwyg_editor">{{ ($Film->synopsis != NULL ? $Film->synopsis : '') }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                 </div>
@@ -290,16 +304,20 @@
                         <i class="fa fa-refresh fa-spin"></i>
                     </div>
                     <div class="js-photo_container row ">
-                        @if($Photo)
+                        @if($Photo->count() > 0)
                             @foreach($Photo as $data)
                                 <div class="col-xs-6 col-md-3">
                                     <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
-                                        <img alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
+                                        <img style="cursor:pointer" alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
                                         <span class="caption text-center">
                                         <h4>{{ $data->title }}</h4>
                                     </div>
                                 </div>
                             @endforeach
+                        @else
+                            <div class="col-sm-12">
+                                <h5>No photo yet</h5>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -316,19 +334,23 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Film Quote</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-manage_photo_single"><i class="fa fa-pencil"></i> Update Quote</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-managa_quote"><i class="fa fa-pencil"></i> Update Quote</button>
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
                     </div>
                 </div>
-                <div class="box-body js-film_photo_content_holder box box-solid">
+                <div class="box-body js-film_quote_content_holder box box-solid">
                     <div class="overlay hidden">
                         <i class="fa fa-refresh fa-spin"></i>
                     </div>
                     <div class="box-body">
-                        <blockquote>
-                            <p>The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.</p>
-                            <small></small>
-                        </blockquote>
+                        @if ($Quote)
+                            <blockquote>
+                                <p>{{ ($Quote ? $Quote->main_quote : 'Not yet set') }}</p>
+                                <small>{{ $Quote->name_of_person }} <cite title="{{ $Quote->url }}"><a href="{{ $Quote->url }}" target="_blank">source</a></cite></small>
+                            </blockquote>
+                        @else
+                            <h5>Not yet set</h5>
+                        @endif
                     </div>
                 </div>
                 {{-- <div class="box-footer">
@@ -339,7 +361,37 @@
             </div>
             {{-- QUOTE --}}
 
-
+            {{-- PRESS RELEASE --}}
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Press Release</h3>
+                    <div class="box-tools">
+                        <button class="btn btn-sm btn-flat btn-primary js-managa_quote"><i class="fa fa-pencil"></i> Update Quote</button>
+                        {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
+                    </div>
+                </div>
+                <div class="box-body js-film_press_release_content_holder box box-solid">
+                    <div class="overlay hidden">
+                        <i class="fa fa-refresh fa-spin"></i>
+                    </div>
+                    <div class="box-body">
+                        @if ($Quote)
+                            <blockquote>
+                                <p>{{ ($Quote ? $Quote->main_quote : 'Not yet set') }}</p>
+                                <small>{{ $Quote->name_of_person }} <cite title="{{ $Quote->url }}"><a href="{{ $Quote->url }}" target="_blank">source</a></cite></small>
+                            </blockquote>
+                        @else
+                            <h5>Not yet set</h5>
+                        @endif
+                    </div>
+                </div>
+                {{-- <div class="box-footer">
+                    <p>Note : </p>
+                    <p class="text-primary">Double click the poster to edit data.</p>
+                    <p class="text-primary">Drag the image posters to arrange the order.</p>
+                </div> --}}
+            </div>
+            {{-- PRESS RELEASE --}}
         </div>
     </div>
     <div id="js-modal_holder"></div>
@@ -348,6 +400,8 @@
 @section('scripts')
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/js/fileinput.js') }}"></script>
+    <script src="{{ asset('cms/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
+
     <!-- iCheck 1.0.1 -->
     <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
     <script>
@@ -686,6 +740,69 @@
         });
         
         $('.film').addClass('active');
+
+        /*
+         * QUOTE
+         */
+        $('body').on('click', '.js-managa_quote', function (e) {
+            e.preventDefault();
+            
+            $.ajax({
+                url : "{{ route('film_quote_form_modal') }}",
+                type : 'POST',
+                data : { _token:'{{ csrf_token() }}', film_id : {{ $Film->id }} },
+                success : function (data) {
+                    $('#js-modal_holder').html(data);
+                    $('#js-film_quote_form_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+            });
+        });
+        
+        $('body').on('submit', '#js-frm_quote', function (e) {
+            e.preventDefault();
+            save_data($(this), "{{ route('film_quote_save') }}", "{{ route('film_quote_fetch', $Film->id) }}", $('.js-film_quote_content_holder'));
+        });
+        
+        /*
+         * UPDATE SYNOPSIS
+         */
+        $('body').on('click', '.js-update_sysnopsis', function (e) {
+            e.preventDefault();
+            $(".js-synopsis_editor ul.wysihtml5-toolbar").hide();
+
+            if ($(this).data('edit') == true)
+            {
+                var synopsis = $(".js-wysiwyg_editor").val();
+                $('.js-film_synopsis_holder').children('.overlay').removeClass('hidden');
+                $.ajax({
+                    url : "{{ route('film_synopsis_save') }}",
+                    type : 'POST',
+                    dataType : 'JSON',
+                    data : {_token:'{{ csrf_token() }}', synopsis:synopsis, id:{{ $Film->id }} },
+                    success : function (data) {
+                        $('.js-film_synopsis_holder').children('.overlay').addClass('hidden');
+
+                        $('.js-film_synopsis_content_holder').html(synopsis);
+
+                        $('.js-film_synopsis_content_holder').slideToggle();
+                        $('.js-synopsis_editor').slideToggle();
+
+                    }
+                });
+            }
+            else
+            {
+                $('.js-film_synopsis_content_holder').slideToggle();
+                $('.js-synopsis_editor').slideToggle();
+            }
+            
+                $(this).data('edit', !$(this).data('edit'));
+                $(this).html( ($(this).data('edit') == true ? '<i class="fa fa-save"></i> Save Synopsis' : '<i class="fa fa-pencil"></i> Update Synopsis') );
+        });
+
+        //bootstrap WYSIHTML5 - text editor
+        $(".js-wysiwyg_editor").wysihtml5();
+        //$.ajax();
     </script>
 @endsection
 

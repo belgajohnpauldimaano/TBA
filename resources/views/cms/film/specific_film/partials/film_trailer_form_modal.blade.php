@@ -20,7 +20,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-link"></i>
                     </div>
-                    <input type="text" name="url" id="url" class="form-control" value="{{ ($Trailer ? $Trailer->trailer_url : '') }}">
+                    <input type="text" name="url" id="url" class="form-control" value="{{ ($Trailer ? $Trailer->trailer_url : 'http://') }}">
                 </div>
                 <div class="help-block text-center" id="url-error"></div>
             </div>

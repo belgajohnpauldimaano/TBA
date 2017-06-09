@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
-//use Storage;
 use File;
 use Image;
 
@@ -14,6 +13,8 @@ use App\Trailer;
 use App\Poster;
 use App\Award;
 use App\Photo;
+use App\Quote;
+
 class FilmController extends Controller
 {
 
@@ -46,6 +47,26 @@ class FilmController extends Controller
         ->paginate(2);
         $RATINGS = Film::RATINGS;
         return view('cms.film.index', ['Film' => $Film, 'RATINGS' => $RATINGS]);
+    }
+
+    public function film_synopsis_save (Request $request)
+    {
+        if (!$request->id)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of film']);
+        }
+
+        $Film = Film::where('id', $request->id)->first();
+
+        if(!$Film)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of film']);
+        }
+
+        $Film->synopsis = $request->synopsis;
+        $Film->save();
+
+        return response()->json(['errCode' => 0, 'messages' => 'Synopsis successfully updated']);
     }
 
     public function fetch_record (Request $request)
@@ -223,12 +244,15 @@ class FilmController extends Controller
             return redirect(route('film'));
         }
         
-        $Poster = Poster::where('film_id', $id)->orderBy('poster_image_sorter', 'ASC')->get();
-        $Award  = Award::where('film_id', $id)->orderBy('award_image_sorter', 'ASC')->get();
-        $Photo  = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->get();
-        $RATINGS = Film::RATINGS;
+        $Poster         = Poster::where('film_id', $id)->orderBy('poster_image_sorter', 'ASC')->get();
+        $Award          = Award::where('film_id', $id)->orderBy('award_image_sorter', 'ASC')->get();
+        $Photo          = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->get();
+        $Quote          = Quote::where('film_id', $id)->first();
+
+        $RATINGS        = Film::RATINGS;
         $RELEASE_STATUS = Film::RELEASE_STATUS;
-        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS]);
+
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS]);
      }
 
      public function trailer_order_save (Request $request) 
@@ -315,13 +339,13 @@ class FilmController extends Controller
 
         if(!$request->has('trailer_id')) 
         {
-            $rules['image_preview'] = 'required|mimes:jpeg,png|dimensions:min_width=1600,min_height=900';
+            //$rules['image_preview'] = 'required|mimes:jpeg,png|dimensions:min_width=1600,min_height=900';
             $messages['image_preview.required'] = 'Image preview is a required field.';
             $messages['image_preview.dimensions'] = 'Image preview is should atleast 1600px width and 900px in height.';
         }
         else
         {   //ratio=16/9
-            $rules['image_preview'] = 'mimes:jpg,jpeg,png|dimensions:min_width=1600,min_height=900';
+            //$rules['image_preview'] = 'mimes:jpg,jpeg,png|dimensions:min_width=1600,min_height=900';
             $messages['image_preview.dimensions'] = 'Image preview is should atleast 1600px width and 900px in height.';
         }
 
@@ -347,15 +371,21 @@ class FilmController extends Controller
                 return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of data.']);
             }
 
-            $Trailer->trailer_url   = $request->url;
-            $Trailer->save();
             
             if($request->hasFile('image_preview'))
             {
-                $filename   = $Trailer->image_preview;
+                $old_filename   = $Trailer->image_preview;
+                File::delete(public_path('content\\film\\trailers\\' . $old_filename));
+                
+                $ext        = $request->image_preview->getClientOriginalExtension();
+                $filename   = str_random(100) . '.' . $ext;
                 $request->image_preview->move(public_path('content/film/trailers'), $filename);
+
+                $Trailer->image_preview = $filename;
             }
 
+            $Trailer->trailer_url   = $request->url;
+            $Trailer->save();
             return response()->json(['errCode' => 0, 'messages' => 'Trailer successfully updated.']);
         }
 
@@ -659,18 +689,27 @@ class FilmController extends Controller
             {
                 return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of award.']); // return an error message
             }
+            
 
             // award is existing
 
-            $Photo->title = $request->title;
-            $Photo->save();
 
             if ($request->hasFile('image_filename')) // check if there is new file uploaded
             {
-                $filename = $Photo->filename;
+                $ext = $request->image_filename->getClientOriginalExtension(); // get the file extension name
+                $filename   = str_random(100) . '.' . $ext; // generate random filename and append the extension
+
+                $old_filename = $Photo->filename;
+
+                File::delete(public_path('content\\film\\posters\\' . $old_filename));
+
                 $request->image_filename->move(public_path('content/film/photos'), $filename); // upload the file
+                
+                $Photo->filename    = $filename;
             }
 
+            $Photo->title = $request->title;
+            $Photo->save();
             return response()->json(['errCode' => 0, 'messages' => 'Photo information successfully editted.']); // return an success message
         }
 
@@ -689,5 +728,65 @@ class FilmController extends Controller
         $Photo->save();
         
         return response()->json(['errCode' => 0, 'messages' => 'Photo information successfully editted.']); // return an success message
+    }
+
+    /*
+     * FILM QUOTE
+     */
+    public function film_quote_form_modal (Request $request)
+    {
+        if (!$request->film_id)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of quote.']);
+        }
+
+        $Quote = Quote::where('film_id', $request->film_id)->first(); 
+
+        return view('cms.film.specific_film.partials.film_quote_form_modal', ['Quote' => $Quote, 'film_id' => $request->film_id])->render();
+    }
+
+    public function film_quote_save (Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+                'main_quote'    => 'required',
+                'person'        => 'required'
+            ], [
+                'main_quote.required'    => 'Quote is required.',
+                'person.required'        => 'Person is required.'
+            ]);
+
+        if ($validator->fails())
+        {
+            return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
+        }
+ 
+        $Quote = Quote::where(['film_id' => $request->film_id, 'id' => $request->quote_id])->first();
+
+        if($Quote) // there is an existing then edit
+        {
+            $Quote->main_quote      = $request->main_quote;
+            $Quote->name_of_person  = $request->person;
+            $Quote->url             = $request->url;
+            $Quote->save();
+
+            return response()->json(['errCode' => 0, 'messages' => 'Quote successfully updated.']);
+        }
+
+        $Quote = new Quote();
+
+        $Quote->main_quote      = $request->main_quote;
+        $Quote->name_of_person  = $request->person;
+        $Quote->url             = $request->url;
+        $Quote->film_id         = $request->film_id;
+        $Quote->save();
+
+        return response()->json(['errCode' => 0, 'messages' => 'Quote successfully updated.']);
+
+    }
+
+    public function film_quote_fetch ($id, Request $request) 
+    {
+        $Quote = Quote::where('film_id', $id)->first();
+        return view('cms.film.specific_film.partials.film_quote_data_fetch', ['Quote' => $Quote])->render();
     }
 }
