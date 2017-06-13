@@ -347,5 +347,9 @@
           var id = 3;
           openPhotoSwipe(id);
       });
+
+      @section ('mapContact')
+        getMapId('mapContact');
+      @endsection
     </script>
 @endsection
