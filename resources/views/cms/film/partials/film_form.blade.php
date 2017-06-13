@@ -12,7 +12,10 @@
         {{ csrf_field() }}
         <input type="hidden" name="id" value="{{ ($Film ? $Film->id : '') }}">
         <div class="modal-body">
-                        <div class="pull-left"> <span class="text-red">All fields with an asterisk (*) are required.</span></div>
+                        <div class="pull-left"> 
+                            <span class="text-red">All fields with an asterisk (*) are required.</span><br>
+                            <span class="text-red">Press enter on keyboard or comma (,) when adding genre or hashtags to be added.</span>
+                        </div>
             <div class="row">
                 <div class="col-sm-12">
                 
@@ -29,7 +32,7 @@
                     <div class="form-group">
                         <label for="">Genre/s <span class="text-red">*</span></label>
                         {{-- <input type="text" data-provide="typeahead" autoComplete="off" name="genre" id="genre" class="form-control typeahead" placeholder="Genre" value="{{ ($Film ? $Film->genre->genre : '') }}"> --}}
-                        <input type="text" autoComplete="off" name="genre" id="genre" class="form-control tokenfield-typeahead" placeholder="Genre" value="{{ ($Film ? $Film->genre : '') }}">
+                        <input type="text" autoComplete="off" name="genre" id="genre" class="form-control tokenfield-typeahead" placeholder="" value="{{ ($Film ? $Film->genre : '') }}">
                         
                         <div class="help-block text-center" id="genre-error"></div>
                     </div>
@@ -66,8 +69,6 @@
 
                     <div class="form-group">
                         <label for="">Rating</label>
-                        {{-- <input type="text" name="rating" id="rating" class="form-control" placeholder="Rating" value="{{ ($Film ? $Film->rating : '') }}"> --}}
-                        
                         <select name="rating" id="rating" class="form-control">
                             <option value="">Select a Rating</option>
                             @foreach($RATINGS as $key => $val)
@@ -101,10 +102,48 @@
                     
                     <div class="form-group">
                         <label for="">Hash Tags</label>
-                        <input type="text" name="hashtags" class="form-control input-md typeahead" id="hashtags" value="{{ ($Film ? $Film->hash_tags : '') }}" data-role="tagsinput" />
-                        <div class="help-block text-center" id="hashtags-error"></div>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-hashtag"></i>
+                            </div>
+                            <input type="text" name="hashtags" class="form-control input-sm typeahead  input-sm" id="hashtags" value="{{ ($Film ? $Film->hash_tags : '') }}" data-role="tagsinput" />
+                            <div class="help-block text-center" id="hashtags-error"></div>
+                        </div>
                     </div>
 
+                    
+                    <div class="form-group">
+                        <label for="">Facebook</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-facebook"></i>
+                            </div>
+                            <input type="text" name="facebook_link" id="facebook_link" class="form-control input-sm" placeholder="Facebook" value="{{ ($Film ? ( $Film->links != NULL ? $Film->links->facebook_url : '')  : '') }}">
+                        </div>
+                        <div class="help-block text-center" id="facebook_link-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="">Twitter</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-twitter"></i>
+                            </div>
+                            <input type="text" name="twitter_link" id="twitter_link" class="form-control input-sm" placeholder="Twitter" value="{{ ($Film ? ($Film->links ? $Film->links->twitter_url : '') : '') }}">
+                        </div>
+                        <div class="help-block text-center" id="twitter_link-error"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="">Instagram</label>
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="fa fa-instagram"></i>
+                            </div>
+                            <input type="text" name="instagram_link" id="instagram_link" class="form-control input-sm" placeholder="Instagram" value="{{ ($Film ? ( $Film->links ? $Film->links->instagram_url : '') : '') }}">
+                        </div>
+                        <div class="help-block text-center" id="instagram_link-error"></div>
+                    </div>
                 </div>
             </div>
 
