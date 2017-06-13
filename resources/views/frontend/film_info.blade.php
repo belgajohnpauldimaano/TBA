@@ -242,4 +242,95 @@
     <script src="{{ asset('frontend/node_modules/photoswipe/dist/photoswipe.min.js') }}"></script>
     <script src="{{ asset('frontend/node_modules/photoswipe/dist/photoswipe-ui-default.min.js') }}"></script>
     <script src="{{ asset('frontend/assets/js/app.js') }}"></script>
+
+    <script type="text/javascript">
+      var owl = $('.owl-gallery');
+      options = {
+          items: 4,
+          loop: true,
+          margin: 1,
+          autoplay: true,
+          autoplaySpeed: 1000,
+          autoplayTimeout: 3000,
+          responsive: {
+              0: {
+                  items: 3,
+                  nav: true
+              },
+              768: {
+                  items: 4,
+                  nav: true,
+                  loop: false
+              }
+          }
+      };
+      owl.owlCarousel(options);
+
+      $('#readMorePR_info').on('click', function(e) {
+          e.preventDefault();
+          $('#modalPressRelease').modal('show');
+      });
+
+      var gallery = {};
+      var openPhotoSwipe = function(goTo) {
+          var pswpElement = document.querySelectorAll('.pswp')[0];
+          // build items array
+          var items = [{
+              src: '{{ asset("frontend/assets/img/hero/1.jpg") }}',
+              w: 1600,
+              h: 900
+          }, {
+              src: '{{ asset("frontend/assets/img/hero/2.jpg") }}',
+              w: 1600,
+              h: 900
+          },{
+              src: '{{ asset("frontend/assets/img/hero/3.jpg") }}',
+              w: 1600,
+              h: 900
+                  //title: "asdasdasd",
+          }, {
+              src: '{{ asset("frontend/assets/img/hero/4.jpg") }}',
+              w: 1600,
+              h: 900
+                  //title: "asdasdasd"
+          }, {
+              src: '{{ asset("frontend/assets/img/hero/5.jpg") }}',
+              w: 1600,
+              h: 900
+                  //title: "asdasdasd"
+          }];
+
+          // define options (if needed)
+          var options = {
+              // history & focus options are disabled on CodePen
+              history: false,
+              focus: false,
+              index: goTo,
+              maxSpreadZoom: 1,
+              getDoubleTapZoom: function(isMouseClick, item) {
+                  return item.initialZoomLevel;
+              },
+
+              showAnimationDuration: 0,
+              hideAnimationDuration: 0,
+
+              bgOpacity: 0.9,
+              fullscreenEl: false,
+              zoomEl: false,
+              shareEl: false,
+
+              closeOnScroll: false
+          };
+
+          gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+          gallery.init();
+      };
+
+      $('body').on('click', '.opet', function(e) {
+          e.preventDefault();
+
+          var id = 3;
+          openPhotoSwipe(id);
+      });
+    </script>
 @endsection
