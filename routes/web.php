@@ -32,25 +32,15 @@ Route::get('/sample_home', function () {
     return view('frontend.home');
 });
 
-Route::get('/films', function () {
-    return view('frontend.films');
-});
+Route::get('/films', 'Frontend\FilmController@films')->name('films');
 
-Route::get('/about', function () {
-    return view('frontend.about');
-});
+Route::get('/about', 'Frontend\FilmController@about')->name('about');
 
-Route::get('/contact', function () {
-    return view('frontend.contact');
-});
+Route::get('/contact', 'Frontend\FilmController@contact')->name('contact');
 
-Route::get('/film/info', function () {
-    return view('frontend.film_info');
-});
-
+Route::get('/film/info', 'Frontend\FilmController@film_info')->name('film_info');
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 
 Route::group(['prefix' => '/cms'], function () {
 
