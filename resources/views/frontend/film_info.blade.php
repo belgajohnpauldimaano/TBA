@@ -108,19 +108,19 @@
                 <h2 class="header-title__tag">Gallery</h2>
             </div>
             <div class="owl-gallery owl-carousel">
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="">
                 </a>
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f2.jpg') }}" alt="">
                 </a>
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f3.jpg') }}" alt="">
                 </a>
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f4.jpg') }}" alt="">
                 </a>
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f5.jpg') }}" alt="">
                 </a>
             </div>
@@ -169,6 +169,23 @@
          </section>
     </main>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalPressRelease">
+       <div class="modal-dialog modal-lg m-t-0" role="document">
+           <div class="modal-content">
+               <img src="{{ asset('frontend/assets/img/hero/2.jpg') }}" alt="" class="img-responsive center-block">
+               <div class="modal-body">
+                  <div class="row">
+                     <div class="col-md-10 col-md-offset-1">
+                        <h2 class="text-center">"I'm drunk i love you" serve love, music and a shot of reality</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quisquam animi, quidem? Perspiciatis alias rem, debitis expedita voluptatum. Quaerat accusamus ipsa sint magnam officia eligendi temporibus in excepturi fugiat facilis.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quisquam animi, quidem? Perspiciatis alias rem, debitis expedita voluptatum. Quaerat accusamus ipsa sint magnam officia eligendi temporibus in excepturi fugiat facilis.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quisquam animi, quidem? Perspiciatis alias rem, debitis expedita voluptatum. Quaerat accusamus ipsa sint magnam officia eligendi temporibus in excepturi fugiat facilis.</p>
+                     </div>
+                  </div>
+               </div>
+           </div>
+       </div>
+    </div>
 
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
@@ -287,22 +304,21 @@
               src: '{{ asset("frontend/assets/img/hero/3.jpg") }}',
               w: 1600,
               h: 900
-                  //title: "asdasdasd",
+              //title: "img title",
           }, {
               src: '{{ asset("frontend/assets/img/hero/4.jpg") }}',
               w: 1600,
               h: 900
-                  //title: "asdasdasd"
+              //title: "img title"
           }, {
               src: '{{ asset("frontend/assets/img/hero/5.jpg") }}',
               w: 1600,
               h: 900
-                  //title: "asdasdasd"
+              //title: "img title"
           }];
 
           // define options (if needed)
           var options = {
-              // history & focus options are disabled on CodePen
               history: false,
               focus: false,
               index: goTo,
@@ -326,11 +342,14 @@
           gallery.init();
       };
 
-      $('body').on('click', '.opet', function(e) {
+      $('.films-gallery').on('click', '.owl-gallery__item', function(e) {
           e.preventDefault();
-
           var id = 3;
           openPhotoSwipe(id);
       });
+
+      @section ('mapContact')
+        getMapId('mapContact');
+      @endsection
     </script>
 @endsection
