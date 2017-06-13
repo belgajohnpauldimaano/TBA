@@ -108,19 +108,19 @@
                 <h2 class="header-title__tag">Gallery</h2>
             </div>
             <div class="owl-gallery owl-carousel">
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="">
                 </a>
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f2.jpg') }}" alt="">
                 </a>
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f3.jpg') }}" alt="">
                 </a>
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f4.jpg') }}" alt="">
                 </a>
-                <a href="#" class="opet">
+                <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f5.jpg') }}" alt="">
                 </a>
             </div>
@@ -287,22 +287,21 @@
               src: '{{ asset("frontend/assets/img/hero/3.jpg") }}',
               w: 1600,
               h: 900
-                  //title: "asdasdasd",
+              //title: "img title",
           }, {
               src: '{{ asset("frontend/assets/img/hero/4.jpg") }}',
               w: 1600,
               h: 900
-                  //title: "asdasdasd"
+              //title: "img title"
           }, {
               src: '{{ asset("frontend/assets/img/hero/5.jpg") }}',
               w: 1600,
               h: 900
-                  //title: "asdasdasd"
+              //title: "img title"
           }];
 
           // define options (if needed)
           var options = {
-              // history & focus options are disabled on CodePen
               history: false,
               focus: false,
               index: goTo,
@@ -326,9 +325,8 @@
           gallery.init();
       };
 
-      $('body').on('click', '.opet', function(e) {
+      $('.films-gallery').on('click', '.owl-gallery__item', function(e) {
           e.preventDefault();
-
           var id = 3;
           openPhotoSwipe(id);
       });
