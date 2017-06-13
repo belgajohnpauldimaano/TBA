@@ -1,0 +1,107 @@
+/* 
+========================================================
+Center vertical */
+
+.va-block {
+    display: table;
+    height: 100%;
+    width: 100%;
+}
+
+.va-middle,
+.va-bottom {
+    display: table-cell;
+}
+
+.va-middle {
+    vertical-align: middle;
+}
+
+.va-bottom {
+    vertical-align: bottom;
+}
+
+
+/* 
+========================================================
+Padding helpers */
+
+@for $i from 0 through 6 {
+    .p-a-#{$i * 1} {
+        padding: #{($i * 5) + 'px'} !important;
+    }
+    .p-t-#{$i * 1} {
+        padding-top: #{($i * 5) + 'px'} !important;
+    }
+    .p-r-#{$i * 1} {
+        padding-right: #{($i * 5) + 'px'} !important;
+    }
+    .p-b-#{$i * 1} {
+        padding-bottom: #{($i * 5) + 'px'} !important;
+    }
+    .p-l-#{$i * 1} {
+        padding-left: #{($i * 5) + 'px'} !important;
+    }
+    .p-x-#{$i * 1} {
+        padding-left: #{($i * 5) + 'px'} !important;
+        padding-right: #{($i * 5) + 'px'} !important;
+    }
+    .p-y-#{$i * 1} {
+        padding-top: #{($i * 5) + 'px'} !important;
+        padding-bottom: #{($i * 5) + 'px'} !important;
+    }
+}
+
+/* 
+========================================================
+Margin helpers*/
+
+@for $i from 0 through 6 {
+    .m-a-#{$i * 1} {
+        margin: #{($i * 5) + 'px'} !important;
+    }
+    .m-t-#{$i * 1} {
+        margin-top: #{($i * 5) + 'px'} !important;
+    }
+    .m-r-#{$i * 1} {
+        margin-right: #{($i * 5) + 'px'} !important;
+    }
+    .m-b-#{$i * 1} {
+        margin-bottom: #{($i * 5) + 'px'} !important;
+    }
+    .m-l-#{$i * 1} {
+        margin-left: #{($i * 5) + 'px'} !important;
+    }
+    .m-x-#{$i * 1} {
+        margin-left: #{($i * 5) + 'px'} !important;
+        margin-right: #{($i * 5) + 'px'} !important;
+    }
+    .m-y-#{$i * 1} {
+        margin-top: #{($i * 5) + 'px'} !important;
+        margin-bottom: #{($i * 5) + 'px'} !important;
+    }
+}
+
+
+.w-100{
+	width: 100%;
+}
+
+/* 
+========================================================
+Font family*/
+
+.text-calibri{
+    font-family: 'Calibri';
+}
+/* 
+========================================================
+btn */
+
+.btn-default{
+    color: #000;
+    &--border{
+        border: 2px solid #333;
+        font-size: 22px;
+    }
+}

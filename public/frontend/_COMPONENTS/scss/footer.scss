@@ -1,0 +1,60 @@
+
+
+.footer{
+	background-color: $black;
+	padding: 50px 0;
+	color: #fafafa;
+	&__mid{
+		max-width: 290px;
+	}
+	&__social{
+		margin: 25px 0;
+		&__item{
+			float: left;
+			width: 25%;
+			&__link{
+			    color: #fff !important;
+			    width: 46px;
+			    height: 46px;
+			    line-height: 46px;
+			    border-radius: 50%;
+			    display: block;
+			    background: rgba(255, 255, 255, 0.2);
+			    text-align: center;
+			    font-size: 20px;
+			    margin: 0 auto;
+			}
+		}
+	}
+    .form-group {
+        padding-left: 50px;
+        background: url(../../assets/img/mail-icon.png) no-repeat 1px 1px;
+        background-size: 33px 24px;
+        .form-control {
+            border: 0;
+            height: 26px;
+        }
+    }
+	hr{
+		border-color: rgba(255, 255, 255, 0.18);
+		margin: 20px 0 30px 0;
+	}
+    #map{
+		height: 150px;
+	    width: 100%;
+	}
+	@media (max-width: $md - 1){
+		text-align: center;
+		padding: 30px 0;
+		.container{
+			max-width: 500px;
+		}
+		.footer__mid{
+			margin-top: 50px;
+			margin-bottom: 50px;
+		}
+		#map{
+			margin-top: 20px;
+		}
+	}
+}

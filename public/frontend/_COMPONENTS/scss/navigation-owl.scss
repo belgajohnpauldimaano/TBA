@@ -1,0 +1,72 @@
+.nav-owl{
+	width: 300px;
+    float: right;
+    height: $navbarHeight;
+    line-height: $navbarHeight;
+    margin: 0 30px;
+
+	&__menu{
+
+	}
+
+	&__link{
+		color: #fff !important;
+		display: block;
+		text-align: center;
+
+		&--text{
+			width: 100px;
+		}
+
+		&--announcements{
+			width: 150px;
+		}
+
+		&--cinema-76{
+			width: 50px;
+			background: url(../../assets/img/CInema-76.png);
+			background-size: 26px; 
+		}
+
+		&--cinema-tropa{
+			width: 100px;
+			background: url(../../assets/img/Cinetropa.png);
+			background-size: 80px;
+		}
+
+		&--img{
+			height: $navbarHeight;
+			background-repeat: no-repeat;
+			background-position: center center;
+		}
+	}
+
+	.owl-prev,
+	.owl-next{
+		position: absolute;
+		top: 0;
+		padding: 0 10px;
+		
+		img{
+			height: 20px;
+		    position: relative;
+		    top: -2px;
+		}
+		&.disabled{
+			display: none;
+		}
+	}
+
+	.owl-prev{
+		left: -20px;
+	}
+
+	.owl-next{
+		right: -20px;
+	}
+
+	@media (max-width: $md - 1){
+		float: none;
+		margin: 0 15px;
+	}
+}
