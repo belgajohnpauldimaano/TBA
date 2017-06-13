@@ -1,0 +1,25 @@
+.navbar {
+    border-radius: 0;
+    margin-bottom: 0;
+
+    .navbar-brand{
+    	padding: 10px 15px;
+    	>img{
+    		height: 30px;;
+    	}
+    }
+
+	@media (min-width: $md){
+    	min-height: $navbarHeight;
+	    .navbar-brand{
+	    	padding: 20px;
+    		height: $navbarHeight;
+	    	>img{
+	    		height: $navbarHeight - 40;	
+	    	}
+	    }
+    }
+    a{
+        text-transform: uppercase;
+    }
+}

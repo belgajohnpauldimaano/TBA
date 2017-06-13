@@ -1,0 +1,224 @@
+/* Set Default */
+main{
+	padding-top: $navbarHeight + 30;
+	@media (max-width: $md - 1){
+		padding-top: $navbarHeight;
+	}
+}
+
+.header-title{
+	text-align: center;
+	margin-bottom: 15px;
+	&__tag{
+		display: inline-block;
+		font-family: 'NeutraText-Demi';
+	    letter-spacing: 5px;
+	    font-size: 26px;
+	    background: #e0cd96;
+	    background: -moz-linear-gradient(left, #e0cd96 0%, #a78230 50%, #e0cd96 100%);
+	    background: -webkit-linear-gradient(left, #e0cd96 0%, #a78230 50%, #e0cd96 100%);
+	    background: -webkit-gradient(linear, left top, right top, from(#e0cd96), color-stop(50%, #a78230), to(#e0cd96));
+	    background: -o-linear-gradient(left, #e0cd96 0%, #a78230 50%, #e0cd96 100%);
+	    background: linear-gradient(to right, #e0cd96 0%, #a78230 50%, #e0cd96 100%);
+	    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0cd96', endColorstr='#e0cd96',GradientType=1 );
+	    background-clip: text;
+	    -o-background-clip: text;
+	    -ms-background-clip: text;
+	    -moz-background-clip: text;
+	    -webkit-background-clip: text;
+	    text-fill-color: transparent;
+	    -o-text-fill-color: transparent;
+	    -ms-text-fill-color: transparent;
+	    -moz-text-fill-color: transparent;
+	    -webkit-text-fill-color: transparent;
+		
+		@media (min-width: $md + 1){
+		    &:before, &:after {
+			    content: "";
+			    display: block;
+			    height: 30px;
+			    position: relative;
+			    top: -1px;
+			}
+
+			&:before {
+			    background: url(../../assets/img/left-arrow-title.png) no-repeat 0px 8px;
+			    background-size: 115px 16px;
+			    width: 115px;
+			    float: left;
+			    left: -12px;
+			}
+			&:after {
+			    background: url(../../assets/img/right-arrow-title.png) no-repeat 0px 8px;
+			    background-size: 115px 16px;
+			    width: 115px;
+			    float: right;
+			    right: -12px;
+			}
+		}
+	}
+	@media (min-width: $md){
+		margin: 30px 0;
+	}
+}
+
+/* Homepage */
+
+.hero{
+	position: relative;
+	background: #000;
+	background-image:none;
+	padding-top: 50px;
+
+	@media (min-width: $md){
+		padding-top: $navbarHeight;
+		height: 100%;
+		div{
+			height: 100%;
+		}
+
+		&__owl{
+			&__slide {
+				background-repeat: no-repeat;
+				background-size: cover;
+				background-position: top center;
+				height: 100%;
+				display: block;
+			}
+		}
+
+		img, 
+		.owl-nav,
+		.owl-dots{
+			display: none !important;
+		}
+	}
+}
+
+/* Film Page */
+
+.film{
+	margin-bottom: 30px;
+	
+	&__link{
+		display: block;
+	}
+}
+
+.info-img{
+	margin-top: 15px;
+	@media (min-width: $md){
+		margin-top: 30px;
+	}
+}
+.info-desc{
+	margin-top: 35px;
+	@media (max-width: $md - 1){
+		text-align: center;
+	}
+}
+
+.film-award{
+	@media (min-width: $md){
+		margin: 60px 0;
+	}
+}
+
+.films-gallery{
+    background: #1c1c1c;
+    padding: 25px 0 45px 0;
+    .owl-item{
+    	margin-right: 0 !important;
+    }
+	a{
+		&:after {
+		    content: "";
+		    display: block;
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    background: rgba(0, 0, 0, 0.31);
+		    width: 100%;
+		    height: 100%;
+		    @extend .t-ease;
+		}
+		&:hover:after {
+		    background: transparent;
+		}
+	}
+	@media (max-width: $md - 1){
+    	padding: 10px 0 25px 0;
+	}
+}
+.film-quotes, .film-press{
+	margin: 50px 0 70px 0;
+	.read-more{
+		color: #949494;
+	}
+	@media (max-width: $md - 1){
+		margin: 0 0 20px 0;
+		.header-title{
+			margin: 10px 0;
+		}
+		.h3, h3{
+			font-size: 16px;
+			margin-top: 0;
+		}
+	}
+}
+
+/* About Page */
+
+.tba-logo{
+	@media (min-width: $md){
+		margin-top: 20px;
+	}
+	img{
+		max-width: 150px;
+	}
+}
+.media-block{
+	margin-top: 35px;
+	.media{
+		margin-bottom: 40px;
+	}
+	blockquote{
+		font-size: 14px;
+	}
+	.media-left img{
+		width: 250px;
+	}
+	@media (max-width: $md - 1){
+		.media-left,
+		.media-left{
+			display: block;
+			margin-left: 25px;
+		}
+	}
+}
+
+/* About Page */
+#mapContact{
+	height: 500px;
+	width: 100%;
+	@media (max-width: $md - 1){
+		height: 300px;
+	}
+}
+.contact-info{
+	margin-bottom: 100px;
+	.form-control{
+		border-width: 2px;
+		border-color: #333;
+	}
+	&-details{
+		margin-bottom: 30px;
+		max-width: 375px;
+		.b-left-3{
+			border-left: 3px solid #ddd;
+		}
+		@media (min-width: $md){
+			max-width: 600px;
+		}
+	}
+}
