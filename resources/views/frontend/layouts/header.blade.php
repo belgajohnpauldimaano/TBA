@@ -36,9 +36,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <div class="nav-owl">
                   <div class="nav-owl__menu owl-carousel">
-                      <a href="/films" class="nav-owl__link nav-owl__link--text">Films</a>
-                      <a href="/about" class="nav-owl__link nav-owl__link--text">About</a>
-                      <a href="/contact" class="nav-owl__link nav-owl__link--text">Contact</a>
+                      <a href="{{ route('films') }}" class="nav-owl__link nav-owl__link--text">Films</a>
+                      <a href="{{ route('about') }}" class="nav-owl__link nav-owl__link--text">About</a>
+                      <a href="{{ route('contact') }}" class="nav-owl__link nav-owl__link--text">Contact</a>
                       <a href="#" class="nav-owl__link nav-owl__link--text nav-owl__link--announcements">Announcements</a>
                       <a href="#" class="nav-owl__link nav-owl__link--img nav-owl__link--cinema-76"></a>
                       <a href="#" class="nav-owl__link nav-owl__link--img nav-owl__link--cinema-tropa"></a>
