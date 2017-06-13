@@ -2,6 +2,8 @@
 
 @section ('styles')
     <link rel="stylesheet" href="{{ asset('cms/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/tokenfield-bootstrap/css/bootstrap-tokenfield.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/tokenfield-bootstrap/css/tokenfield-typeahead.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ asset('cms/plugins/iCheck/all.css') }}">
@@ -18,11 +20,16 @@
 
                 <div class="box-header with-border">
                     <h3 class="box-title">Film</h3>
+                    <div class="box-tools">
+                        <button class="btn btn-primary btn-sm btn-flat js-edit_film" data-id="{{ $Film->id }}"><i class="fa fa-pencil"></i> Edit Film Information</button>
+                    </div>
                 </div>
 
                 <div class="box-body">
-                    <div class="row" id="js-film_primary_info">
-
+                    <div class="row js-film_primary_info_content_holder box box-solid">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
                         <div class="col-sm-6">
 
                             <div class="form-group">
@@ -366,7 +373,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Press Release</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-managa_quote"><i class="fa fa-pencil"></i> Update Quote</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_press_release"><i class="fa fa-pencil"></i> Manage Press Release</button>
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
                     </div>
                 </div>
@@ -375,11 +382,33 @@
                         <i class="fa fa-refresh fa-spin"></i>
                     </div>
                     <div class="box-body">
-                        @if ($Quote)
-                            <blockquote>
-                                <p>{{ ($Quote ? $Quote->main_quote : 'Not yet set') }}</p>
-                                <small>{{ $Quote->name_of_person }} <cite title="{{ $Quote->url }}"><a href="{{ $Quote->url }}" target="_blank">source</a></cite></small>
-                            </blockquote>
+                        
+                        @if ($PressRelease)
+                            <ul class="media-list">
+                                <li class="media">
+                                    <div class="media-left">
+                                    <a>
+                                        <img class="media-object" style="max-width:220px;" src="{{ asset('content/film/press_release' . '/' . $PressRelease->article_image) }}" alt="...">
+                                    </a>
+                                    </div>
+                                    <div class="media-body">
+                                    <h4 class="media-heading">Article</h4>
+                                        <div>
+                                            <label for="">Blurb</label>
+                                            <div class="margin">
+                                                {!! str_limit($PressRelease->blurb, 200) !!}
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </li>
+                            </ul>
+                            <div>
+                                <label for="">Main Content</label>
+                                <div class="margin">
+                                    {!! str_limit($PressRelease->content, 500, '<a href="#" class="link">Read more...</a>') !!}
+                                </div>
+                            </div>
                         @else
                             <h5>Not yet set</h5>
                         @endif
@@ -398,13 +427,40 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('cms/plugins/Bootstrap-3-Typeahead/bootstrap3-typeahead.js') }}"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="{{ asset('cms/plugins/tokenfield-bootstrap/bootstrap-tokenfield.js') }}"></script>
+    <script src="{{ asset('cms/plugins/tokenfield-bootstrap/typeahead.bundle.js') }}"></script>
     <script src="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/js/fileinput.js') }}"></script>
     <script src="{{ asset('cms/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
 
     <!-- iCheck 1.0.1 -->
     <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
     <script>
+        // modal edit film info show
+        $('body').on('click', '.js-edit_film', function (e) {
+            e.preventDefault();
+
+            var id = $(this).data('id');
+
+            $.ajax({
+                url : "{{ route('show_film_form') }}",
+                type : 'POST',
+                data : {_token : '{{ csrf_token() }}', id : id},
+                success : function (data) {
+                    $('#js-modal_holder').html(data);
+                    $('#js-film_form_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+            });
+        });
+        // form film edit save
+        $('body').on('submit', '#js-film_form', function (e) {
+            e.preventDefault();
+
+            save_data($(this), "{{ route('save_film') }}", "{{ route('film_basic_info_fetch', $Film->id) }}", $('.js-film_primary_info_content_holder'));
+            
+        });
+
         var order = [];
         //Red color scheme for iCheck
         $('input[type="checkbox"].minimal-green, input[type="radio"].minimal-green').iCheck({
@@ -739,6 +795,66 @@
             show_photo_single_form_modal(id);
         });
         
+        $('.bootbox').on('hidden.bs.modal', function (e) {
+            alert('fasf');
+            if($('.modal.in')){
+                $('body').addClass('modal-open');
+            }
+        });
+
+        $('body').on('click', '.js-photo_delete', function (e) {
+            e.preventDefault();
+
+            var id = $(this).data('id');
+            bootbox.confirm({
+                message: "Are you sure you want to delete photo?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-danger btn-flat'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-default btn-flat'
+                    }
+                },
+                callback: function (result) {
+                    console.log('This was logged in the callback: ' + result);
+                    if(result)
+                    {
+                        $.ajax({
+                            url : "{{ route('photo_single_delete') }}",
+                            type : 'POST',
+                            data : {_token : '{{ csrf_token() }}', id : id},
+                            success     : function (data) {
+                                if (data.errCode == 1)
+                                {
+                                    show_message (data.messages, 'danger');
+                                }
+                                else if (data.errCode == 2)
+                                {
+                                    $('#general-error').append('<code>'+ data['messages'] +'</code>');
+                                }
+                                else
+                                {
+                                    $('#js-film_photo_single_form_modal').modal('hide');
+                                    fetch_record("{{ route('film_photo_fetch', $Film->id) }}", $('.js-film_photo_content_holder'), 1, '');
+                                }
+                            }
+                        });
+                    }
+                    setTimeout(function(){
+                        var modal_count = $('.modal-dialog').length;
+                        if(modal_count > 0)
+                        {
+                            $('body').addClass('modal-open');
+                        }
+                    }, 500);  
+                }
+            });
+
+        });
+
         $('.film').addClass('active');
 
         /*
@@ -803,6 +919,91 @@
         //bootstrap WYSIHTML5 - text editor
         $(".js-wysiwyg_editor").wysihtml5();
         //$.ajax();
+
+        /*
+         * PRESS RELEASE
+         */
+        $('body').on('click', '.js-manage_press_release', function () {
+
+            $.ajax({
+                url : "{{ route('film_press_release_form_modal', $Film->id) }}",
+                type : 'POST',
+                data : { _token : "{{ csrf_token() }}", id : {{ $Film->id }} },
+                success : function (data) {
+                    $('#js-modal_holder').html(data);
+                    $('#js-film_press_release_form_modal').modal({keyboard : false, backdrop : 'static'});
+                    
+                    $("#press_release_blurb").wysihtml5();
+                    $("#press_release_content").wysihtml5();
+                    $("#js-frm_press_release ul.wysihtml5-toolbar").addClass('hidden');
+                }
+            });
+        });
+        
+        $('body').on('click', '#js-press_release_article_image', function (e) {
+            e.preventDefault();
+            $('#press_release_article_image').click();
+        });
+
+        $('body').on('change', '#press_release_article_image', function () {
+            $('#js-text_press_release_article_image').val($('#press_release_article_image').val().replace(/.*(\/|\\)/, ''));
+        });
+
+        $('body').on('submit', '#js-frm_press_release', function (e) {
+            e.preventDefault();
+            save_data($(this), "{{ route('film_press_release_save') }}", "{{ route('film_press_release_fetch', $Film->id) }}", $('.js-film_press_release_content_holder'));
+        });
+
+        $('body').on('click', '.js-delete_press_release', function (e) {
+            e.preventDefault();
+
+            var id = $(this).data('id');
+            bootbox.confirm({
+                message: "Are you sure you want to delete press release details?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-danger btn-flat'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-default btn-flat'
+                    }
+                },
+                callback: function (result) {
+                    if(result)
+                    {
+                        $.ajax({
+                            url : "{{ route('film_press_release_delete') }}",
+                            type : 'POST',
+                            data : {_token : '{{ csrf_token() }}', id : id, film_id : "{{ $Film->id }}"},
+                            success     : function (data) {
+                                if (data.errCode == 1)
+                                {
+                                    show_message (data.messages, 'danger');
+                                }
+                                else if (data.errCode == 2)
+                                {
+                                    $('#general-error').append('<code>'+ data['messages'] +'</code>');
+                                }
+                                else
+                                {
+                                    $('#js-film_press_release_form_modal').modal('hide');
+                                    fetch_record("{{ route('film_press_release_fetch', $Film->id) }}", $('.js-film_press_release_content_holder'), 1, '');
+                                }
+                            }
+                        });
+                    }
+                    setTimeout(function(){
+                        var modal_count = $('.modal-dialog').length;
+                        if(modal_count > 0)
+                        {
+                            $('body').addClass('modal-open');
+                        }
+                    }, 500);  
+                }
+            });
+        }); 
     </script>
 @endsection
 

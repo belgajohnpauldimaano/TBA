@@ -30,12 +30,11 @@
                             <th>Film Status</th>
                             <th>Release Date</th>
                             <th>Rating</th>
-                            <th>Synopsis</th>
+                            {{-- <th>Synopsis</th> --}}
                             <th>Actions</th>
                         </tr>
                         <tbody>
                             @if($Film->count() > 0)
-                                {{-- {{ json_encode($Film) }} --}}
                                 @foreach($Film as $data)
                                     <tr>
                                         <td>{{ $data->title }}</td>
@@ -44,7 +43,7 @@
                                         <td>{{ ($data->release_status ? $data::RELEASE_STATUS[$data->release_status] : 'Not yet set') }}</td>
                                         <td>{{ Date('l, jS \of F Y', strtotime($data->release_date)) }}</td>
                                         <td>{{ ( $data->rating ? $RATINGS[$data->rating] : 'Not yet set' ) }}</td>
-                                        <td>{{ str_limit($data->synopsis, $limit=20, $end = '...') }}</td>
+                                        {{-- <td>{{ str_limit($data->synopsis, $limit=20, $end = '...') }}</td> --}}
                                         <td>
                                             <!-- Single button -->
                                             <div class="btn-group">

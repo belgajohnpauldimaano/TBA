@@ -14,6 +14,7 @@ use App\Poster;
 use App\Award;
 use App\Photo;
 use App\Quote;
+use App\PressRelease;
 
 class FilmController extends Controller
 {
@@ -167,7 +168,7 @@ class FilmController extends Controller
             $Film                   = Film::where('id', $request->id)->first();
             $Film->title            = $request->title;
             $Film->genre            = $request->genre;
-            $Film->synopsis         = $request->synopsis;
+            //$Film->synopsis         = $request->synopsis;
             $Film->release_status   = ($request->release_status != '' ? $request->release_status : NULL);
             $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : NULL);
             $Film->rating           = $request->rating;
@@ -190,7 +191,7 @@ class FilmController extends Controller
         $Film                   = new Film();
         $Film->title            = $request->title;
         $Film->genre            = $request->genre;
-        $Film->synopsis         = $request->synopsis;
+        //$Film->synopsis         = $request->synopsis;
         $Film->release_status   = ($request->release_status != '' ? $request->release_status : NULL);
         $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : NULL);
         $Film->rating           = $request->rating;
@@ -248,11 +249,21 @@ class FilmController extends Controller
         $Award          = Award::where('film_id', $id)->orderBy('award_image_sorter', 'ASC')->get();
         $Photo          = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->get();
         $Quote          = Quote::where('film_id', $id)->first();
+        $PressRelease   = PressRelease::where('film_id', $id)->first();
 
         $RATINGS        = Film::RATINGS;
         $RELEASE_STATUS = Film::RELEASE_STATUS;
 
-        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS]);
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'PressRelease' => $PressRelease, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS]);
+     }
+
+     public function film_basic_info_fetch ($id)
+     {
+        $Film = Film::where('id', $id)->first(); 
+        
+        $RATINGS        = Film::RATINGS;
+        $RELEASE_STATUS = Film::RELEASE_STATUS;
+        return view('cms.film.specific_film.partials.film_basic_info', ['Film' => $Film, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS])->render();
      }
 
      public function trailer_order_save (Request $request) 
@@ -563,25 +574,30 @@ class FilmController extends Controller
             }
 
             // award is existing
+            
 
             $Award->award_name = $request->award_title;
-            $Award->save();
 
             if ($request->hasFile('award_image')) // check if there is new file uploaded
             {
-                $filename = $Award->award_image;
+                File::delete(public_path('content\\film\\awards\\' . $Award->award_image));
+
+
+                $ext = $request->award_image->getClientOriginalExtension(); // get the file extension name
+                $filename   = str_random(100). '.' . $ext; // generate random filename and append the extension
                 $request->award_image->move(public_path('content/film/awards'), $filename); // upload the file
+
+                $Award->award_image = $filename;
             }
 
+            $Award->save();
             return response()->json(['errCode' => 0, 'messages' => 'Award information successfully editted.']); // return an success message
         }
 
         // this is for add
 
         $ext = $request->award_image->getClientOriginalExtension(); // get the file extension name
-
         $filename   = str_random(100). '.' . $ext; // generate random filename and append the extension
-
         $request->award_image->move(public_path('content/film/awards'), $filename); // upload the file
 
         $Award = new Award();
@@ -701,7 +717,7 @@ class FilmController extends Controller
 
                 $old_filename = $Photo->filename;
 
-                File::delete(public_path('content\\film\\posters\\' . $old_filename));
+                File::delete(public_path('content\\film\\photos\\' . $old_filename));
 
                 $request->image_filename->move(public_path('content/film/photos'), $filename); // upload the file
                 
@@ -728,6 +744,19 @@ class FilmController extends Controller
         $Photo->save();
         
         return response()->json(['errCode' => 0, 'messages' => 'Photo information successfully editted.']); // return an success message
+    }
+
+    public function photo_single_delete (Request $request)
+    {
+        if (!$request->id)
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of photo.']);
+        }
+
+        $Photo = Photo::where('id', $request->id)->first();
+        File::delete(public_path('content\\film\\photos\\' . $Photo->filename));
+        $Photo->delete();
+        return response()->json(['errCode' => 0, 'messages' => 'Photo successfully deleted.', 'closeModal' => true]);
     }
 
     /*
@@ -788,5 +817,115 @@ class FilmController extends Controller
     {
         $Quote = Quote::where('film_id', $id)->first();
         return view('cms.film.specific_film.partials.film_quote_data_fetch', ['Quote' => $Quote])->render();
+    }
+
+    /*
+     * PRESS RELEASE
+     */
+    
+    public function film_press_release_save (Request $request)
+    {
+        $rules = [
+            'film_id'                       => 'required',
+            'press_release_title'           => 'required',
+            'press_release_article_image'   => 'required|mimes:jpeg,png',
+            'press_release_blurb'           => 'required',
+            'press_release_content'         => 'required'
+        ];
+
+        $messages = [
+            'film_id.required'                          => 'Invalid film data selection.',
+            'press_release_title.required'              => 'Title field is required.',
+            'press_release_article_image.required'      => 'Article image field is required.',
+            'press_release_article_image.mimes'         => 'Article image should be a valid format :jpeg, png',
+            'press_release_blurb.required'              => 'Blurb field is required.',
+            'press_release_content.required'            => 'Article content field is required.'
+        ];
+        
+        if ($request->press_release_id)
+        {
+            $rules['press_release_article_image'] = 'mimes:jpeg,png';
+            $messages['press_release_article_image.mimes'] = 'Article image should be a valid format :jpeg, png';
+        }
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails())
+        {
+            return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
+        }
+
+        $PressRelease = PressRelease::where('film_id', $request->film_id)->first();
+        if ($PressRelease != null)
+        {
+
+
+            if ($request->hasFile('press_release_article_image'))
+            {
+                File::delete(public_path('content\\film\\press_release\\' . $PressRelease->article_image));
+                $ext = $request->press_release_article_image->getClientOriginalExtension(); // get the file extension name
+                $filename   = str_random(100) . '.' . $ext; // generate random filename and append the extension
+                $request->press_release_article_image->move(public_path('content/film/press_release'), $filename); // upload the file
+                
+                $PressRelease->article_image    = $filename;
+            }
+
+
+            $PressRelease->title            = $request->press_release_title;
+            $PressRelease->blurb            = $request->press_release_blurb;
+            $PressRelease->content          = $request->press_release_content;
+
+            $PressRelease->save();
+
+            return response()->json(['errCode' => 0, 'messages' => 'Press release successfully updated.']);
+        }
+
+        $ext = $request->press_release_article_image->getClientOriginalExtension(); // get the file extension name
+        $filename   = str_random(100) . '.' . $ext; // generate random filename and append the extension
+        $request->press_release_article_image->move(public_path('content/film/press_release'), $filename); // upload the file
+
+        $PressRelease = new PressRelease();
+        $PressRelease->title            = $request->press_release_title;
+        $PressRelease->article_image    = $filename;
+        $PressRelease->blurb            = $request->press_release_blurb;
+        $PressRelease->content          = $request->press_release_content;
+        $PressRelease->film_id          = $request->film_id;
+
+        $PressRelease->save();
+
+        return response()->json(['errCode' => 0, 'messages' => 'Press release successfully added.']);
+
+    }
+
+    public function film_press_release_fetch ($id) 
+    {
+        $PressRelease = PressRelease::where('film_id', $id)->first();
+        return view('cms.film.specific_film.partials.film_press_release_data', ['PressRelease' => $PressRelease])->render();
+    }
+
+    public function film_press_release_form_modal ($id)
+    {
+        $PressRelease = PressRelease::where('film_id', $id)->first();
+        return view('cms.film.specific_film.partials.film_press_release_form_modal', ['PressRelease' => $PressRelease, 'film_id' => $id])->render();
+    }
+
+    public function film_press_release_delete (Request $request)
+    {
+        if(!$request->id || !$request->film_id)
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of press release.']);
+        }
+
+        $PressRelease = PressRelease::where('id', $request->id)->first();
+
+        if(!$PressRelease)
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of press release.']);
+        }
+
+        File::delete(public_path('content\\film\\press_release\\' . $PressRelease->article_image));
+        $PressRelease->delete();
+
+        return response()->json(['errCode' => 0, 'messages' => 'Press release details successfully deleted.']);
     }
 }

@@ -40,11 +40,11 @@
                         <div class="help-block text-center" id="running_time-error"></div>
                     </div>
 
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="">Synopsis</label>
                         <textarea name="synopsis" id="synopsis" cols="30" rows="7" class="form-control" placeholder="Film Synopsis">{{ ($Film ? $Film->synopsis : '') }}</textarea>
                         <div class="help-block text-center" id="synopsis-error"></div>
-                    </div>
+                    </div> --}}
                     
                     <div class="form-group">
                         <label for="">Film Status</label>

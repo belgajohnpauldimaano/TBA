@@ -28,6 +28,11 @@ Route::get('/sample_upload_view', function () {
 Route::post('/sample_upload', 'FilmController@sample_upload');
 Auth::routes();
 
+Route::get('/sample_home', function () {
+    return view('frontend.home');
+});
+
+
 Route::get('/home', 'HomeController@index')->name('home');
 
 
@@ -60,7 +65,7 @@ Route::group(['prefix' => '/cms'], function () {
             Route::post('/film_trailer_fetch_record/{id}', 'FilmController@film_trailer_fetch_record')->name('film_trailer_fetch_record');
             Route::post('/film_trailer_form_modal', 'FilmController@film_trailer_form_modal')->name('film_trailer_form_modal');
             Route::post('/save_trailer/{id}', 'FilmController@save_trailer')->name('save_trailer');
-            
+            Route::post('/film_basic_info_fetch/{id}', 'FilmController@film_basic_info_fetch')->name('film_basic_info_fetch');
         });
         
         Route::group(['prefix' => '/poster'], function () {
@@ -87,6 +92,7 @@ Route::group(['prefix' => '/cms'], function () {
             Route::post('/film_photo_single_upload_form_modal', 'FilmController@film_photo_single_upload_form_modal')->name('film_photo_single_upload_form_modal');
             Route::post('/film_photo_single_save/{id}', 'FilmController@film_photo_single_save')->name('film_photo_single_save');
             Route::post('/film_photo_order_save', 'FilmController@film_photo_order_save')->name('film_photo_order_save');
+            Route::post('/photo_single_delete', 'FilmController@photo_single_delete')->name('photo_single_delete');
             
         });
         
@@ -94,6 +100,13 @@ Route::group(['prefix' => '/cms'], function () {
             Route::post('/film_quote_form_modal', 'FilmController@film_quote_form_modal')->name('film_quote_form_modal');
             Route::post('/film_quote_save', 'FilmController@film_quote_save')->name('film_quote_save');
             Route::post('/film_quote_fetch/{id}', 'FilmController@film_quote_fetch')->name('film_quote_fetch');
+            
+        });
+        Route::group(['prefix' => '/press_release'], function () {
+            Route::post('/film_press_release_form_modal/{id}', 'FilmController@film_press_release_form_modal')->name('film_press_release_form_modal');
+            Route::post('/film_press_release_save', 'FilmController@film_press_release_save')->name('film_press_release_save');
+            Route::post('/film_press_release_fetch/{id}', 'FilmController@film_press_release_fetch')->name('film_press_release_fetch');
+            Route::post('/film_press_release_delete', 'FilmController@film_press_release_delete')->name('film_press_release_delete');
             
         });
         

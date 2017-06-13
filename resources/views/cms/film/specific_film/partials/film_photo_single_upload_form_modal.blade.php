@@ -46,7 +46,10 @@
                 <p class="text-danger">*Image preview should atleast 1600x900 dimension.</p>
             </div> --}}
             <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary btn-flat">Save changes</button>
+            <button type="submit" class="btn btn-primary btn-flat">Save</button>
+            @if($Photo)
+                <button type="submit" class="btn btn-danger btn-flat js-photo_delete" data-id="{{$Photo->id}}">Delete</button>
+            @endif
         </div>
       </form>
     </div><!-- /.modal-content -->

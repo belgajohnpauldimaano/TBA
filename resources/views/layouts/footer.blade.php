@@ -205,6 +205,10 @@
                     {
                         show_message (data.messages, 'danger');
                     }
+                    else if (data.errCode == 2)
+                    {
+                        $('#general-error').append('<code>'+ data['messages'] +'</code>');
+                    }
                     else
                     {
                         //show_message (data.messages, 'success');
