@@ -22,4 +22,9 @@ class Film extends Model
     {
         return $this->hasMany(Trailer::class, 'film_id', 'id');
     }
+
+    public function links ()
+    {
+        return $this->hasOne(RelatedLink::class, 'film_id', 'id');
+    }
 }

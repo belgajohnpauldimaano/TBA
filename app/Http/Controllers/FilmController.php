@@ -15,6 +15,7 @@ use App\Award;
 use App\Photo;
 use App\Quote;
 use App\PressRelease;
+use App\RelatedLink;
 
 class FilmController extends Controller
 {
@@ -95,13 +96,23 @@ class FilmController extends Controller
         $Film = '';
         if ($request->id)
         {
-            $Film = Film::where('id', $request->id)->first();
+            $Film = Film::with('links')->where('id', $request->id)->first();
 
             if (!$Film)
             {
                 return response()->json(['errCode' => 1, 'messages' => 'Invalid section']);
             }
         }
+
+        if($Film)
+        {
+            echo "Merons";
+        }
+        else
+        {
+
+        }
+
         $Genre = Genre::all();
         $film_status = Film::RELEASE_STATUS;
         $RATINGS = Film::RATINGS; 
@@ -116,16 +127,22 @@ class FilmController extends Controller
             'genre'     => 'required',
             'sellsheet' => 'mimes:pdf',
             'release_status'    => 'digits_between:min:1,3',
-            'running_time'      => 'digits_between:1,1000'
+            'running_time'      => 'nullable|digits_between:1,1000',
+            'facebook_link'     => 'nullable|url',
+            'twitter_link'      => 'nullable|url',
+            'instagram_link'    => 'nullable|url',
         ];
         $messages = [
-            'title.required' => 'Film title is required field.',
-            'genre.required' => 'Film genre is required field.',
-            'sellsheet.mimes' => 'Sell sheet should be in pdf file format.',
+            'title.required'    => 'Film title is required field.',
+            'genre.required'    => 'Film genre is required field.',
+            'sellsheet.mimes'   => 'Sell sheet should be in pdf file format.',
             'release_status.digits_between' => 'Releas status is required field.',
-            'running_time.digits_between'          => 'Please provide a valid running time in minutes.'
+            'running_time.digits_between'   => 'Please provide a valid running time in minutes.',
+            'facebook_link.url'     => 'Invalid Facebook link.',
+            'twitter_link.url'      => 'Invalid Twitter link.',
+            'instagram_link.url'    => 'Invalid Instagram link.',
         ];;
-
+          
         $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails())
@@ -163,6 +180,9 @@ class FilmController extends Controller
         //     $genre_id = $Genre->id;
         // }
 
+
+        
+
         if($request->has('id')) // has id then it is updating of record
         {
             $Film                   = Film::where('id', $request->id)->first();
@@ -184,6 +204,27 @@ class FilmController extends Controller
                 $request->sellsheet->move(public_path('content/sell_sheets'),$filename);
             }
 
+            if($request->facebook_link || $request->twitter_link || $request->instagram_link)
+            {
+                $RelatedLink = RelatedLink::where('film_id', $request->id)->first();
+                if($RelatedLink) // update links
+                {        
+                    $RelatedLink->facebook_url  = $request->facebook_link;
+                    $RelatedLink->twitter_url   = $request->twitter_link;
+                    $RelatedLink->instagram_url = $request->instagram_link;
+                    $RelatedLink->save();
+                }
+                else // create links
+                {
+                    $RelatedLink = new RelatedLink();
+                    $RelatedLink->facebook_url  = $request->facebook_link;
+                    $RelatedLink->twitter_url   = $request->twitter_link;
+                    $RelatedLink->instagram_url = $request->instagram_link;
+                    $RelatedLink->film_id       = $request->id;
+                    $RelatedLink->save();
+                }
+            }
+            
             return response()->json(['errCode' => 0, 'messages' => 'Film successfully updated.']);
         }
 
@@ -205,6 +246,27 @@ class FilmController extends Controller
             $ext        = $request->sellsheet->getClientOriginalExtension();
             $filename   = str_random(40) . '.' . $ext;
             $request->sellsheet->move(public_path('content/sell_sheets'),$filename);
+        }
+
+        if($request->facebook_link || $request->twitter_link || $request->instagram_link)
+        {
+            $RelatedLink = RelatedLink::where('film_id', $request->id)->first();
+            if($RelatedLink) // update links
+            {        
+                $RelatedLink->facebook_url  = $request->facebook_link;
+                $RelatedLink->twitter_url   = $request->twitter_link;
+                $RelatedLink->instagram_url = $request->instagram_link;
+                $RelatedLink->save();
+            }
+            else // create links
+            {
+                $RelatedLink = new RelatedLink();
+                $RelatedLink->facebook_url  = $request->facebook_link;
+                $RelatedLink->twitter_url   = $request->twitter_link;
+                $RelatedLink->instagram_url = $request->instagram_link;
+                $RelatedLink->film_id       = $Film->id;
+                $RelatedLink->save();
+            }
         }
         return response()->json(['errCode' => 0, 'messages' => 'Film successfully updated.']);
     }
@@ -238,7 +300,9 @@ class FilmController extends Controller
                 $q->orderBy('trailer_image_sorter', 'ASC');
                 $q->where('trailer_show', '!=', 0);
             }, 
-            'genre'])->where('id', $id)->first();
+            'genre',
+            'links'
+            ])->where('id', $id)->first();
         
         if(!$Film)
         {
@@ -253,7 +317,7 @@ class FilmController extends Controller
 
         $RATINGS        = Film::RATINGS;
         $RELEASE_STATUS = Film::RELEASE_STATUS;
-
+        //return json_encode($Film);
         return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'PressRelease' => $PressRelease, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS]);
      }
 

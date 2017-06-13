@@ -103,6 +103,27 @@
                                 </h5>
                             </div>
 
+                            <div>
+                                <label for="">Social media urls</label>
+                                <h5 class="margin">
+                                    @if($Film->links != NULL)
+                                        @if ($Film->links->facebook_url != '')
+                                            <a href="{{ $Film->links->facebook_url }}" target="_blank" class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook"></i></a>
+                                        @endif
+                                        
+                                        @if ($Film->links->twitter_url != '')
+                                            <a href="{{ $Film->links->twitter_url }}" target="_blank" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></a>
+                                        @endif
+                                        
+                                        @if ($Film->links->instagram_url != '')
+                                            <a href="{{ $Film->links->instagram_url }}" target="_blank" class="btn btn-social-icon btn-instagram"><i class="fa fa-instagram"></i></a>
+                                        @endif
+                                    @else
+                                        <p>Not yet set</p>
+                                    @endif
+                                </h5>
+                            </div>
+
                         </div>
                         <div class="col-sm-12">
                             <div class="box box-solid js-film_synopsis_holder">
