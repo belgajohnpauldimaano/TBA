@@ -22,10 +22,10 @@ Route::get('/gen', function () {
     echo($t . "<br>");
     echo(date("Y-m-d",$t));
 });
-Route::get('/sample_upload_view', function () {
-    return view('layouts.sample');
-});
+Route::get('/sample_upload_view', 'Frontend\FilmController@sample')->name('sample');
+
 Route::post('/sample_upload', 'FilmController@sample_upload');
+
 Auth::routes();
 
 Route::get('/sample_home', function () {
