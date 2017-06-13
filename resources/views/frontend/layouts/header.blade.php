@@ -9,6 +9,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('frontend/node_modules/owl.carousel/dist/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
+    @yield('styles')
+
     <link href="{{ asset('frontend/assets/css/app.css') }}" / rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -34,9 +36,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <div class="nav-owl">
                   <div class="nav-owl__menu owl-carousel">
-                      <a href="films.html" class="nav-owl__link nav-owl__link--text">Films</a>
-                      <a href="about.html" class="nav-owl__link nav-owl__link--text">About</a>
-                      <a href="contact.html" class="nav-owl__link nav-owl__link--text">Contact</a>
+                      <a href="/films" class="nav-owl__link nav-owl__link--text">Films</a>
+                      <a href="/about" class="nav-owl__link nav-owl__link--text">About</a>
+                      <a href="/contact" class="nav-owl__link nav-owl__link--text">Contact</a>
                       <a href="#" class="nav-owl__link nav-owl__link--text nav-owl__link--announcements">Announcements</a>
                       <a href="#" class="nav-owl__link nav-owl__link--img nav-owl__link--cinema-76"></a>
                       <a href="#" class="nav-owl__link nav-owl__link--img nav-owl__link--cinema-tropa"></a>

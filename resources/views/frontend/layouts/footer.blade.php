@@ -49,6 +49,8 @@
     <script src="{{ asset('frontend/node_modules/owl.carousel/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('frontend/bootstrap/js/bootstrap.min.js') }}"></script>
 
+    @yield('scripts')
+
     <script>
       $(document).ready(function() {
           $('.nav-owl__menu').owlCarousel({
