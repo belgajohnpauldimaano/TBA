@@ -169,6 +169,23 @@
          </section>
     </main>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalPressRelease">
+       <div class="modal-dialog modal-lg m-t-0" role="document">
+           <div class="modal-content">
+               <img src="{{ asset('frontend/assets/img/hero/2.jpg') }}" alt="" class="img-responsive center-block">
+               <div class="modal-body">
+                  <div class="row">
+                     <div class="col-md-10 col-md-offset-1">
+                        <h2 class="text-center">"I'm drunk i love you" serve love, music and a shot of reality</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quisquam animi, quidem? Perspiciatis alias rem, debitis expedita voluptatum. Quaerat accusamus ipsa sint magnam officia eligendi temporibus in excepturi fugiat facilis.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quisquam animi, quidem? Perspiciatis alias rem, debitis expedita voluptatum. Quaerat accusamus ipsa sint magnam officia eligendi temporibus in excepturi fugiat facilis.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quisquam animi, quidem? Perspiciatis alias rem, debitis expedita voluptatum. Quaerat accusamus ipsa sint magnam officia eligendi temporibus in excepturi fugiat facilis.</p>
+                     </div>
+                  </div>
+               </div>
+           </div>
+       </div>
+    </div>
 
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
