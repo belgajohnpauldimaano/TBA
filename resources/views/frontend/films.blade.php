@@ -2,7 +2,7 @@
 
 @section('container')
         
-    <main>
+    <main class="m-b-6">
         @include('frontend.layouts.film_categ')
         <section>
             <div class="header-title">

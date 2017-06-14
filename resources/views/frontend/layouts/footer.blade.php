@@ -69,19 +69,29 @@
           });
       });
 
+
       function initMap() {
           var latLong = {
               lat: 14.592483,
               lng: 121.037864
           };
-          var map = new google.maps.Map(document.getElementById('map'), {
-              zoom: 18,
-              center: latLong
-          });
-          var marker = new google.maps.Marker({
-              position: latLong,
-              map: map
-          });
+
+          function mapOutside(mapId){
+              var map = new google.maps.Map(document.getElementById(mapId), {
+                  zoom: 18,
+                  center: latLong
+              });
+              var marker = new google.maps.Marker({
+                  position: latLong,
+                  map: map
+              });
+          }
+
+          mapOutside('map');
+
+          @if(Request::is('contact'))
+            mapOutside('mapContact');
+          @endif
       }
     </script>
 
