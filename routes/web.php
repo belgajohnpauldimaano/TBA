@@ -40,6 +40,8 @@ Route::get('/film/info', 'Frontend\FilmController@film_info')->name('film_info')
 
 Route::get('/trailers', 'Frontend\FilmController@trailers')->name('trailers');
 
+Route::get('/on-dvd', 'Frontend\FilmController@on_dvd')->name('on_dvd');
+
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => '/cms'], function () {

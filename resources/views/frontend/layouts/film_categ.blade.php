@@ -7,7 +7,7 @@
         	<a class="film-categ__item__link {{ route('trailers') === 'trailers' ? 'film-categ__item__link--active' : '' }}" href="{{ route('trailers') }}" href="">Trailers</a>
         </li>
         <li class="film-categ__item">
-        	<a class="film-categ__item__link" href="">On DVD</a>
+        	<a class="film-categ__item__link" href="{{ route('on_dvd') }}">On DVD</a>
         </li>
     </ul>
 </section>
