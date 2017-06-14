@@ -151,6 +151,42 @@
             </div>
             {{-- FILM BASIC INFO --}}
             
+            <div class="box box-warning">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Film Crew</h3>
+                    <div class="box-tools"><button class="btn btn-flat btn-primary btn-sm js-btn_manage_people"><i class="fa fa-pencil"></i> Manage</button></div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+
+                            <div class="col-sm-12">
+                                @if ($FilmCrew)
+                                    @foreach($PERSON_ROLES as $key => $val)
+                                        <div>
+                                            <strong>{{ $val }}</strong>
+                                            {{-- {{ json_encode($Person) }} --}}
+                                            <p>
+                                                <?php 
+                                                    $c = $FilmCrew->filter(function ($crew) use($key) {
+                                                                return $crew->role == $key;
+                                                    }); 
+                                                ?>
+                                                @if ($c->count() > 0)
+                                                    @foreach ($c as $crew)
+                                                        {{ $crew->person->name }},
+                                                    @endforeach
+                                                @else
+                                                    <p>No crew for this role</p>
+                                                @endif
+                                            </p>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        
+                    </div>
+                </div>
+            </div>
 
             {{-- TRAILER --}}
             <div class="box box-success">
@@ -1025,6 +1061,34 @@
                 }
             });
         }); 
+
+
+        /*
+         * FILM CREW
+         */
+        
+        // Show Film Crew Form Modal
+        $('body').on('click', '.js-btn_manage_people', function (e) {
+            e.preventDefault();
+           
+            $.ajax({
+                url : "{{ route('film_crew_form_modal') }}",
+                type : 'POST',
+                data : { _token:'{{ csrf_token() }}', film_id : {{ $Film->id }} },
+                success : function (data) {
+                    $('#js-modal_holder').html(data);
+                    $('#js-film_crew_form_modal').modal({keyboard : false, backdrop : 'static'});
+                    
+                    $('.tokenfield-typeahead').tokenfield();
+                }
+            });
+        })
+
+        $('body').on('submit', '#js-frm_film_crew', function (e) {
+            e.preventDefault();
+            save_data($(this), "{{ route('film_crew_save') }}", "{{ route('film_press_release_fetch', $Film->id) }}", $('.js-film_press_release_content_holder'));
+            
+        });
     </script>
 @endsection
 
