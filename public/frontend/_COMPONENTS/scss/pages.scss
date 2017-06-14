@@ -254,6 +254,9 @@ main{
 			&__link{
 				color: #949494;
 				border-color: #5d5d5d;
+				&--active{
+					color: #fff;
+				}
 			}
 		}
 	}
@@ -365,7 +368,7 @@ main{
 .dvd-page {
 	margin-bottom: 50px;
 	.film-categ{
-		margin-bottom: 50px;
+		margin-bottom: 70px;
 	}
 }
 .dvd{

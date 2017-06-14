@@ -835,6 +835,8 @@ main {
   .trailers-page .film-categ__item__link {
     color: #949494;
     border-color: #5d5d5d; }
+    .trailers-page .film-categ__item__link--active {
+      color: #fff; }
   .trailers-page .footer {
     margin-top: 50px; }
 
@@ -929,7 +931,7 @@ main {
 .dvd-page {
   margin-bottom: 50px; }
   .dvd-page .film-categ {
-    margin-bottom: 50px; }
+    margin-bottom: 70px; }
 
 .dvd a {
   display: block; }
