@@ -27,26 +27,39 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
+    <a href="../../index2.html"><b>TBA</b>CMS</a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg">Sign in to start your session</p>
-
+    <p class="login-box-msg">Sign in to manage films</p>
+    {{-- {{ bcrypt('123456') }} --}}
     <form action="{{ route('login') }}" method="post">
-      <div class="form-group has-feedback">
-        <input type="email" class="form-control" placeholder="Email">
+    {{ csrf_field() }}
+      <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
+        <input type="email" name="email" class="form-control" placeholder="Email" value="{{ old('email') }}" required autofocus>
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+
+        @if ($errors->has('email'))
+            <span class="help-block text-center">
+                <strong>{{ $errors->first('email') }}</strong>
+            </span>
+        @endif
       </div>
-      <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="Password">
+      <div class="form-group has-feedback{{ $errors->has('password') ? ' has-error' : '' }}">
+        <input type="password" name="password" class="form-control" placeholder="Password" required>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+
+        @if ($errors->has('password'))
+            <span class="help-block text-center">
+                <strong>{{ $errors->first('password') }}</strong>
+            </span>
+        @endif
       </div>
       <div class="row">
         <div class="col-xs-8">
           <div class="checkbox icheck">
             <label>
-              <input type="checkbox"> Remember Me
+              <input type="checkbox" name="remember_me"> Remember Me
             </label>
           </div>
         </div>
@@ -59,9 +72,11 @@
     </form>
 
 
-    <a href="#">I forgot my password</a><br>
-    <a href="register.html" class="text-center">Register a new membership</a>
-
+    {{-- <a href="#">I forgot my password</a><br>
+    <a href="{{ route('password.request') }}" class="text-center">Register a new membership</a> --}}
+    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    Forgot Your Password?
+                                </a>
   </div>
   <!-- /.login-box-body -->
 </div>
