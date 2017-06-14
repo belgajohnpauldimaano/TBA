@@ -112,6 +112,9 @@ h5,
 h6 {
   text-transform: uppercase; }
 
+.modal-content {
+  border-radius: 0; }
+
 /* 
 ========================================================
 Center vertical */
@@ -523,7 +526,8 @@ btn */
 
 .navbar {
   border-radius: 0;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  background-color: #1c1c1c; }
   .navbar .navbar-brand {
     padding: 10px 15px; }
     .navbar .navbar-brand > img {
@@ -641,6 +645,20 @@ main {
     main {
       padding-top: 70px; } }
 
+.film-categ {
+  padding-top: 20px; }
+  .film-categ__item__link {
+    color: #adadad;
+    font-size: 20px;
+    border-right: 1px solid #ddd;
+    padding-right: 20px; }
+    .film-categ__item__link--active {
+      color: #333;
+      font-weight: bold; }
+  .film-categ__item:nth-child(3) .film-categ__item__link {
+    border-right: 0; }
+
+/* End Set Default */
 .header-title {
   text-align: center;
   margin-bottom: 15px; }
@@ -810,3 +828,76 @@ main {
     @media (min-width: 768px) {
       .contact-info-details {
         max-width: 600px; } }
+
+/* Trailers Page */
+.trailers-page {
+  background-color: #1c1c1c; }
+  .trailers-page .film-categ__item__link {
+    color: #949494;
+    border-color: #5d5d5d; }
+  .trailers-page .footer {
+    margin-top: 50px; }
+
+.trailer {
+  position: relative;
+  margin-bottom: 25px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); }
+  .trailer__block {
+    display: block;
+    overflow: hidden; }
+  .trailer:hover img {
+    -moz-transform: scale(1.1);
+    -webkit-transform: scale(1.1);
+    -ms-transform: scale(1.1);
+    transform: scale(1.1); }
+
+#modalTrailer .modal-header {
+  padding: 5px 15px;
+  border-bottom: 1px solid rgba(229, 229, 229, 0.34); }
+
+#modalTrailer .video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  /* 16:9 */
+  padding-top: 25px;
+  height: 0; }
+
+#modalTrailer .video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: block; }
+
+#modalTrailer .modal-content {
+  background: rgba(0, 0, 0, 0.49); }
+
+#modalTrailer h4 {
+  color: #fff;
+  font-family: 'Calibri'; }
+
+@media (min-width: 768px) {
+  #modalTrailer {
+    text-align: center;
+    padding: 0 !important; }
+    #modalTrailer:before {
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+      margin-right: -4px; }
+    #modalTrailer .modal-dialog {
+      display: inline-block;
+      text-align: left;
+      vertical-align: middle; } }
+
+#modalTrailer .close {
+  opacity: .8;
+  color: #fff;
+  padding: 5px 0;
+  font-size: 28px; }
+  #modalTrailer .close:hover {
+    opacity: 1; }

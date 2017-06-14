@@ -31,7 +31,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/sample_home"><img src="{{ asset('frontend/assets/img/logo-white.png') }}" alt="TBA LOGO"></a>
+                <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('frontend/assets/img/logo-white.png') }}" alt="TBA LOGO"></a>
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <div class="nav-owl">

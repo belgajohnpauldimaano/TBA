@@ -13,9 +13,9 @@
 
 use Illuminate\Http\Request;
 
-Route::get('/', function () {
-        return redirect('cms/carousel');
-})->name('index');
+// Route::get('/', function () {
+//         return redirect('cms/carousel');
+// })->name('index');
 Route::get('/gen', function () {
     
     $t=time();
@@ -28,9 +28,7 @@ Route::post('/sample_upload', 'FilmController@sample_upload');
 
 Auth::routes();
 
-Route::get('/sample_home', function () {
-    return view('frontend.home');
-});
+Route::get('/', 'Frontend\FilmController@home')->name('home');
 
 Route::get('/films', 'Frontend\FilmController@films')->name('films');
 
@@ -40,7 +38,9 @@ Route::get('/contact', 'Frontend\FilmController@contact')->name('contact');
 
 Route::get('/film/info', 'Frontend\FilmController@film_info')->name('film_info');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/trailers', 'Frontend\FilmController@trailers')->name('trailers');
+
+//Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => '/cms'], function () {
 
