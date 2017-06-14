@@ -1059,7 +1059,7 @@ class FilmController extends Controller
                     {
                         // create new person
                         $Person = new Person();
-                        $Person->name = trim($n);
+                        $Person->name = ucwords(trim($n));
                         $Person->save();
 
                         // create film crew that tags to the film

@@ -44,8 +44,13 @@ Route::get('/on-dvd', 'Frontend\FilmController@on_dvd')->name('on_dvd');
 
 //Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => '/cms'], function () {
 
+Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
+    
+    Route::get('/', function () {
+            return redirect('cms/carousel/home_page_carousel');
+            //return "fsaf";
+    });
     Route::group(['prefix' => '/carousel'], function () {
         Route::get('/home_page_carousel', 'HomeCarouselController@index')->name('home_page_carousel');
         Route::post('/image_uploader_modal', 'HomeCarouselController@image_uploader_modal')->name('image_uploader_modal');
@@ -57,7 +62,7 @@ Route::group(['prefix' => '/cms'], function () {
         Route::post('/image_list', 'HomeCarouselController@image_list')->name('image_list');
     });
        
-    Route::group(['prefix' => '/film'], function () {
+    Route::group(['prefix' => '/films'], function () {
         Route::get('/', 'FilmController@index')->name('film');
         Route::post('/show_film_form', 'FilmController@show_film_form')->name('show_film_form');
         Route::post('/save_film', 'FilmController@save_film')->name('save_film');
@@ -65,15 +70,15 @@ Route::group(['prefix' => '/cms'], function () {
         Route::post('/delete_film', 'FilmController@delete_film')->name('delete_film');
         Route::post('/film_synopsis_save', 'FilmController@film_synopsis_save')->name('film_synopsis_save');
         
-        Route::get('/{id}', 'FilmController@specific_film_index')->name('specific_film_index');
+        Route::get('/{id}/view', 'FilmController@specific_film_index')->name('specific_film_index');
         Route::group(['prefix' => '/trailer'], function () {
             Route::post('/trailer_order_save', 'FilmController@trailer_order_save')->name('trailer_order_save');
             Route::post('/show_hide_toggle', 'FilmController@show_hide_toggle')->name('show_hide_toggle');
             Route::post('/delete_trailer', 'FilmController@delete_trailer')->name('delete_trailer');
-            Route::post('/film_trailer_fetch_record/{id}', 'FilmController@film_trailer_fetch_record')->name('film_trailer_fetch_record');
+            Route::post('/film_trailer_fetch_record/{id}/fetch', 'FilmController@film_trailer_fetch_record')->name('film_trailer_fetch_record');
             Route::post('/film_trailer_form_modal', 'FilmController@film_trailer_form_modal')->name('film_trailer_form_modal');
-            Route::post('/save_trailer/{id}', 'FilmController@save_trailer')->name('save_trailer');
-            Route::post('/film_basic_info_fetch/{id}', 'FilmController@film_basic_info_fetch')->name('film_basic_info_fetch');
+            Route::post('/save_trailer/{id}/save', 'FilmController@save_trailer')->name('save_trailer');
+            Route::post('/film_basic_info_fetch/{id}/fetch', 'FilmController@film_basic_info_fetch')->name('film_basic_info_fetch');
         });
         
         Route::group(['prefix' => '/poster'], function () {
