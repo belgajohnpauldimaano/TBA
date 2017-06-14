@@ -48,4 +48,9 @@ class Film extends Model
     {
         return $this->hasOne(RelatedLink::class, 'film_id', 'id');
     }
+
+    public function film_crews ()
+    {
+        return $this->hasMany(FilmCrew::class, 'film_id', 'id');
+    }
 }

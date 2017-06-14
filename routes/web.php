@@ -115,6 +115,10 @@ Route::group(['prefix' => '/cms'], function () {
             Route::post('/film_press_release_delete', 'FilmController@film_press_release_delete')->name('film_press_release_delete');
             
         });
+        Route::group(['prefix' => '/film_crew'], function () {
+            Route::post('/film_crew_form_modal', 'FilmController@film_crew_form_modal')->name('film_crew_form_modal');
+            Route::post('/film_crew_save', 'FilmController@film_crew_save')->name('film_crew_save');
         
+        });
     });
 });

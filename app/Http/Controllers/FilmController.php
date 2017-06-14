@@ -16,7 +16,8 @@ use App\Photo;
 use App\Quote;
 use App\PressRelease;
 use App\RelatedLink;
-
+use App\Person;
+use App\FilmCrew;
 class FilmController extends Controller
 {
 
@@ -47,7 +48,9 @@ class FilmController extends Controller
         ->orderBy('title', 'asc')
         ->orderBy('release_date', 'DESC')
         ->paginate(2);
+        
         $RATINGS = Film::RATINGS;
+
         return view('cms.film.index', ['Film' => $Film, 'RATINGS' => $RATINGS]);
     }
 
@@ -314,11 +317,13 @@ class FilmController extends Controller
         $Photo          = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->get();
         $Quote          = Quote::where('film_id', $id)->first();
         $PressRelease   = PressRelease::where('film_id', $id)->first();
+        $FilmCrew       = FilmCrew::with('person')->where('film_id', $id)->orderBy('role')->get();
 
-        $RATINGS        = Film::RATINGS;
+        $RATINGS        = Film::RATINGS;    
         $RELEASE_STATUS = Film::RELEASE_STATUS;
+        $PERSON_ROLES   = FilmCrew::ROLE;
         //return json_encode($Film);
-        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'PressRelease' => $PressRelease, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS]);
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'PressRelease' => $PressRelease, 'FilmCrew' => $FilmCrew, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS, 'PERSON_ROLES' => $PERSON_ROLES]);
      }
 
      public function film_basic_info_fetch ($id)
@@ -991,5 +996,98 @@ class FilmController extends Controller
         $PressRelease->delete();
 
         return response()->json(['errCode' => 0, 'messages' => 'Press release details successfully deleted.']);
+    }
+
+
+    /*
+     * FILM CREW
+     */
+    
+    public function film_crew_save (Request $request) 
+    {
+        $regex = 'regex:/^[\pL\s\,\.]+$/u';
+        $rules = [
+            'director'              => 'nullable|'.$regex,
+            'producer'              => 'nullable|'.$regex,
+            'executive_producer'    => 'nullable|'.$regex,
+            'cast'                  => 'nullable|'.$regex,
+            'written_by'            => 'nullable|'.$regex,
+            'director_of_photography' => 'nullable|'.$regex,
+            'production_designer'   => 'nullable|'.$regex,
+            'co-executive_producer' => 'nullable|'.$regex,
+            'screenplay_by'         => 'nullable|'.$regex,
+            'editor'                => 'nullable|regex:/^[\pL\s\,]+$/u',
+            'sound_designer'        => 'nullable|'.$regex,
+            'vfx'                   => 'nullable|'.$regex,
+            'story_by'              => 'nullable|'.$regex,
+            'cinematography'        => 'nullable|'.$regex,
+            'music_by'              => 'nullable|'.$regex,
+            'distributed_by'        => 'nullable|'.$regex,
+            'production_designer_for_costume' => 'nullable|'.$regex,
+        ];
+        $messages ;
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails())
+        {
+            return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
+        }
+        $data = $request->all();
+        array_shift($data);
+        array_shift($data);
+
+        //echo json_encode($data);
+
+        foreach ($data as $key => $val)
+        {
+            $names = explode(',', $val);
+            foreach ($names as $n)
+            {
+                if ($n != '')
+                {
+                    $role = str_replace('_', ' ', strtoupper($key));
+                    echo $role . ' ' . $n . ';';
+                    $role_id = array_search($role, FilmCrew::ROLE);
+                    
+                    $Person = Person::where('name', trim($n))->first();
+
+                    if (!$Person)
+                    {
+                        $Person = new Person();
+                        $Person->name = trim($n);
+                        $Person->save();
+
+                        $FilmCrew = new FilmCrew();
+                        // $FilmCrew->
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+
+                //$Person = Person::where('name', trim($n))->first();
+
+                // if (!$Person)
+                // {
+                //     $Person = new Person();
+                //     $Person->name = trim($n);
+                //     $Person->save();
+                // }
+                // else
+                // {
+
+                // }
+            }
+        }
+        return response()->json(['errCode' => 2, 'messages' => 'Something went wrong!']);
+    }
+    public function film_crew_form_modal (Request $request)
+    {   
+        $FilmCrew       = FilmCrew::with('person')->where('film_id', $request->film_id)->orderBy('role')->get();
+        $PERSON_ROLES   = FilmCrew::ROLE;
+        echo json_encode($FilmCrew);
+        return view('cms.film.specific_film.partials.film_crew_form_modal', ['FilmCrew' => $FilmCrew, 'film_id' => $request->film_id, 'PERSON_ROLES' => $PERSON_ROLES])->render();
     }
 }
