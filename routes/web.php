@@ -45,7 +45,7 @@ Route::get('/trailers', 'Frontend\FilmController@trailers')->name('trailers');
 Route::group(['prefix' => '/cms'], function () {
 
     Route::group(['prefix' => '/carousel'], function () {
-        Route::get('/', 'HomeCarouselController@index')->name('home_page_carousel');
+        Route::get('/home_page_carousel', 'HomeCarouselController@index')->name('home_page_carousel');
         Route::post('/image_uploader_modal', 'HomeCarouselController@image_uploader_modal')->name('image_uploader_modal');
         Route::post('/image_upload_save', 'HomeCarouselController@image_upload_save')->name('image_upload_save');
         Route::post('/image_ordering', 'HomeCarouselController@image_ordering')->name('image_ordering');
@@ -118,7 +118,8 @@ Route::group(['prefix' => '/cms'], function () {
         Route::group(['prefix' => '/film_crew'], function () {
             Route::post('/film_crew_form_modal', 'FilmController@film_crew_form_modal')->name('film_crew_form_modal');
             Route::post('/film_crew_save', 'FilmController@film_crew_save')->name('film_crew_save');
-        
+            Route::post('/film_crew_data_fetch/{id}', 'FilmController@film_crew_data_fetch')->name('film_crew_data_fetch');
+            
         });
     });
 });

@@ -30,4 +30,9 @@ use Illuminate\Database\Eloquent\Model;
     {
         return $this->hasOne(Person::class, 'id', 'people_id');
     }
+
+    public function people ()
+    {
+        return $this->belongsTo(Person::class, 'id', 'people_id');
+    }
 }

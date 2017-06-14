@@ -1025,7 +1025,6 @@ class FilmController extends Controller
             'distributed_by'        => 'nullable|'.$regex,
             'production_designer_for_costume' => 'nullable|'.$regex,
         ];
-        $messages ;
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails())
@@ -1036,58 +1035,89 @@ class FilmController extends Controller
         array_shift($data);
         array_shift($data);
 
-        //echo json_encode($data);
+        $film_id = $request->film_id;
 
         foreach ($data as $key => $val)
         {
             $names = explode(',', $val);
+
+            $ids_not_to_be_delete = [];
+
+            $role = str_replace('_', ' ', strtoupper($key)); // replace the role underscore (_) with space to match the array of roles
+            
+            $role_id = array_search($role, FilmCrew::ROLE); // get the key id of role
+
             foreach ($names as $n)
             {
-                if ($n != '')
+                if ($n != '') // go thru not blank data only
                 {
-                    $role = str_replace('_', ' ', strtoupper($key));
-                    echo $role . ' ' . $n . ';';
-                    $role_id = array_search($role, FilmCrew::ROLE);
-                    
-                    $Person = Person::where('name', trim($n))->first();
 
-                    if (!$Person)
+                    // check if the person already in the list
+                    $Person = Person::where('name', trim($n))->first(); 
+
+                    if (!$Person) // if not in the list
                     {
+                        // create new person
                         $Person = new Person();
                         $Person->name = trim($n);
                         $Person->save();
 
-                        $FilmCrew = new FilmCrew();
-                        // $FilmCrew->
-                    }
-                    else
-                    {
+                        // create film crew that tags to the film
+                        $FilmCrew               = new FilmCrew();
+                        $FilmCrew->film_id      = $film_id;
+                        $FilmCrew->people_id    = $Person->id;
+                        $FilmCrew->role         = $role_id;
+                        $FilmCrew->save();
 
+                        $ids_not_to_be_delete[] = $Person->id;
+
+                    }
+                    else // person already exists in the list
+                    {
+                        // check if the current person in the loop is already in the database
+                        $FilmCrew = FilmCrew::where(['people_id' => $Person->id, 'role' => $role_id, 'film_id' => $film_id])->first();
+
+                        if (!$FilmCrew) // if not in the database create new
+                        {
+                            // create film crew that tags to the film
+                            $FilmCrew               = new FilmCrew();
+                            $FilmCrew->film_id      = $film_id;
+                            $FilmCrew->people_id    = $Person->id;
+                            $FilmCrew->role         = $role_id;
+                            $FilmCrew->save();
+
+                            $ids_not_to_be_delete[] = $Person->id;
+                        }
+                        else
+                        {
+                            $ids_not_to_be_delete[] = $Person->id;
+                        }
                     }
                 }
-
-
-                //$Person = Person::where('name', trim($n))->first();
-
-                // if (!$Person)
-                // {
-                //     $Person = new Person();
-                //     $Person->name = trim($n);
-                //     $Person->save();
-                // }
-                // else
-                // {
-
-                // }
             }
+
+            // Delete all crew that are not in the list variable (ids_not_to_be_delete) 
+            $FilmCrew = FilmCrew
+                        ::where(['role' => $role_id, 'film_id' => $film_id])
+                        ->where(function ($q) use ($ids_not_to_be_delete) {
+                            $q->whereNotIn('people_id', $ids_not_to_be_delete);
+                        })
+                        ->delete();
+
         }
-        return response()->json(['errCode' => 2, 'messages' => 'Something went wrong!']);
+        return response()->json(['errCode' => 0, 'messages' => 'Film crew successfully updated.']);
     }
     public function film_crew_form_modal (Request $request)
     {   
         $FilmCrew       = FilmCrew::with('person')->where('film_id', $request->film_id)->orderBy('role')->get();
         $PERSON_ROLES   = FilmCrew::ROLE;
-        echo json_encode($FilmCrew);
         return view('cms.film.specific_film.partials.film_crew_form_modal', ['FilmCrew' => $FilmCrew, 'film_id' => $request->film_id, 'PERSON_ROLES' => $PERSON_ROLES])->render();
+    }
+
+    public function film_crew_data_fetch ($id)
+    {
+        $FilmCrew       = FilmCrew::with('person')->where('film_id', $id)->orderBy('role')->get();
+        $PERSON_ROLES   = FilmCrew::ROLE;
+        return view('cms.film.specific_film.partials.film_crew_data', ['FilmCrew' => $FilmCrew, 'PERSON_ROLES' => $PERSON_ROLES])->render();
     }
 }

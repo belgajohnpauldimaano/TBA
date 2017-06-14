@@ -6,7 +6,7 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ route('index') }}" class="logo">
+    <a href="{{ route('film') }}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>T</b>BA</span>
       <!-- logo for regular state and mobile devices -->
