@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="col-md-3 col-xs-6">
                         <div class="film">
-                            <a href="/#" class="film__link">
+                            <a href="#" class="film__link">
                               <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="" class="w-100">
                             </a>
                             <div class="film__title text-center">
@@ -65,7 +65,7 @@
                     </div>
                     <div class="col-md-3 col-xs-6">
                         <div class="film">
-                            <a href="/film/info" class="film__link">
+                            <a href="#" class="film__link">
                               <img src="{{ asset('frontend/assets/img/films/line-up/f6.jpg') }}" alt="" class="w-100">
                             </a>
                             <div class="film__title text-center">

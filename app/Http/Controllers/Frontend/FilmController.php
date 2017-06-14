@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 
 class FilmController extends Controller
 {
+    public function home(){
+        return view('frontend.home');
+    }
     public function films(){
     	return view('frontend.films');
     }
