@@ -23,6 +23,9 @@ class FilmController extends Controller
         return view('frontend.film_info');
     }
     public function trailers(){
-    	return view('frontend.trailers');
+        return view('frontend.trailers');
+    }
+    public function on_dvd(){
+    	return view('frontend.on_dvd');
     }
 }
