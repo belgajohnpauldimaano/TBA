@@ -38,6 +38,8 @@ Route::get('/contact', 'Frontend\FilmController@contact')->name('contact');
 
 Route::get('/film/info', 'Frontend\FilmController@film_info')->name('film_info');
 
+Route::get('/trailers', 'Frontend\FilmController@trailers')->name('trailers');
+
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => '/cms'], function () {

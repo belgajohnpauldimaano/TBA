@@ -5,6 +5,25 @@ main{
 		padding-top: $navbarHeight;
 	}
 }
+.film-categ{
+	padding-top: 20px;
+	&__list{
+		
+	}
+	&__item{
+		&__link{
+			color: #adadad;
+			font-size: 20px;
+			border-right: 1px solid #ddd;
+			padding-right: 20px;
+			&--active{
+				color: #333;
+				font-weight: bold;
+			}
+		}
+	}
+}
+/* End Set Default */
 
 .header-title{
 	text-align: center;

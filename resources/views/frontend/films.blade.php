@@ -1,7 +1,9 @@
 @extends('frontend.layouts.main')
 
 @section('container')
+        
     <main>
+        @include('frontend.layouts.film_categ')
         <section>
             <div class="header-title">
                 <h2 class="header-title__tag"><span class="text-calibri">2016 - 2017</span> Film Line Up</h2>
