@@ -84,20 +84,20 @@
                 </div>
                 <div class="row">
                    <div class="col-md-10 col-md-offset-1">
-                       <div class="row">
-                           <div class="col-md-3 col-xs-6">
-                               <img src="{{ asset('frontend/assets/img/Sample_award.png') }}" class="img-responsive center-block m-y-6">
-                           </div>
-                           <div class="col-md-3 col-xs-6">
-                               <img src="{{ asset('frontend/assets/img/Sample_award.png') }}" class="img-responsive center-block m-y-6">
-                           </div>
-                           <div class="col-md-3 col-xs-6">
-                               <img src="{{ asset('frontend/assets/img/Sample_award.png') }}" class="img-responsive center-block m-y-6">
-                           </div>
-                           <div class="col-md-3 col-xs-6">
-                               <img src="{{ asset('frontend/assets/img/Sample_award.png') }}" class="img-responsive center-block m-y-6">
-                           </div>
-                       </div>
+                      <div class="film-award-owl m-b-6 owl-carousel">
+                          <div class="item">
+                              <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
+                          </div>
+                          <div class="item">
+                              <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
+                          </div>
+                          <div class="item">
+                              <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
+                          </div>
+                          <div class="item">
+                              <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
+                          </div>
+                      </div>
                    </div>
                </div>
             </div>
@@ -271,17 +271,32 @@
           autoplayTimeout: 3000,
           responsive: {
               0: {
-                  items: 3,
-                  nav: true
+                  items: 3
               },
               768: {
-                  items: 4,
-                  nav: true,
-                  loop: false
+                  items: 4
               }
           }
       };
       owl.owlCarousel(options);
+
+      $('.film-award-owl').owlCarousel({
+          items: 4,
+          loop: true,
+          margin: 30,
+          nav: false,
+          autoplay: true,
+          autoplaySpeed: 1000,
+          autoplayTimeout: 5000,
+          responsive: {
+              0: {
+                  items: 3
+              },
+              768: {
+                  items: 4
+              }
+          }
+      });
 
       $('#readMorePR_info').on('click', function(e) {
           e.preventDefault();
