@@ -9,6 +9,24 @@
                 <h2 class="header-title__tag"><span class="text-calibri">2016 - 2017</span> Film Line Up</h2>
             </div>
             <div class="container">
+            
+                <div class="row">
+                    @if($Film)
+                        @foreach ($Film as $film)
+                                 <div class="col-md-3 col-xs-6">
+                                    <div class="film">
+                                        <a href="#" class="film__link">
+                                          <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="" class="w-100">
+                                        </a>
+                                        <div class="film__title text-center">
+                                            <span>{{ $film->title }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        @endforeach
+                    @endif
+                </div>
+
                 <div class="row">
                     <div class="col-md-3 col-xs-6">
                         <div class="film">
