@@ -44,7 +44,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        /**
+         * Handle not found http exception
+         * John Paul Belga
+         */
+        if ($exception instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) 
+        {
+            return response()->view('layouts.errors.404', [], 404);
+        }
         return parent::render($request, $exception);
+        // return parent::render($request, $exception);
     }
 
     /**

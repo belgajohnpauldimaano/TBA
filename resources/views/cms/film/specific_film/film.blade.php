@@ -9,7 +9,13 @@
     <link rel="stylesheet" href="{{ asset('cms/plugins/iCheck/all.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css') }}">
     <link href="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/css/fileinput.css') }}" media="all" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{{ asset('cms/plugins/cropper/cropper.css') }}">
+
 @endsection
+    {{-- <div class="thumbnail">
+            <img id="film_photo" src="http://127.0.0.1/TBA/public/content/film/photos/uo2GnCOnpGfEOt9hNqWPONMQthV5F4lfNTKYdwLZHnN5N7GrrHpOvNiv8cVZL5GBlaS6eIUPyLu2hNSmZq1SMzYrGFAxo4ofAwop.jpg" alt="">
+        
+    </div> --}}
 
 @section ('content')
     <div class="row">
@@ -377,6 +383,10 @@
                                         <img style="cursor:pointer" alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
                                         <span class="caption text-center">
                                         <h4>{{ $data->title }}</h4>
+                                        <div class="pull-right">
+                                            <button class="btn btn-flat btn-xs bg-olive js-film_photo_update_info" data-id="{{ $data->id }}">Update Info</button>
+                                            <button class="btn btn-flat btn-xs bg-olive js-film_photo_crop" data-id="{{ $data->id }}">Crop</button>
+                                        </div>
                                     </div>
                                 </div>
                             @endforeach
@@ -492,6 +502,7 @@
     <script src="{{ asset('cms/plugins/tokenfield-bootstrap/typeahead.bundle.js') }}"></script>
     <script src="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/js/fileinput.js') }}"></script>
     <script src="{{ asset('cms/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
+    <script src="{{ asset('cms/plugins/cropper/cropper.js') }}"></script>
 
     <!-- iCheck 1.0.1 -->
     <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
@@ -850,10 +861,99 @@
         $('body').on('dblclick', '.js-film_photo_item', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
-            console.log(id);
+            show_photo_single_form_modal(id);
+        });
+
+        $('body').on('click', '.js-film_photo_update_info', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
             show_photo_single_form_modal(id);
         });
         
+        // show modal for crop
+        $('body').on('click', '.js-film_photo_crop',  function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            //js-film_photo_crop_modal
+            data = {_token:"{{ csrf_token() }}", photo_id:id, film_id : {{$Film->id}} };
+
+            $.ajax({
+                url : "{{ route('film_photo_crop_modal') }}",
+                type : 'POST',
+                data : data,
+                success : function (data){
+                    $('#js-modal_holder').html(data);
+                    $('#js-film_photo_crop_modal').modal({keyboard : false, backdrop : 'static'});
+                    
+                    var $image = $('#film_photo');
+                    var cropBoxData;
+                    var canvasData;
+                    $('#js-film_photo_crop_modal').on('shown.bs.modal', function () {
+                        $image.cropper({
+                        autoCropArea: 0.5,
+                        aspectRatio: 1 / 1,
+                        cropBoxResizable: false,
+                        responsive : true,
+                        movable  : true,
+                        zoomable : true,
+                        zoomOnTouch : false,
+                        minCropBoxWidth : 300,
+                        minCropBoxHeight : 300,
+                        dragMode : 'move',
+                        //crop: function(e) {
+                            // Output the result data for cropping image.
+                            /*console.log(e.x);
+                            console.log(e.y);
+                            console.log(e.width);
+                            console.log(e.height);
+                            console.log(e.rotate);
+                            console.log(e.scaleX);
+                            console.log(e.scaleY);*/
+                        //},
+                        ready: function () {
+                                $image.cropper('setCanvasData', canvasData);
+                                $image.cropper('setCropBoxData', cropBoxData);
+                            }
+                        });
+                    }).on('hidden.bs.modal', function () {
+                            cropBoxData = $image.cropper('getCropBoxData');
+                            canvasData = $image.cropper('getCanvasData');
+                            $image.cropper('destroy');
+                    });
+                    
+                }
+            });
+        });
+
+        $('body').on('submit', '#js-frm_film_photo_crop', function (e) {
+            e.preventDefault();
+            var cropData = $('#film_photo').cropper('getData');
+            var formData = new FormData( $(this)[0] );
+            formData.append('left', Math.round(cropData.x));
+            formData.append('top', Math.round(cropData.y));
+            formData.append('width', Math.round(cropData.width));
+            formData.append('height', Math.round(cropData.height));
+            
+
+            $.ajax({
+                url : "{{ route('film_photo_crop_save') }}",
+                type : 'POST',
+                data : formData,
+                dataType : 'JSON',
+                processData : false,
+                contentType : false,
+                success : function (data){
+                    if(data.errCode == 0)
+                    {
+                        $('#js-film_photo_crop_modal').modal('hide');
+                        bootbox.alert(data.messages);
+                    }
+                }
+            });
+        });
+
+
+
         $('.bootbox').on('hidden.bs.modal', function (e) {
             alert('fasf');
             if($('.modal.in')){
@@ -1091,6 +1191,19 @@
             save_data($(this), "{{ route('film_crew_save') }}", "{{ route('film_crew_data_fetch', $Film->id) }}", $('.js-film_crew_holder'));
              
         });
+        /*$('#film_photo').cropper({
+            aspectRatio: 16 / 9,
+            crop: function(e) {
+                // Output the result data for cropping image.
+                console.log(e.x);
+                console.log(e.y);
+                console.log(e.width);
+                console.log(e.height);
+                console.log(e.rotate);
+                console.log(e.scaleX);
+                console.log(e.scaleY);
+            }
+        });*/
     </script>
 @endsection
 

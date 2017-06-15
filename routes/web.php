@@ -106,6 +106,8 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
             Route::post('/film_photo_single_save/{id}', 'FilmController@film_photo_single_save')->name('film_photo_single_save');
             Route::post('/film_photo_order_save', 'FilmController@film_photo_order_save')->name('film_photo_order_save');
             Route::post('/photo_single_delete', 'FilmController@photo_single_delete')->name('photo_single_delete');
+            Route::post('/film_photo_crop_modal', 'FilmController@film_photo_crop_modal')->name('film_photo_crop_modal');
+            Route::post('/film_photo_crop_save', 'FilmController@film_photo_crop_save')->name('film_photo_crop_save');
             
         });
         

@@ -74,9 +74,6 @@
 
     {{-- <a href="#">I forgot my password</a><br>
     <a href="{{ route('password.request') }}" class="text-center">Register a new membership</a> --}}
-    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                    Forgot Your Password?
-                                </a>
   </div>
   <!-- /.login-box-body -->
 </div>
