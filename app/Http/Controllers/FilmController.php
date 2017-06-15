@@ -48,9 +48,9 @@ class FilmController extends Controller
         ->orderBy('title', 'asc')
         ->orderBy('release_date', 'DESC')
         ->paginate(2);
-        
-        $RATINGS = Film::RATINGS;
 
+        $RATINGS = Film::RATINGS;
+        
         return view('cms.film.index', ['Film' => $Film, 'RATINGS' => $RATINGS]);
     }
 
@@ -419,14 +419,14 @@ class FilmController extends Controller
 
         if(!$request->has('trailer_id')) 
         {
-            //$rules['image_preview'] = 'required|mimes:jpeg,png|dimensions:min_width=1600,min_height=900';
+            $rules['image_preview'] = 'required|mimes:jpeg,png|dimensions:min_width=1600,min_height=900,max_width=1600,max_height=900';
             $messages['image_preview.required'] = 'Image preview is a required field.';
-            $messages['image_preview.dimensions'] = 'Image preview is should atleast 1600px width and 900px in height.';
+            $messages['image_preview.dimensions'] = 'Image preview is should 1600px width and 900px in height.';
         }
         else
         {   //ratio=16/9
-            //$rules['image_preview'] = 'mimes:jpg,jpeg,png|dimensions:min_width=1600,min_height=900';
-            $messages['image_preview.dimensions'] = 'Image preview is should atleast 1600px width and 900px in height.';
+            $rules['image_preview'] = 'mimes:jpg,jpeg,png|dimensions:min_width=1600,min_height=900,max_width=1600,max_height=900';
+            $messages['image_preview.dimensions'] = 'Image preview is should 1600px width and 900px in height.';
         }
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -540,6 +540,24 @@ class FilmController extends Controller
 
     public function poster_image_upload (Request $request)
     {
+        $rule = [
+                'photo' => 'required|dimensions:min_width=600,max_width=1200|max:1024'
+        ];
+        $message = [
+            'photo.required'    => 'Poster photo is required',
+            'photo.dimensions'  => 'Poster photo width should only between 600 to 1200 pixels.'
+        ];
+        $validator = Validator::make($request->all(), $rule, $message);
+        
+        if ($validator->fails())
+        {
+            $initialPreview = [];
+            $initialPreviewConfig = [
+                []
+            ];
+            return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true, 'error' => 'Poster photo width should only between 600 to 1200 pixels, and should not exceeds file size of 1mb.']);
+        }
+
         if($request->hasFile('photo'))
         {
             $filename = '';
@@ -560,15 +578,6 @@ class FilmController extends Controller
             ];
             $initialPreviewConfig = [
                 ['caption' => "", 'size' => 0, 'width' => "120px", 'url' => route('poster_image_delete'), 'key' => $Poster->id, 'extra' => [' _token' => csrf_token() ] ]
-            ];
-            return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true]);
-        }
-        else
-        {
-             $initialPreview = [
-            ];
-            $initialPreviewConfig = [
-                []
             ];
             return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true]);
         }
@@ -613,17 +622,17 @@ class FilmController extends Controller
     {
         $rules = [
             'award_title' => 'required',
-            'award_image' => 'required|mimes:jpeg,png'
+            'award_image' => 'required|mimes:jpeg,png|dimensions:min_width=200,min_height=200,max_width=200,max_height=200'
         ];
         $messages = [
-            'award_title.required'  => 'Award title is required.',
-            'award_image.required'  => 'Award photo is required.',
-            'award_image.mimes'     => 'Award photo is invalid format it should be :jpeg,png.'
+            'award_title.required'       => 'Award title is required.',
+            'award_image.required'       => 'Award photo is required.',
+            'award_image.dimensions'     => 'Award photo should atleast 200 x 200 pixels.'
         ];
 
         if ($request->award_id)
         {
-            $rules['award_image'] = 'mimes:jpeg,png';
+            $rules['award_image'] = 'mimes:jpeg,png|dimensions:min_width=200,min_height=200,max_width=200,max_height=200';
         }
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -712,6 +721,11 @@ class FilmController extends Controller
 
         return response()->json(['errCode' => 0, 'messages' => 'Award successfully deleted.']);
     }
+
+    /**
+     * FILM PHOTO
+     *
+     */
 
     public function film_photo_fetch ($id, Request $request)
     {
@@ -826,6 +840,60 @@ class FilmController extends Controller
         File::delete(public_path('content\\film\\photos\\' . $Photo->filename));
         $Photo->delete();
         return response()->json(['errCode' => 0, 'messages' => 'Photo successfully deleted.', 'closeModal' => true]);
+    }
+
+    public function film_photo_crop_modal (Request $request)
+    {
+        //$film_thumbnail = Image::make(public_path('content\\film\\photos\\img3.jpg'));
+        //$film_thumbnail->crop(300,300,100,100);
+        //$film_thumbnail->save(public_path('content\\film\\photos\\img3_1.jpg'));
+        //film_photo_crop_modal
+
+        $Photo = Photo::where(['id' => $request->photo_id, 'film_id' => $request->film_id])->first(['id', 'filename', 'film_id']);
+
+        return view('cms.film.specific_film.partials.film_photo_crop_modal', ['Photo' => $Photo])->render();
+    }
+
+    public function film_photo_crop_save (Request $request)
+    {
+        //return json_encode($request->all());
+
+        $rules = [
+            'left'      => 'required',
+            'top'       => 'required',
+            'width'     => 'required|digits_between:1,300',
+            'height'    => 'required|digits_between:1,300',
+            'photo_id'  => 'required',
+            'film_id'   => 'required',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails())
+        {
+            return response()->json(['errCode' => 2, 'messages' => $validator->getMessageBag()]);
+        }
+
+        $Photo = Photo::where(['id' => $request->photo_id, 'film_id' => $request->film_id])->first();
+
+        //return json_encode($request->all());
+        if (!$Photo)
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid selected film photo.']);
+        }
+        
+        $origFilename = $Photo->filename;
+        $origFilename_arr = explode('.', $origFilename);
+        $ext =  array_pop($origFilename_arr);
+        $origFilename = implode('.', $origFilename_arr);
+        $filename = $origFilename . '-thumbnail';
+        $cropFilename =  $filename . '.' . $ext;
+        $film_thumbnail = Image::make(public_path('content\\film\\photos\\' . $Photo->filename));
+
+        $film_thumbnail->crop($request->width, $request->height, $request->left, $request->top);
+        $film_thumbnail->save(public_path('content\\film\\photos\\' . $cropFilename));
+
+        return response()->json(['errCode' => 0, 'messages' => 'Film photo successfully cropped.']);
     }
 
     /*
@@ -1005,7 +1073,7 @@ class FilmController extends Controller
     
     public function film_crew_save (Request $request) 
     {
-        $regex = 'regex:/^[\pL\s\,\.\"\-\(\)"]+$/u';
+        $regex = 'regex:/^[\pL\s\,\.\"\(\) -]+$/u';
         $rules = [
             'director'              => 'nullable|'.$regex,
             'producer'              => 'nullable|'.$regex,
@@ -1016,7 +1084,7 @@ class FilmController extends Controller
             'production_designer'   => 'nullable|'.$regex,
             'co-executive_producer' => 'nullable|'.$regex,
             'screenplay_by'         => 'nullable|'.$regex,
-            'editor'                => 'nullable|'.$regex,
+            'editor'                => 'nullable|regex:/^[\pL\s\,]+$/u',
             'sound_designer'        => 'nullable|'.$regex,
             'vfx'                   => 'nullable|'.$regex,
             'story_by'              => 'nullable|'.$regex,
