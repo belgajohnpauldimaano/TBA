@@ -1005,7 +1005,7 @@ class FilmController extends Controller
     
     public function film_crew_save (Request $request) 
     {
-        $regex = 'regex:/^[\pL\s\,\.]+$/u';
+        $regex = 'regex:/^[\pL\s\,\.\"\-\(\)"]+$/u';
         $rules = [
             'director'              => 'nullable|'.$regex,
             'producer'              => 'nullable|'.$regex,
@@ -1016,7 +1016,7 @@ class FilmController extends Controller
             'production_designer'   => 'nullable|'.$regex,
             'co-executive_producer' => 'nullable|'.$regex,
             'screenplay_by'         => 'nullable|'.$regex,
-            'editor'                => 'nullable|regex:/^[\pL\s\,]+$/u',
+            'editor'                => 'nullable|'.$regex,
             'sound_designer'        => 'nullable|'.$regex,
             'vfx'                   => 'nullable|'.$regex,
             'story_by'              => 'nullable|'.$regex,
