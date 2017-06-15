@@ -732,9 +732,12 @@ main {
 
 /* Film Page */
 .film {
-  margin-bottom: 30px; }
+  margin-bottom: 15px; }
   .film__link {
     display: block; }
+  .film__title {
+    padding: 10px;
+    min-height: 55px; }
 
 .info-img {
   margin-top: 15px; }

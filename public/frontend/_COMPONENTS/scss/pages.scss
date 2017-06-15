@@ -120,10 +120,14 @@ main{
 /* Film Page */
 
 .film{
-	margin-bottom: 30px;
+	margin-bottom: 15px;
 	
 	&__link{
 		display: block;
+	}
+	&__title{
+	    padding: 10px;
+	    min-height: 55px;
 	}
 }
 
