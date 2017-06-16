@@ -16,11 +16,11 @@
                                  <div class="col-md-3 col-xs-6">
                                     <div class="film">
                                         <a href="#" class="film__link">
-                                          <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="" class="w-100">
-                                          <!-- <img src="{{ asset('content/film/photos/') }}" alt="" class="w-100"> -->
+                                            @if($film->photos->count() > 0)
+                                            <img src="{{ asset('content/film/photos/' . $film->photos[0]->thumb_filename) }}" alt="" class="w-100">
+                                            @endif
                                         </a>
                                         <h3 class="film__title text-center">
-
                                             <span>{{ $film->title }}</span>
                                         </h3>
                                     </div>

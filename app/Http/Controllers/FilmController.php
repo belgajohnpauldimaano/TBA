@@ -788,15 +788,17 @@ class FilmController extends Controller
             if ($request->hasFile('image_filename')) // check if there is new file uploaded
             {
                 $ext = $request->image_filename->getClientOriginalExtension(); // get the file extension name
-                $filename   = str_random(100) . '.' . $ext; // generate random filename and append the extension
-
-                $old_filename = $Photo->filename;
+                $random_str = str_random(100);
+                $filename   = $random_str . '.' . $ext; // generate random filename and append the extension
+                $thumb_file = $filename . '-thumbnail' . $ext;
+                //$old_filename = $Photo->filename;
 
                 File::delete(public_path('content\\film\\photos\\' . $old_filename));
 
                 $request->image_filename->move(public_path('content/film/photos'), $filename); // upload the file
                 
                 $Photo->filename    = $filename;
+            
             }
 
             $Photo->title = $request->title;
@@ -880,6 +882,10 @@ class FilmController extends Controller
         $origFilename = implode('.', $origFilename_arr);
         $filename = $origFilename . '-thumbnail';
         $cropFilename =  $filename . '.' . $ext;
+
+        $Photo->thumb_filename = $cropFilename;
+        $Photo->save();
+
         $film_thumbnail = \Image::make(public_path('content\\film\\photos\\' . $Photo->filename));
 
         $film_thumbnail->crop($request->width, $request->height, $request->left, $request->top);

@@ -15,8 +15,10 @@ class FilmController extends Controller
         return view('frontend.home', ['Carousel' => $Carousel, ]);
     }
     public function films(){
-        $Film = Film::with(['photos'])->where('release_status', 1)->get();
-        //echo json_encode($Film);
+        $Film = Film::with(['photos' => function ($q) {
+            $q->where('photo_sorter' , 1);
+        }])->where('release_status', 1)->get();
+        //return json_encode($Film);
     	return view('frontend.films', ['Film' => $Film]);
     }
     public function about(){
