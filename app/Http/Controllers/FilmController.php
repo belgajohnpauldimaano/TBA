@@ -107,15 +107,6 @@ class FilmController extends Controller
             }
         }
 
-        if($Film)
-        {
-            echo "Merons";
-        }
-        else
-        {
-
-        }
-
         $Genre = Genre::all();
         $film_status = Film::RELEASE_STATUS;
         $RATINGS = Film::RATINGS; 

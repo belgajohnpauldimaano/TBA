@@ -16,22 +16,22 @@ class Film extends Model
     
     const ROLE = [
         'DIRECTOR',
-        'PRODUCER',
-        'EXECUTIVE PRODUCER',
         'CAST',
         'WRITTEN BY',
-        'DIRECTOR OF PHOTOGRAPHY',
-        'PRODUCTION DESIGNER',
+        'PRODUCER',
+        'EXECUTIVE PRODUCER',
         'CO-EXECUTIVE PRODUCER',
+        'DIRECTOR OF PHOTOGRAPHY',
         'SCREENPLAY BY',
-        'EDITOR',
-        'SOUND DESIGNER',
-        'VFX',
         'STORY BY',
         'CINEMATOGRAPHY',
-        'MUSIC BY',
-        'DISTRIBUTED BY',
+        'PRODUCTION DESIGNER',
         'PRODUCTION DESIGNER FOR COSTUME',
+        'EDITOR',
+        'MUSIC BY',
+        'SOUND DESIGNER',
+        'VFX',
+        'DISTRIBUTED BY',
     ];
     
     public function genre ()

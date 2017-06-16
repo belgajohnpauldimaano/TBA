@@ -179,6 +179,10 @@ return [
 
         Intervention\Image\ImageServiceProvider::class,
 
+        /**
+         * LARAVEL CAFFEINE - prevent form token sleeping
+         */
+        //GeneaLabs\LaravelCaffeine\Providers\LaravelCaffeineService::class,
     ],
 
     /*
