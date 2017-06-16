@@ -53,4 +53,9 @@ class Film extends Model
     {
         return $this->hasMany(FilmCrew::class, 'film_id', 'id');
     }
+
+    public function photos ()
+    {
+        return $this->hasMany(Photo::class, 'film_id', 'id');
+    }
 }

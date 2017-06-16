@@ -17,8 +17,10 @@
                                     <div class="film">
                                         <a href="#" class="film__link">
                                           <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="" class="w-100">
+                                          <!-- <img src="{{ asset('content/film/photos/') }}" alt="" class="w-100"> -->
                                         </a>
                                         <h3 class="film__title text-center">
+
                                             <span>{{ $film->title }}</span>
                                         </h3>
                                     </div>

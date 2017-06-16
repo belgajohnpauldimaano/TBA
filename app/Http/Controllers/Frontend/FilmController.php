@@ -6,14 +6,17 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Film;
+use App\Carousel;
 
 class FilmController extends Controller
 {
     public function home(){
-        return view('frontend.home');
+        $Carousel = Carousel::orderBy('carousels_sorter', 'ASC')->get();
+        return view('frontend.home', ['Carousel' => $Carousel, ]);
     }
     public function films(){
-        $Film = Film::where('release_status', 1)->get();
+        $Film = Film::with(['photos'])->where('release_status', 1)->get();
+        //echo json_encode($Film);
     	return view('frontend.films', ['Film' => $Film]);
     }
     public function about(){
