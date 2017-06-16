@@ -18,9 +18,9 @@
                                         <a href="#" class="film__link">
                                           <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="" class="w-100">
                                         </a>
-                                        <div class="film__title text-center">
+                                        <h3 class="film__title text-center">
                                             <span>{{ $film->title }}</span>
-                                        </div>
+                                        </h3>
                                     </div>
                                 </div>
                         @endforeach

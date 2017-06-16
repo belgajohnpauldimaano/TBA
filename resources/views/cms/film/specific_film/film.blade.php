@@ -30,73 +30,44 @@
                         <button class="btn btn-primary btn-sm btn-flat js-edit_film" data-id="{{ $Film->id }}"><i class="fa fa-pencil"></i> Edit Film Information</button>
                     </div>
                 </div>
-
+                <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
                 <div class="box-body">
-                    <div class="row js-film_primary_info_content_holder box box-solid">
-                        <div class="overlay hidden">
-                            <i class="fa fa-refresh fa-spin"></i>
-                        </div>
-                        <div class="col-sm-6">
-
-                            <div class="form-group">
-                                <label for="">Title</label>
-                                <h3 class="margin">
-                                    <span>{{ $Film->title }}</span>
-                                </h3>
-                            </div>
-                            
-                            <div>
-                                <label for="">Genre</label>
-                                <h5 class="margin">
-                                    {{ ($Film != NULL ? $Film->genre : 'Not yet set') }}
-                                </h5>
-                            </div>
-
-                            <div>
-                                <label for="">Running Time</label>
-                                <h5 class="margin">
-                                    {{ ($Film->running_time != NULL ? $Film->running_time : 'Not yet set') }}
-                                </h5>
-                            </div>
-                            
-                            <div>
-                                <label for="">Release Status</label>
-                                <h5 class="margin">
-                                    {{ ($Film->release_status != NULL ? $RELEASE_STATUS[$Film->release_status] : 'Not yet set') }}
-                                </h5>
-                            </div>
-
-                        </div>
-
-                        <div class="col-sm-6">
-                        
-                            
-                            <div>
-                                <label for="">Release Date</label>
-                                <h5 class="margin">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr class="info">
+                                <th width="369px">Title</th>
+                                <td>{{ $Film->title }}</td>
+                            </tr>
+                            <tr>
+                                <th width="369px">Genre</th>
+                                <td>{{ ($Film != NULL ? $Film->genre : 'Not yet set') }}</td>
+                            </tr>
+                            <tr>
+                                <th width="369px">Running Time</th>
+                                <td>{{ ($Film->running_time != NULL ? $Film->running_time.' minutes' : 'Not yet set') }}</td>
+                            </tr>
+                            <tr>
+                                <th width="369px">Release Status</th>
+                                <td>{{ ($Film->release_status != NULL ? $RELEASE_STATUS[$Film->release_status] : 'Not yet set') }}</td>
+                            </tr>
+                            <tr>
+                                <th width="369px">Release Date</th>
+                                <td>
                                     {{ ($Film->release_date != NULL ? Date('d F Y', strtotime($Film->release_date)) : 'Not yet set') }}
                                     {{-- ($Film->release_date != NULL ? Date('l, jS \of F Y', strtotime($Film->release_date)) : 'Not yet set') --}}
-                                </h5>
-                            </div>
-                            
-                            <div>
-                                <label for="">Ratings</label>
-                                <h5 class="margin">
-                                    {{ ( $Film->rating ? $RATINGS[$Film->rating] : 'Not yet set' ) }}
-                                </h5>
-                            </div>
-
-                            
-                            <div>
-                                <label for="">Sell Sheet</label>
-                                <h5 class="margin">
-                                    {{ ($Film->sell_sheet != NULL ? $Film->sell_sheet : 'None uploaded') }}
-                                </h5>
-                            </div>
-
-                            <div>
-                                <label for="">Hash Tags</label>
-                                <h5 class="margin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="369px">Ratings</th>
+                                <td>{{ ( $Film->rating ? $RATINGS[$Film->rating] : 'Not yet set' ) }}</td>
+                            </tr>
+                            <tr>
+                                <th width="369px">Sell Sheet</th>
+                                <td>{{ ($Film->sell_sheet != NULL ? $Film->sell_sheet : 'None uploaded') }}</td>
+                            </tr>
+                            <tr>
+                                <th width="369px">Hash Tags</th>
+                                <td>
                                     @if($Film->hash_tags != NULL)
                                        <?php
                                             //$hash_tags_arr = explode(',', $Film->hash_tags);
@@ -106,12 +77,11 @@
                                             <span class="text-light-blue">{{ $val }}</span>
                                         @endforeach --}}
                                     @endif
-                                </h5>
-                            </div>
-
-                            <div>
-                                <label for="">Social media urls</label>
-                                <h5 class="margin">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="369px">Social media urls</th>
+                                <td>
                                     @if($Film->links != NULL)
                                         @if ($Film->links->facebook_url != '')
                                             <a href="{{ $Film->links->facebook_url }}" target="_blank" class="btn btn-social-icon btn-facebook"><i class="fa fa-facebook"></i></a>
@@ -127,18 +97,11 @@
                                     @else
                                         <p>Not yet set</p>
                                     @endif
-                                </h5>
-                            </div>
-
-                        </div>
-                        <div class="col-sm-12">
-                            <div class="box box-solid js-film_synopsis_holder">
-                                <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
-                                <div class="box-body">
-                                    <div class="">
-                                        <label for="">Synopsis</label> <button class="btn btn-flat btn-primary btn-sm pull-right js-update_sysnopsis" data-edit="false"><i class="fa fa-pencil"></i> Update Synopsis</button>
-                                    </div>
-                                    <br>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th width="369px">Synopsis</th>
+                                <td>
                                     <blockquote class="js-film_synopsis_content_holder">
                                         <p>
                                             {!! ($Film->synopsis != NULL ? $Film->synopsis : 'Not yet populated') !!}
@@ -147,11 +110,11 @@
                                     <div class="js-synopsis_editor" style="display:none">
                                         <textarea placeholder="Write synopsis" style="width: 100%; height: 300px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" name="js-synopsis_textarea" id="js-synopsis_textarea" cols="30" rows="10" class="js-wysiwyg_editor">{{ ($Film->synopsis != NULL ? $Film->synopsis : '') }}</textarea>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+                                    <button class="btn btn-flat btn-primary btn-sm js-update_sysnopsis" data-edit="false"><i class="fa fa-pencil"></i> Update Synopsis</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
             </div>
@@ -165,33 +128,30 @@
                 </div>
                 <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
                 <div class="box-body ">
-                    <div class="row ">
-                            <div class="col-sm-12">
-                                @if ($FilmCrew)
-                                    @foreach($PERSON_ROLES as $key => $val)
-                                        <div>
-                                            <strong>{{ $val }}</strong>
-                                            {{-- {{ json_encode($Person) }} --}}
-                                            <p>
-                                                <?php 
-                                                    $c = $FilmCrew->filter(function ($crew) use($key) {
-                                                                return $crew->role == $key;
-                                                    }); 
-                                                ?>
-                                                @if ($c->count() > 0)
-                                                    @foreach ($c as $crew)
-                                                        {{ $crew->person->name }},
-                                                    @endforeach
-                                                @else
-                                                    <p>No crew for this role</p>
-                                                @endif
-                                            </p>
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                        
-                    </div>
+                    <table class="table table-bordered table-striped">
+                        @if ($FilmCrew)
+                                @foreach($PERSON_ROLES as $key => $val)
+                                    <tr>
+                                        <th width="369px">{{ $val }}</th>
+                                        <td>
+                                            <?php 
+                                                $c = $FilmCrew->filter(function ($crew) use($key) {
+                                                            return $crew->role == $key;
+                                                }); 
+                                            ?>
+                                            @if ($c->count() > 0)
+                                                @foreach ($c as $crew)
+                                                    <span class="label label-primary">{{ $crew->person->name }}</span>
+                                                @endforeach
+                                            @else
+                                                <p style="margin-bottom: 0">No crew for this role</p>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </div>
+                    </table>
                 </div>
             </div>
             {{-- FILM CREWS --}}
@@ -380,12 +340,18 @@
                             @foreach($Photo as $data)
                                 <div class="col-xs-6 col-md-3">
                                     <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
-                                        <img style="cursor:pointer" alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
-                                        <span class="caption text-center">
-                                        <h4>{{ $data->title }}</h4>
-                                        <div class="pull-right">
-                                            <button class="btn btn-flat btn-xs bg-olive js-film_photo_update_info" data-id="{{ $data->id }}">Update Info</button>
-                                            <button class="btn btn-flat btn-xs bg-olive js-film_photo_crop" data-id="{{ $data->id }}">Crop</button>
+                                        <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
+                                        <div class="caption">
+                                            <h4>{{ $data->title }}</h4>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-flat btn-sm btn-block btn-primary js-film_photo_update_info" data-id="{{ $data->id }}">Update Info</button>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-flat btn-sm btn-block bg-olive js-film_photo_crop" data-id="{{ $data->id }}">Crop</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
