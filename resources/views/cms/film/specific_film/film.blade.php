@@ -340,12 +340,18 @@
                             @foreach($Photo as $data)
                                 <div class="col-xs-6 col-md-3">
                                     <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
-                                        <img style="cursor:pointer" alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
-                                        <span class="caption text-center">
-                                        <h4>{{ $data->title }}</h4>
-                                        <div class="pull-right">
-                                            <button class="btn btn-flat btn-xs bg-olive js-film_photo_update_info" data-id="{{ $data->id }}">Update Info</button>
-                                            <button class="btn btn-flat btn-xs bg-olive js-film_photo_crop" data-id="{{ $data->id }}">Crop</button>
+                                        <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
+                                        <div class="caption">
+                                            <h4>{{ $data->title }}</h4>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-flat btn-sm btn-block btn-primary js-film_photo_update_info" data-id="{{ $data->id }}">Update Info</button>
+                                                </div>
+                                                <div class="col-xs-6">
+                                                    <button class="btn btn-flat btn-sm btn-block bg-olive js-film_photo_crop" data-id="{{ $data->id }}">Crop</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -853,7 +859,7 @@
                         $image.cropper({
                         autoCropArea: 0.5,
                         aspectRatio: 1 / 1,
-                        cropBoxResizable: false,
+                        cropBoxResizable: true,
                         responsive : true,
                         movable  : true,
                         zoomable : true,
