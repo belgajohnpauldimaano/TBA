@@ -76,7 +76,7 @@
               lng: 121.037864
           };
 
-          function mapOutside(mapId){
+          function mapIdSelected(mapId){
               var map = new google.maps.Map(document.getElementById(mapId), {
                   zoom: 18,
                   center: latLong,
@@ -88,12 +88,31 @@
               });
           }
 
-          mapOutside('map');
+          mapIdSelected('map');
 
           @if(Request::is('contact'))
-            mapOutside('mapContact');
+            mapIdSelected('mapContact');
           @endif
       }
+
+      var $document = $(document),
+          $element = $('.navbar__scrolled');
+
+      $document.scroll(function() {
+          if ($document.scrollTop() >= 70) {
+              $element.fadeIn();
+          } else {
+              $element.fadeOut();
+          }
+      });
+
+      $('.gotoTop').on('click', function(e) {
+          e.preventDefault();
+          $('html,body').animate({
+              scrollTop: 0
+          }, 700);
+      });
+
     </script>
 
     <script async defer

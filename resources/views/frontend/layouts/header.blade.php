@@ -57,3 +57,22 @@
             </div>
         </div>
     </nav>
+    
+    @if(Request::route()->getName() != 'home')
+        <nav class="navbar navbar-inverse navbar-fixed-top navbar__scrolled" style="background: url({{ asset('frontend/assets/img/navbar.png') }}) #d5ab44 no-repeat; display: none;"">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('frontend/assets/img/logo-black.png') }}" alt="TBA LOGO"></a>
+                </div>
+                <a href="#" class="gotoTop">
+                    <div class="va-block">
+                        <div class="va-middle">
+                            <div class="fa-rotate-180">
+                                <span class="caret"></span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </nav>
+    @endif

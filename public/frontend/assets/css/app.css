@@ -536,10 +536,10 @@ btn */
     .navbar {
       min-height: 70px; }
       .navbar .navbar-brand {
-        padding: 20px;
+        padding: 18px 20px;
         height: 70px; }
         .navbar .navbar-brand > img {
-          height: 30px; } }
+          height: 35px; } }
   .navbar a {
     text-transform: uppercase; }
   @media (max-width: 767px) {
@@ -548,6 +548,22 @@ btn */
       .navbar .navbar-nav > li > a {
         font-weight: bold;
         color: #ddd; } }
+  .navbar__scrolled {
+    border-color: transparent;
+    -webkit-box-shadow: 0 2px 12px rgba(0, 0, 0, 0.19);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.19); }
+    .navbar__scrolled .gotoTop {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      color: #333;
+      padding: 0 25px; }
+    .navbar__scrolled .caret {
+      border-top: 12px dashed;
+      border-top: 12px solid \9;
+      border-right: 12px solid transparent;
+      border-left: 12px solid transparent; }
 
 .nav-owl {
   width: 300px;
