@@ -50,13 +50,11 @@
                                                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Action <span class="caret"></span>
                                                 </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" class="js-edit_film" data-id="{{ $data->id }}">Edit</a></li>
+                                                <ul class="dropdown-menu dropdown-menu-right dropdown-menu__action">
+                                                    <li><a href="#" class="js-edit_film" data-id="{{ $data->id }}">Update Basic Info</a></li>
+                                                    <li><a href="{{ route('specific_film_index', $data->id) }}" class="js-view_film" data-id="{{ $data->id }}">View & Update Details</a></li>
+                                                    <li role="separator" class="divider"></li>
                                                     <li><a href="#" class="js-delete_film" data-id="{{ $data->id }}">Delete</a></li>
-                                                    <li><a href="{{ route('specific_film_index', $data->id) }}" class="js-view_film" data-id="{{ $data->id }}">View</a></li>
-                                                    <li><a href="#" class="js-quote_film" data-id="{{ $data->id }}">View Quote</a></li>
-                                                    {{-- <li role="separator" class="divider"></li>
-                                                    <li><a href="#">View</a></li> --}}
                                                 </ul>
                                             </div>
                                         </td>

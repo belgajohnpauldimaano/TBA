@@ -6,17 +6,17 @@
     .navbar-brand{
     	padding: 10px 15px;
     	>img{
-    		height: 30px;;
+    		height: 30px;
     	}
     }
 
 	@media (min-width: $md){
     	min-height: $navbarHeight;
 	    .navbar-brand{
-	    	padding: 20px;
+            padding: 18px 20px;
     		height: $navbarHeight;
 	    	>img{
-	    		height: $navbarHeight - 40;	
+	    		height: $navbarHeight - 35;	
 	    	}
 	    }
     }
@@ -29,6 +29,28 @@
         .navbar-nav>li>a {
             font-weight: bold;
             color: #ddd;
+        }
+    }
+
+    &__scrolled{
+        border-color: transparent;
+        -webkit-box-shadow: 0 2px 12px rgba(0, 0, 0, 0.19);
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.19);
+
+        .gotoTop{
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            color: #333;
+            padding: 0 25px;
+        }
+
+        .caret {
+            border-top: 12px dashed;
+            border-top: 12px solid \9;
+            border-right: 12px solid transparent;
+            border-left: 12px solid transparent;
         }
     }
 }

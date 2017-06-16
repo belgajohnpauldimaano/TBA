@@ -18,7 +18,7 @@
     </div> --}}
 
 @section ('content')
-    <div class="row">
+    <div class="row row-film">
         <div class="col-sm-12">
 
             {{-- FILM BASIC INFO --}}
@@ -27,7 +27,7 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Film</h3>
                     <div class="box-tools">
-                        <button class="btn btn-primary btn-sm btn-flat js-edit_film" data-id="{{ $Film->id }}"><i class="fa fa-pencil"></i> Edit Film Information</button>
+                        <button class="btn btn-primary btn-sm btn-flat js-edit_film" data-id="{{ $Film->id }}"><i class="fa fa-edit"></i> Update</button>
                     </div>
                 </div>
                 <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
@@ -123,35 +123,38 @@
             {{-- FILM CREWS --}}
             <div class="box box-warning js-film_crew_holder">
                 <div class="box-header with-border">
+                    <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Film Crew</h3>
-                    <div class="box-tools"><button class="btn btn-flat btn-primary btn-sm js-btn_manage_people"><i class="fa fa-pencil"></i> Manage</button></div>
+                    <div class="box-tools"><button class="btn btn-flat btn-primary btn-sm js-btn_manage_people"><i class="fa fa-edit"></i> Update</button></div>
                 </div>
                 <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
-                <div class="box-body ">
-                    <table class="table table-bordered table-striped">
-                        @if ($FilmCrew)
-                                @foreach($PERSON_ROLES as $key => $val)
-                                    <tr>
-                                        <th width="369px">{{ $val }}</th>
-                                        <td>
-                                            <?php 
-                                                $c = $FilmCrew->filter(function ($crew) use($key) {
-                                                            return $crew->role == $key;
-                                                }); 
-                                            ?>
-                                            @if ($c->count() > 0)
-                                                @foreach ($c as $crew)
-                                                    <span class="label label-primary">{{ $crew->person->name }}</span>
-                                                @endforeach
-                                            @else
-                                                <p style="margin-bottom: 0">No crew for this role</p>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </div>
-                    </table>
+                <div class="collapse">
+                    <div class="box-body ">
+                        <table class="table table-bordered table-striped">
+                            @if ($FilmCrew)
+                                    @foreach($PERSON_ROLES as $key => $val)
+                                        <tr>
+                                            <th width="369px">{{ $val }}</th>
+                                            <td>
+                                                <?php 
+                                                    $c = $FilmCrew->filter(function ($crew) use($key) {
+                                                                return $crew->role == $key;
+                                                    }); 
+                                                ?>
+                                                @if ($c->count() > 0)
+                                                    @foreach ($c as $crew)
+                                                        <span class="label label-primary">{{ $crew->person->name }}</span>
+                                                    @endforeach
+                                                @else
+                                                    <p style="margin-bottom: 0">No crew for this role</p>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </div>
+                        </table>
+                    </div>
                 </div>
             </div>
             {{-- FILM CREWS --}}
@@ -159,63 +162,66 @@
             {{-- TRAILER --}}
             <div class="box box-success">
                 <div class="box-header with-border">
+                    <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Trailers</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-trailer_add_form"><i class="fa fa-plus"></i> Add Trailer</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-trailer_add_form"><i class="fa fa-edit"></i> Update</button>
                     </div>
                 </div>
-                <div class="box-body">
-                    <div class="js-content_holder_trailer box box-solid">
-                        <div class="overlay hidden">
-                            <i class="fa fa-refresh fa-spin"></i>
+                <div class="collapse">
+                    <div class="box-body">
+                        <div class="js-content_holder_trailer box box-solid">
+                            <div class="overlay hidden">
+                                <i class="fa fa-refresh fa-spin"></i>
+                            </div>
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Featured</th>
+                                    <th>Preview Image</th>
+                                    <th>URL</th>
+                                    <th>Actions</th>
+                                </tr>
+                                <tbody class="js-sortable_container">
+                                    @if($Film->trailers)
+                                        @foreach($Film->trailers as $trailer)
+                                            @if($trailer->trailer_show != 0)
+                                                <tr data-id="{{$trailer->id}}">
+                                                    <td>
+                                                        <label>
+                                                            <input type="checkbox" class="minimal-green js-check_hide_show" {{ ($trailer->trailer_show == 1 ? 'checked' : '') }} > 
+                                                        </label>
+                                                    </td>
+                                                    <td><img class="media-object" width="160" height="90" src="{{ asset('content/film/trailers/' . $trailer->image_preview) }}" alt="..."></td>
+                                                    <td> <a href="{{$trailer->trailer_url}}" target="_blank">{{ str_limit($trailer->trailer_url, 60) }}</a> </td>
+                                                    <td>
+                                                        <!-- Single button -->
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                Action <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu">
+                                                                <li><a href="#" class="js-edit_trailer" data-id="{{ $trailer->id }}">Edit</a></li>
+                                                                <li><a href="#" class="js-delete_trailer" data-id="{{ $trailer->id }}">Delete</a></li>
+                                                                {{-- <li role="separator" class="divider"></li>
+                                                                <li><a href="#">View</a></li> --}}
+                                                            </ul>
+                                                        </div>  
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </tbody>
+                            </table>
                         </div>
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>Featured</th>
-                                <th>Preview Image</th>
-                                <th>URL</th>
-                                <th>Actions</th>
-                            </tr>
-                            <tbody class="js-sortable_container">
-                                @if($Film->trailers)
-                                    @foreach($Film->trailers as $trailer)
-                                        @if($trailer->trailer_show != 0)
-                                            <tr data-id="{{$trailer->id}}">
-                                                <td>
-                                                    <label>
-                                                        <input type="checkbox" class="minimal-green js-check_hide_show" {{ ($trailer->trailer_show == 1 ? 'checked' : '') }} > 
-                                                    </label>
-                                                </td>
-                                                <td><img class="media-object" width="160" height="90" src="{{ asset('content/film/trailers/' . $trailer->image_preview) }}" alt="..."></td>
-                                                <td> <a href="{{$trailer->trailer_url}}" target="_blank">{{ str_limit($trailer->trailer_url, 60) }}</a> </td>
-                                                <td>
-                                                    <!-- Single button -->
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Action <span class="caret"></span>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            <li><a href="#" class="js-edit_trailer" data-id="{{ $trailer->id }}">Edit</a></li>
-                                                            <li><a href="#" class="js-delete_trailer" data-id="{{ $trailer->id }}">Delete</a></li>
-                                                            {{-- <li role="separator" class="divider"></li>
-                                                            <li><a href="#">View</a></li> --}}
-                                                        </ul>
-                                                    </div>  
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="box-footer">
-                        <div class="callout callout-success">
-                            <h5>Instructions : </h5>
-                            <ol>
-                                <li>Tick/untick the checkbox to show/hide the trailer in the Trailers Page of the website, respectively.</li>
-                                <li>Drag the row to arrange the order of the trailers of how it will appear in the website.</li>
-                            </ol>
+                        <div class="box-footer">
+                            <div class="callout callout-success">
+                                <h5>Instructions : </h5>
+                                <ol>
+                                    <li>Tick/untick the checkbox to show/hide the trailer in the Trailers Page of the website, respectively.</li>
+                                    <li>Drag the row to arrange the order of the trailers of how it will appear in the website.</li>
+                                </ol>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -226,40 +232,43 @@
             {{-- POSTER PREVIEW --}}
             <div class="box box-danger">
                 <div class="box-header with-border">
+                    <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Poster</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-manage_poster_images">Manage Posters</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_poster_images"><i class="fa fa-edit"></i> Update</button>
                     </div>
                 </div>
-                <div class="box-body js-poster_content_holder box box-solid">
-                    <div class="overlay hidden">
-                        <i class="fa fa-refresh fa-spin"></i>
-                    </div>
-                    <div class="js-poster_container row ">
-                        @if($Poster)
-                            @foreach($Poster as $data)
-                                <div class="col-xs-6 col-md-3">
-                                    <div href="#" data-id="{{ $data->id }}" class="thumbnail">
-                                        <img alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/posters/' . $data->label) }}" style="cursor:pointer" class="js-image_item margin">
-                                        @if($data->featured == 1)
-                                            <span class="badge bg-red">Featured</span>
-                                        @else
-                                            <span class="">&nbsp;</span>
-                                        @endif
+                <div class="collapse">
+                    <div class="box-body js-poster_content_holder box box-solid">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <div class="js-poster_container row ">
+                            @if($Poster)
+                                @foreach($Poster as $data)
+                                    <div class="col-xs-6 col-md-3">
+                                        <div href="#" data-id="{{ $data->id }}" class="thumbnail">
+                                            <img alt="..." data-id="{{ $data->id }}" src="{{ asset('content/film/posters/' . $data->label) }}" style="cursor:pointer" class="js-image_item margin">
+                                            @if($data->featured == 1)
+                                                <span class="badge bg-red">Featured</span>
+                                            @else
+                                                <span class="">&nbsp;</span>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        @endif
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
-                </div>
-                <div class="box-footer">
-                    <div class="callout callout-success">
-                        <h5>Instructions : </h5>
-                        <ol>
-                            <li>Double-click on a poster to use it as the Main Poster for the film.</li>
-                            <li>Drag & drop posters to re-order as to how it would appear when viewing as a gallery.Click MANAGE POSTERS to add or remove image/s.</li>
-                            <li>Click the TRASH ICON in the MANAGE POSTERS MODAL to remove the image/s.</li>
-                        </ol>
+                    <div class="box-footer">
+                        <div class="callout callout-success">
+                            <h5>Instructions : </h5>
+                            <ol>
+                                <li>Double-click on a poster to use it as the Main Poster for the film.</li>
+                                <li>Drag & drop posters to re-order as to how it would appear when viewing as a gallery.Click MANAGE POSTERS to add or remove image/s.</li>
+                                <li>Click the TRASH ICON in the MANAGE POSTERS MODAL to remove the image/s.</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -268,56 +277,59 @@
             {{-- AWARDS --}}
             <div class="box box-danger">
                 <div class="box-header with-border">
+                    <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Awards</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-add_award"><i class="fa fa-plus"></i> Add Award</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-add_award"><i class="fa fa-edit"></i> Update</button>
                     </div>
                 </div>
-                <div class="box-body js-award_content_holder box box-solid">
-                    <div class="overlay hidden">
-                        <i class="fa fa-refresh fa-spin"></i>
+                <div class="collapse">
+                    <div class="box-body js-award_content_holder box box-solid">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <td>Image Title</td>
+                                    <td>Image Preview</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+                            <tbody class="js-awards_sortable_container">
+                                @if($Award->count())
+                                    @foreach($Award as $data)
+                                        <tr data-id="{{ $data->id }}">
+                                            <td>{{ $data->award_name }}</td>
+                                            <td> <img class="media-object" width="64" height="64" src="{{ asset('content/film/awards/' . $data->award_image) }}" alt="..."></td>
+                                            <td>
+                                                <!-- Single button -->
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Action <span class="caret"></span>
+                                                    </button>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a href="#" class="js-edit_award" data-id="{{ $data->id }}">Edit</a></li>
+                                                        <li><a href="#" class="js-delete_award" data-id="{{ $data->id }}">Delete</a></li>
+                                                        {{-- <li role="separator" class="divider"></li>
+                                                        <li><a href="#">View</a></li> --}}
+                                                    </ul>
+                                                </div>  
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            @else
+                                <tr>
+                                    <td colspan="3">No data found.</td>
+                                </tr>
+                            @endif
+                        </table>
                     </div>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <td>Image Title</td>
-                                <td>Image Preview</td>
-                                <td>Action</td>
-                            </tr>
-                        </thead>
-                        <tbody class="js-awards_sortable_container">
-                            @if($Award->count())
-                                @foreach($Award as $data)
-                                    <tr data-id="{{ $data->id }}">
-                                        <td>{{ $data->award_name }}</td>
-                                        <td> <img class="media-object" width="64" height="64" src="{{ asset('content/film/awards/' . $data->award_image) }}" alt="..."></td>
-                                        <td>
-                                            <!-- Single button -->
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    Action <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" class="js-edit_award" data-id="{{ $data->id }}">Edit</a></li>
-                                                    <li><a href="#" class="js-delete_award" data-id="{{ $data->id }}">Delete</a></li>
-                                                    {{-- <li role="separator" class="divider"></li>
-                                                    <li><a href="#">View</a></li> --}}
-                                                </ul>
-                                            </div>  
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        @else
-                            <tr>
-                                <td colspan="3">No data found.</td>
-                            </tr>
-                        @endif
-                    </table>
-                </div>
-                <div class="box-footer">
-                    <p>Note : </p>
-                    <p class="text-primary">Drag the image to arrange the order.</p>
+                    <div class="box-footer">
+                        <p>Note : </p>
+                        <p class="text-primary">Drag the image to arrange the order.</p>
+                    </div>
                 </div>
             </div>
             {{-- AWARDS --}}
@@ -325,48 +337,51 @@
             {{-- PHOTOS --}}
             <div class="box box-danger">
                 <div class="box-header with-border">
+                    <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Film Photos</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-manage_photo_single"><i class="fa fa-plus"></i> Add Photo</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_photo_single"><i class="fa fa-edit"></i> Update</button>
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
                     </div>
                 </div>
-                <div class="box-body js-film_photo_content_holder box box-solid">
-                    <div class="overlay hidden">
-                        <i class="fa fa-refresh fa-spin"></i>
-                    </div>
-                    <div class="js-photo_container row ">
-                        @if($Photo->count() > 0)
-                            @foreach($Photo as $data)
-                                <div class="col-xs-6 col-md-3">
-                                    <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
-                                        <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
-                                        <div class="caption">
-                                            <h4>{{ $data->title }}</h4>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-xs-6">
-                                                    <button class="btn btn-flat btn-sm btn-block btn-primary js-film_photo_update_info" data-id="{{ $data->id }}">Update Info</button>
-                                                </div>
-                                                <div class="col-xs-6">
-                                                    <button class="btn btn-flat btn-sm btn-block bg-olive js-film_photo_crop" data-id="{{ $data->id }}">Crop</button>
+                <div class="collapse">
+                    <div class="box-body js-film_photo_content_holder box box-solid">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <div class="js-photo_container row ">
+                            @if($Photo->count() > 0)
+                                @foreach($Photo as $data)
+                                    <div class="col-xs-6 col-md-3">
+                                        <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
+                                            <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
+                                            <div class="caption">
+                                                <h4>{{ $data->title }}</h4>
+                                                <hr>
+                                                <div class="row">
+                                                    <div class="col-xs-6">
+                                                        <button class="btn btn-flat btn-sm btn-block btn-primary js-film_photo_update_info" data-id="{{ $data->id }}">Update Info</button>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <button class="btn btn-flat btn-sm btn-block bg-olive js-film_photo_crop" data-id="{{ $data->id }}">Crop</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                @endforeach
+                            @else
+                                <div class="col-sm-12">
+                                    <h5>No photo yet</h5>
                                 </div>
-                            @endforeach
-                        @else
-                            <div class="col-sm-12">
-                                <h5>No photo yet</h5>
-                            </div>
-                        @endif
+                            @endif
+                        </div>
                     </div>
-                </div>
-                <div class="box-footer">
-                    <p>Note : </p>
-                    <p class="text-primary">Double click the poster to edit data.</p>
-                    <p class="text-primary">Drag the image posters to arrange the order.</p>
+                    <div class="box-footer">
+                        <p>Note : </p>
+                        <p class="text-primary">Double click the poster to edit data.</p>
+                        <p class="text-primary">Drag the image posters to arrange the order.</p>
+                    </div>
                 </div>
             </div>
             {{-- PHOTOS --}}
@@ -374,86 +389,92 @@
             {{-- QUOTE --}}
             <div class="box box-danger">
                 <div class="box-header with-border">
+                    <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Film Quote</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-managa_quote"><i class="fa fa-pencil"></i> Update Quote</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-managa_quote"><i class="fa fa-edit"></i> Update</button>
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
                     </div>
                 </div>
-                <div class="box-body js-film_quote_content_holder box box-solid">
-                    <div class="overlay hidden">
-                        <i class="fa fa-refresh fa-spin"></i>
+                <div class="collapse">
+                    <div class="box-body js-film_quote_content_holder box box-solid">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <div class="box-body">
+                            @if ($Quote)
+                                <blockquote>
+                                    <p>{{ ($Quote ? $Quote->main_quote : 'Not yet set') }}</p>
+                                    <small>{{ $Quote->name_of_person }} <cite title="{{ $Quote->url }}"><a href="{{ $Quote->url }}" target="_blank">source</a></cite></small>
+                                </blockquote>
+                            @else
+                                <h5>Not yet set</h5>
+                            @endif
+                        </div>
                     </div>
-                    <div class="box-body">
-                        @if ($Quote)
-                            <blockquote>
-                                <p>{{ ($Quote ? $Quote->main_quote : 'Not yet set') }}</p>
-                                <small>{{ $Quote->name_of_person }} <cite title="{{ $Quote->url }}"><a href="{{ $Quote->url }}" target="_blank">source</a></cite></small>
-                            </blockquote>
-                        @else
-                            <h5>Not yet set</h5>
-                        @endif
-                    </div>
+                    {{-- <div class="box-footer">
+                        <p>Note : </p>
+                        <p class="text-primary">Double click the poster to edit data.</p>
+                        <p class="text-primary">Drag the image posters to arrange the order.</p>
+                    </div> --}}
                 </div>
-                {{-- <div class="box-footer">
-                    <p>Note : </p>
-                    <p class="text-primary">Double click the poster to edit data.</p>
-                    <p class="text-primary">Drag the image posters to arrange the order.</p>
-                </div> --}}
             </div>
             {{-- QUOTE --}}
 
             {{-- PRESS RELEASE --}}
             <div class="box box-danger">
                 <div class="box-header with-border">
+                    <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Press Release</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-manage_press_release"><i class="fa fa-pencil"></i> Manage Press Release</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_press_release"><i class="fa fa-edit"></i> Update</button>
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
                     </div>
                 </div>
-                <div class="box-body js-film_press_release_content_holder box box-solid">
-                    <div class="overlay hidden">
-                        <i class="fa fa-refresh fa-spin"></i>
-                    </div>
-                    <div class="box-body">
-                        
-                        @if ($PressRelease)
-                            <ul class="media-list">
-                                <li class="media">
-                                    <div class="media-left">
-                                    <a>
-                                        <img class="media-object" style="max-width:220px;" src="{{ asset('content/film/press_release' . '/' . $PressRelease->article_image) }}" alt="...">
-                                    </a>
-                                    </div>
-                                    <div class="media-body">
-                                    <h4 class="media-heading">Article</h4>
-                                        <div>
-                                            <label for="">Blurb</label>
-                                            <div class="margin">
-                                                {!! str_limit($PressRelease->blurb, 200) !!}
-                                            </div>
+                <div class="collapse">
+                    <div class="box-body js-film_press_release_content_holder box box-solid">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <div class="box-body">
+                            
+                            @if ($PressRelease)
+                                <ul class="media-list">
+                                    <li class="media">
+                                        <div class="media-left">
+                                        <a>
+                                            <img class="media-object" style="max-width:220px;" src="{{ asset('content/film/press_release' . '/' . $PressRelease->article_image) }}" alt="...">
+                                        </a>
                                         </div>
+                                        <div class="media-body">
+                                        <h4 class="media-heading">Article</h4>
+                                            <div>
+                                                <label for="">Blurb</label>
+                                                <div class="margin">
+                                                    {!! str_limit($PressRelease->blurb, 200) !!}
+                                                </div>
+                                            </div>
 
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div>
+                                    <label for="">Main Content</label>
+                                    <div class="margin">
+                                        {!! str_limit($PressRelease->content, 500, '<a href="#" class="link">Read more...</a>') !!}
                                     </div>
-                                </li>
-                            </ul>
-                            <div>
-                                <label for="">Main Content</label>
-                                <div class="margin">
-                                    {!! str_limit($PressRelease->content, 500, '<a href="#" class="link">Read more...</a>') !!}
                                 </div>
-                            </div>
-                        @else
-                            <h5>Not yet set</h5>
-                        @endif
+                            @else
+                                <h5>Not yet set</h5>
+                            @endif
+                        </div>
                     </div>
+                    {{-- <div class="box-footer">
+                        <p>Note : </p>
+                        <p class="text-primary">Double click the poster to edit data.</p>
+                        <p class="text-primary">Drag the image posters to arrange the order.</p>
+                    </div> --}}
                 </div>
-                {{-- <div class="box-footer">
-                    <p>Note : </p>
-                    <p class="text-primary">Double click the poster to edit data.</p>
-                    <p class="text-primary">Drag the image posters to arrange the order.</p>
-                </div> --}}
             </div>
             {{-- PRESS RELEASE --}}
         </div>
@@ -1171,6 +1192,12 @@
                 console.log(e.scaleY);
             }
         });*/
+
+        $('.box').on('click', '.box-header__toggle', function(e){
+            e.preventDefault();
+            $(this).parent().parent().find('.collapse').collapse('toggle');
+            $(this).find('.fa-caret-square-o-down').toggleClass('fa-rotate-180');
+        });
     </script>
 @endsection
 

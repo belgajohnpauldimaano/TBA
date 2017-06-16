@@ -3,3 +3,21 @@
 
 .dropdown-menu__action li > a {
   padding: 8px 20px; }
+
+.row-film .box-header {
+  padding-left: 50px; }
+  .row-film .box-header__toggle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    padding: 7px 12px 9px 12px;
+    background: #ffffff;
+    color: #2d2c2c;
+    font-size: 20px;
+    border-right: 1px solid #f2f2f2; }
+    .row-film .box-header__toggle i {
+      -moz-transition: all 300ms ease-in-out;
+      -o-transition: all 300ms ease-in-out;
+      -webkit-transition: all 300ms ease-in-out;
+      transition: all 300ms ease-in-out; }
