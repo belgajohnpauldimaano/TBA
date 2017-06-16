@@ -542,6 +542,12 @@ btn */
           height: 30px; } }
   .navbar a {
     text-transform: uppercase; }
+  @media (max-width: 767px) {
+    .navbar {
+      background-color: rgba(28, 28, 28, 0.82); }
+      .navbar .navbar-nav > li > a {
+        font-weight: bold;
+        color: #ddd; } }
 
 .nav-owl {
   width: 300px;
