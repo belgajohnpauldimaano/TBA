@@ -6,11 +6,15 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="{{ route('film') }}" class="logo">
+    <a href="{{ route('home_page_carousel') }}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>T</b>BA</span>
+      <!-- <span class="logo-mini"><b>T</b>BA</span> -->
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>T</b>BA</span>
+      <!-- <span class="logo-lg"><b>T</b>BA</span> -->
+      <span class="logo-mini"><b>T</b>BA</span>
+      <span class="logo-lg">
+          <img src="{{ asset('frontend/assets/img/logo-white.png') }}" alt="TBA LOGO" class="main-header__logo">
+      </span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
@@ -136,12 +140,12 @@
           </ul>
         </li> --}}
         
-        <li class="dashboard">
+        <!-- <li class="dashboard">
           <a href="#">
             <i class="fa fa-circle-o text-red"></i> <span>Dashboard</span>
           </a>
-        </li>
-        <li class="home_page_carousel"><a href="{{ route('home_page_carousel') }}"><i class="fa fa-circle-o text-red"></i> <span>Home Page Carousel</span></a></li>
+        </li> -->
+        <li class="home_page_carousel"><a href="{{ route('home_page_carousel') }}"><i class="fa fa-circle-o text-red"></i> <span>TBA Reel</span></a></li>
         <li class="film"><a href="{{ route('film') }}"><i class="fa fa-circle-o text-yellow"></i> <span>Films</span></a></li>
       </ul>
     </section>
