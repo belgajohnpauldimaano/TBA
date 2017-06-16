@@ -886,10 +886,10 @@ class FilmController extends Controller
         $Photo->thumb_filename = $cropFilename;
         $Photo->save();
 
-        $film_thumbnail = \Image::make(public_path('content\\film\\photos\\' . $Photo->filename));
+        $film_thumbnail = \Image::make(public_path('content/film/photos/' . $Photo->filename));
 
         $film_thumbnail->crop($request->width, $request->height, $request->left, $request->top);
-        $film_thumbnail->save(public_path('content\\film\\photos\\' . $cropFilename));
+        $film_thumbnail->save(public_path('content/film/photos/' . $cropFilename));
 
         return response()->json(['errCode' => 0, 'messages' => 'Film photo successfully cropped.']);
     }
