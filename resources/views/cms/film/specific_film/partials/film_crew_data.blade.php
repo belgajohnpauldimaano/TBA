@@ -5,31 +5,28 @@
                 </div>
                 <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
                 <div class="box-body">
-                    <div class="row">
-                            <div class="col-sm-12">
-                                @if ($FilmCrew)
-                                    @foreach($PERSON_ROLES as $key => $val)
-                                        <div>
-                                            <strong>{{ $val }}</strong>
-                                            {{-- {{ json_encode($Person) }} --}}
-                                            <p>
-                                                <?php 
-                                                    $c = $FilmCrew->filter(function ($crew) use($key) {
-                                                                return $crew->role == $key;
-                                                    }); 
-                                                ?>
-                                                @if ($c->count() > 0)
-                                                    @foreach ($c as $crew)
-                                                        {{ $crew->person->name }},
-                                                    @endforeach
-                                                @else
-                                                    <p>No crew for this role</p>
-                                                @endif
-                                            </p>
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                        
-                    </div>
+                    <table class="table table-bordered table-striped">
+                        @if ($FilmCrew)
+                                @foreach($PERSON_ROLES as $key => $val)
+                                    <tr>
+                                        <th width="369px">{{ $val }}</th>
+                                        <td>
+                                            <?php 
+                                                $c = $FilmCrew->filter(function ($crew) use($key) {
+                                                            return $crew->role == $key;
+                                                }); 
+                                            ?>
+                                            @if ($c->count() > 0)
+                                                @foreach ($c as $crew)
+                                                    <span class="label label-primary">{{ $crew->person->name }}</span>
+                                                @endforeach
+                                            @else
+                                                <p style="margin-bottom: 0">No crew for this role</p>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </div>
+                    </table>
                 </div>
