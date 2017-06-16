@@ -1,2 +1,5 @@
 .main-header__logo {
   height: 25px; }
+
+.dropdown-menu__action li > a {
+  padding: 8px 20px; }
