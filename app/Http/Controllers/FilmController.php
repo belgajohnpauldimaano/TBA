@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use File;
-use Image;
+//use Image;
+use Intervention\Image\Facades\Image as Image;
 
 use App\Film;
 use App\Genre;
@@ -879,7 +880,7 @@ class FilmController extends Controller
         $origFilename = implode('.', $origFilename_arr);
         $filename = $origFilename . '-thumbnail';
         $cropFilename =  $filename . '.' . $ext;
-        $film_thumbnail = Image::make(public_path('content\\film\\photos\\' . $Photo->filename));
+        $film_thumbnail = \Image::make(public_path('content\\film\\photos\\' . $Photo->filename));
 
         $film_thumbnail->crop($request->width, $request->height, $request->left, $request->top);
         $film_thumbnail->save(public_path('content\\film\\photos\\' . $cropFilename));
