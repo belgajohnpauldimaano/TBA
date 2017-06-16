@@ -1,5 +1,9 @@
 @extends('frontend.layouts.main')
 
+@section('page_title')
+<title>TBA - Bringing the filipino audience back to the cinema</title>
+@endsection
+
 @section('container')
     <div class="hero">
         <div class="hero__owl owl-carousel">
