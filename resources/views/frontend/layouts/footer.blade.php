@@ -79,7 +79,8 @@
           function mapOutside(mapId){
               var map = new google.maps.Map(document.getElementById(mapId), {
                   zoom: 18,
-                  center: latLong
+                  center: latLong,
+                  scrollwheel: false
               });
               var marker = new google.maps.Marker({
                   position: latLong,
