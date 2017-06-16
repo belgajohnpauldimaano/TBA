@@ -28,7 +28,7 @@
                         <span class="time">
                             
                         </span>
-                        <h3 class="timeline-header">Home Page Carousel</h3>
+                        <h3 class="timeline-header">TBA Reel</h3>
                         <div class="timeline-body js-image_container box" style="border-top:0">
                             <div class="overlay hidden">
                                 <i class="fa fa-refresh fa-spin"></i>

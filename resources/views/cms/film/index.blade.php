@@ -13,7 +13,7 @@
         <div class="col-sm-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Film</h3>
+                    <h3 class="box-title">Films</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-flat btn-sm btn-primary" id="js-btn_add">
                             <i class="fa fa-plus"></i> Add Film
@@ -77,12 +77,14 @@
                                                 <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     Action <span class="caret"></span>
                                                 </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a href="#" class="js-edit_film" data-id="{{ $data->id }}">Edit</a></li>
+                                                <ul class="dropdown-menu dropdown-menu-right dropdown-menu__action">
+                                                    <li><a href="#" class="js-edit_film" data-id="{{ $data->id }}">Update Basic Info</a></li>
+                                                    <li><a href="{{ route('specific_film_index', $data->id) }}" class="js-view_film" data-id="{{ $data->id }}">View & Update Details</a></li>
+                                                    <li role="separator" class="divider"></li>
                                                     <li><a href="#" class="js-delete_film" data-id="{{ $data->id }}">Delete</a></li>
-                                                    <li><a href="{{ route('specific_film_index', $data->id) }}" class="js-view_film" data-id="{{ $data->id }}">View</a></li>
-                                                    <li><a href="#" class="js-quote_film" data-id="{{ $data->id }}">View Quote</a></li>
-                                                    {{-- <li role="separator" class="divider"></li>
+
+                                                    {{-- <li><a href="#" class="js-quote_film" data-id="{{ $data->id }}">View Quote</a></li>
+                                                    <li role="separator" class="divider"></li>
                                                     <li><a href="#">View</a></li> --}}
                                                 </ul>
                                                 </div>

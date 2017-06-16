@@ -3,3 +3,11 @@
 		height: 25px;
 	}
 }
+
+.dropdown-menu{
+	&__action{
+		li>a{
+			padding: 8px 20px;
+		}
+	}	
+}

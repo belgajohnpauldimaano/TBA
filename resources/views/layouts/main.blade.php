@@ -1,6 +1,6 @@
 @include('layouts.nav')
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini">
 <div class="wrapper">
 
   <header class="main-header">
@@ -13,7 +13,7 @@
       <!-- <span class="logo-lg"><b>T</b>BA</span> -->
       <span class="logo-mini"><b>T</b>BA</span>
       <span class="logo-lg">
-          <img src="{{ asset('frontend/assets/img/logo-white.png') }}" alt="TBA LOGO" class="main-header__logo">
+          <img src="{{ asset('frontend/assets/img/logo-black.png') }}" alt="TBA LOGO" class="main-header__logo">
       </span>
     </a>
 
