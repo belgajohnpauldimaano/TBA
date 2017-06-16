@@ -1,5 +1,9 @@
 @extends('frontend.layouts.main')
 
+@section('page_title')
+<title>Film Line-Up by TBA</title>
+@endsection
+
 @section('container')
         
     <main class="m-b-6">

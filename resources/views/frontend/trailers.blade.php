@@ -1,5 +1,9 @@
 @extends('frontend.layouts.main')
 
+@section('page_title')
+<title>Film Trailers by TBA</title>
+@endsection
+
 @section('container')
 	<main class="trailers-page">
 		@include('frontend.layouts.film_categ')
