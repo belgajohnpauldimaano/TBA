@@ -892,7 +892,7 @@
                         $image.cropper({
                         autoCropArea: 0.5,
                         aspectRatio: 1 / 1,
-                        cropBoxResizable: true,
+                        cropBoxResizable: false,
                         responsive : true,
                         movable  : true,
                         zoomable : true,
