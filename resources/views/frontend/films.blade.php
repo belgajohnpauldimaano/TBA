@@ -19,7 +19,7 @@
                         @foreach ($Film as $film)
                                  <div class="col-md-3 col-xs-6">
                                     <div class="film">
-                                        <a href="#" class="film__link">
+                                        <a href="film/{{ $film->id }}" class="film__link">
                                             @if($film->photos->count() > 0)
                                             <img src="{{ asset('content/film/photos/' . $film->photos[0]->thumb_filename) }}" alt="" class="w-100">
                                             @endif
