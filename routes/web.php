@@ -131,5 +131,13 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
             Route::post('/film_crew_data_fetch/{id}', 'FilmController@film_crew_data_fetch')->name('film_crew_data_fetch');
             
         });
+        Route::group(['prefix' => '/dvd'], function () {
+            Route::post('/film_dvd_form_modal', 'FilmController@film_dvd_form_modal')->name('film_dvd_form_modal');
+            Route::post('/film_dvd_save', 'FilmController@film_dvd_save')->name('film_dvd_save');
+            Route::post('/film_dvd_data_fetch/{id}', 'FilmController@film_dvd_data_fetch')->name('film_dvd_data_fetch');
+            Route::post('/film_dvd_delete', 'FilmController@film_dvd_delete')->name('film_dvd_delete');
+            
+        });
+        
     });
 });

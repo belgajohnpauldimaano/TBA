@@ -19,6 +19,8 @@ use App\PressRelease;
 use App\RelatedLink;
 use App\Person;
 use App\FilmCrew;
+use App\Dvd;
+
 class FilmController extends Controller
 {
 
@@ -310,12 +312,13 @@ class FilmController extends Controller
         $Quote          = Quote::where('film_id', $id)->first();
         $PressRelease   = PressRelease::where('film_id', $id)->first();
         $FilmCrew       = FilmCrew::with('person')->where('film_id', $id)->orderBy('role')->get();
+        $Dvd            = Dvd::where('film_id', $id)->get();
 
         $RATINGS        = Film::RATINGS;    
         $RELEASE_STATUS = Film::RELEASE_STATUS;
         $PERSON_ROLES   = FilmCrew::ROLE;
         //return json_encode($Film);
-        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'PressRelease' => $PressRelease, 'FilmCrew' => $FilmCrew, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS, 'PERSON_ROLES' => $PERSON_ROLES]);
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'PressRelease' => $PressRelease, 'FilmCrew' => $FilmCrew, 'Dvd' => $Dvd, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS, 'PERSON_ROLES' => $PERSON_ROLES]);
      }
 
      public function film_basic_info_fetch ($id)
@@ -838,7 +841,7 @@ class FilmController extends Controller
                 
             }
 
-            if ($request->film_photo_featured)
+            if ($request->film_photo_featured_switch)
             {
                 $Photo->featured = 1;
             }
@@ -1271,5 +1274,174 @@ class FilmController extends Controller
         $FilmCrew       = FilmCrew::with('person')->where('film_id', $id)->orderBy('role')->get();
         $PERSON_ROLES   = FilmCrew::ROLE;
         return view('cms.film.specific_film.partials.film_crew_data', ['FilmCrew' => $FilmCrew, 'PERSON_ROLES' => $PERSON_ROLES])->render();
+    }
+
+    /**
+     * FILM DVD
+     */
+    
+    public function film_dvd_form_modal (Request $request) 
+    {
+        $Dvd = Dvd::where(['id' => $request->dvd_id, 'film_id' => $request->film_id])->first();
+        return view('cms.film.specific_film.partials.film_dvd_form_modal', ['Dvd' => $Dvd, 'film_id' => $request->film_id])->render();         
+    }
+
+    public function film_dvd_save (Request $request)
+    {
+        $rules = [
+            'film_id'   => 'required',
+            'dvd_case_cover' => 'required|mimes:png|max:2048',//|dimensions:max_width:300,max_height:600,min_width:300,min_height:600',
+            'dvd_disc_image' => 'required|mimes:png|max:2048',//|dimensions:max_width:300,max_height:600,min_width:300,min_height:600',
+            'dvd_languages' => 'required',
+            'dvd_subtitles' => 'required',
+            'dvd_running_time' => 'nullable|digits_between:1,5',
+
+        ];
+
+        $messages = [
+            'film_id.required'                  => 'Invalid selection of film.',
+            'dvd_case_cover.required'           => 'DVD case image cover is required.',
+            'dvd_case_cover.mimes'              => 'DVD case image cover should only be a PNG file type.',
+            'dvd_case_cover.dimensions'         => 'DVD case image cover should only be 300 x 600 pixels.',
+            'dvd_case_cover.max'                => 'DVD case image cover should not exceeds 2MB.',
+            'dvd_disc_image.required'           => 'DVD disc image is required.',
+            'dvd_disc_image.mimes'              => 'DVD disc image should only be a PNG file type.',
+            'dvd_disc_image.dimensions'         => 'DVD disc image cover should only be 300 x 300 pixels.',
+            'dvd_disc_image.max'                => 'DVD disc image cover should not exceeds 2MB.',
+            'dvd_languages.required'            => 'Language is required.',
+            'dvd_subtitles.required'            => 'Subtitle is required.',
+            'dvd_running_time.digits_between'   => 'Invalid running time.', 
+        ];
+
+        if ($request->dvd_id)
+        {
+            $rules['dvd_case_cover'] = 'nullable|mimes:png|max:2048';//|dimensions:max_width:300,max_height:600,min_width:300,min_height:600';
+            $rules['dvd_disc_image'] = 'nullable|mimes:png|max:2048';//|dimensions:max_width:300,max_height:300,min_width:300,min_height:300';
+        }
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails())
+        {
+            return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
+        }
+
+        $Film = Film::where('id', $request->film_id)->first();
+
+        // check if film is valid
+        if (!$Film)
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of film.']);
+        }
+
+        // path to dvd image storage
+        $public_path = public_path('content/film/dvds/');
+
+        if ($request->dvd_id) // has dvd_id and this is for editing
+        {
+
+            $Dvd = Dvd::where('id', $request->dvd_id)->first();
+            
+            // check if dvd is valid
+            if (!$Dvd)
+            {
+                return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of film DVD.']);
+            }
+
+            if ($request->hasFile('dvd_case_cover'))
+            {
+                $dvd_case_cover_ext = $request->dvd_case_cover->getClientOriginalExtension();
+                $dvd_case_cover     = str_random(100) . '.' . $dvd_case_cover_ext;
+                $request->dvd_case_cover->move($public_path, $dvd_case_cover);
+
+                if (File::exists($public_path . $Dvd->dvd_case_cover))
+                {
+                    File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_case_cover));
+                }
+
+                $Dvd->dvd_case_cover    = $dvd_case_cover;
+            }
+            
+            if ($request->hasFile('dvd_disc_image'))
+            {
+                $dvd_disc_image_ext = $request->dvd_disc_image->getClientOriginalExtension();
+                $dvd_disc_image     = str_random(100) . '.' . $dvd_disc_image_ext;
+                $request->dvd_disc_image->move($public_path, $dvd_disc_image);
+
+                if (File::exists($public_path . $Dvd->dvd_disc_image))
+                {
+                    File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_disc_image));
+                }
+
+                $Dvd->dvd_disc_image    = $dvd_disc_image;
+            }
+            
+            $Dvd->name              = ($request->dvd_name ? $request->dvd_name : $Film->title . ' DVD');
+            $Dvd->languages         = $request->dvd_languages;
+            $Dvd->subtitles         = $request->dvd_subtitles;
+            $Dvd->running_time      = ($request->dvd_running_time ? $request->dvd_running_time : $Film->running_time);
+            $Dvd->description       = $request->dvd_description;
+
+            $Dvd->save();
+
+            return response()->json(['errCode' => 0, 'messages' => 'DVD data successfully updated.']);
+        }
+
+        // no dvd id and this is for adding 
+        
+        $dvd_case_cover_ext = $request->dvd_case_cover->getClientOriginalExtension();
+        $dvd_disc_image_ext = $request->dvd_case_cover->getClientOriginalExtension();
+        $dvd_case_cover     = str_random(100) . '.' . $dvd_case_cover_ext;
+        $dvd_disc_image     = str_random(100) . '.' . $dvd_disc_image_ext;
+
+        $Dvd = new Dvd();
+
+        $Dvd->name              = ($request->dvd_name ? $request->dvd_name : $Film->title . ' DVD');
+        $Dvd->dvd_case_cover    = $dvd_case_cover;
+        $Dvd->dvd_disc_image    = $dvd_disc_image;
+        $Dvd->languages         = $request->dvd_languages;
+        $Dvd->subtitles         = $request->dvd_subtitles;
+        $Dvd->running_time      = ($request->dvd_running_time ? $request->dvd_running_time : $Film->running_time);
+        $Dvd->description       = $request->dvd_description;
+        $Dvd->film_id           = $request->film_id;
+
+        $Dvd->save();
+
+        // save to dvd image storage
+        $request->dvd_case_cover->move($public_path, $dvd_case_cover);
+        $request->dvd_disc_image->move($public_path, $dvd_disc_image);
+
+
+        return response()->json(['errCode' => 0, 'messages' => 'DVD data successfully added.']);
+    }
+
+    public function film_dvd_data_fetch ($id) 
+    {
+        $Dvd = Dvd::where('film_id', $id)->get();
+        return view('cms.film.specific_film.partials.film_dvd_data_fetch', ['Dvd' => $Dvd])->render();
+    }
+
+    public function film_dvd_delete (Request $request)
+    {
+        if (!$request->id)
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of film DVD.']);
+        }
+
+        // path to dvd image storage
+        $public_path = public_path('content/film/dvds/');
+        $Dvd = Dvd::where(['id' => $request->id])->first();
+
+        if (File::exists($public_path . $Dvd->dvd_case_cover))
+        {
+            File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_case_cover));
+        }
+
+        if (File::exists($public_path . $Dvd->dvd_disc_image))
+        {
+            File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_disc_image));
+        }
+        $Dvd->delete();
+        return response()->json(['errCode' => 0, 'messages' => 'Film DVD data successfully deleted.']);
     }
 }
