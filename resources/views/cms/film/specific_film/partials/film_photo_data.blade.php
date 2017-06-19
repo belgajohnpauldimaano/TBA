@@ -8,7 +8,13 @@
                                     <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
                                         <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
                                         <div class="caption">
-                                            <h4>{{ $data->title }}</h4>
+                                            <h4>
+                                                @if ($data->title)
+                                                    {{ $data->title }}
+                                                @else
+                                                    No Title Yet
+                                                @endif
+                                            </h4>
                                             <hr>
                                             <div class="row">
                                                 <div class="col-xs-6">

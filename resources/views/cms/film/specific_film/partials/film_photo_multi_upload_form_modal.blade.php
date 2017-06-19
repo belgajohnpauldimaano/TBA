@@ -1,9 +1,9 @@
-<div class="modal fade" id="js-poster_image_modal" data-id="js-poster_image_modal" tabindex="-1" role="dialog">
+<div class="modal fade" id="js-film_photo_multi_upload_form_modal" data-id="js-film_photo_multi_upload_form_modal" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Poster Details</h4>
+        <h4 class="modal-title">Photo Details</h4>
       </div>
         <form id="carousel_image_details">
             {{ csrf_field() }}
@@ -18,7 +18,7 @@
                 </div>
 
                 <div class="form-group aa" id="upload-container">
-                    <input id="file-uploader" name="photo" class="" type="file" multiple data-preview-file-type="any">
+                    <input id="file-uploader" name="image_filename" class="" type="file" multiple data-preview-file-type="any">
                 </div>
             </div>    
             <div class="modal-footer">
@@ -31,11 +31,6 @@
 
 
 <script>
-    @if ($Poster)
-            @foreach($Poster as $image)
-
-            @endforeach
-    @endif
 
     $('#file-uploader').on('filezoomhidden', function(event, params) {
         console.log('File zoom show ', params.sourceEvent, params.previewId, params.modal);
@@ -52,8 +47,8 @@
     });
     $("#file-uploader").fileinput({
         //showUpload: false,
-        maxImageWidth: 1200,
-        minImageWidth: 600,
+        //maxImageWidth: 1200,
+        //minImageWidth: 600,
         showCaption: false,
         browseClass: "btn btn-primary",
         fileType: "image",
@@ -64,28 +59,28 @@
         overwriteInitial: false,
         initialPreviewAsData: true,
         initialPreview: [
-            @if ($Poster)
-                @foreach($Poster as $image)
-                    "{{ asset('content/film/posters/') }}/{{$image->label}}",
+            @if ($Photo)
+                @foreach($Photo as $image)
+                    "{{ asset('content/film/photos/') }}/{{$image->filename}}",
                 @endforeach
             @endif
         ],
         initialPreviewConfig: [
-            @if ($Poster)
-                @foreach($Poster as $image)
-                    {caption: "", size: 0, width: "120px", url: "{{ route('poster_image_delete') }}", key: {{ $image->id }}, extra : { _token : "{{ csrf_token() }}", film_id : {{ $film_id }} } },
+            @if ($Photo)
+                @foreach($Photo as $image)
+                    {caption: "", size: 0, width: "120px", url: "{{ route('photo_single_delete') }}", key: {{ $image->id }}, extra : { _token : "{{ csrf_token() }}", id : {{ $image->id }}, film_id : {{ $image->film_id }} } },
                 @endforeach
             @endif
         ],
-        uploadExtraData: {_token: "{{ csrf_token() }}", film_id : {{ $film_id }}},
-        uploadUrl: "{{ route('poster_image_upload') }}",
+        uploadExtraData: {_token: "{{ csrf_token() }}", film_id : {{ $film_id }}, upload_type : 1},
+        uploadUrl: "{{ route('film_photo_single_save', $film_id) }}",
         showUploadedThumbs : false,
         dragIcon : '',
         dragClass : '',
         showClose : '',
         maxFileCount: 10,
         browseOnZoneClick: true,
-        maxFileSize : 1024,
-        msgSizeTooLarge : 'File should not exceeds 1MB in size.'
+        maxFileSize : 2048,
+        msgSizeTooLarge : 'File should not exceeds 2MB in size.'
     });
 </script>

@@ -340,7 +340,8 @@
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Film Photos</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-manage_photo_single"><i class="fa fa-edit"></i> Update</button>
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi"><i class="fa fa-edit"></i> Update</button>
+                        {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_single"><i class="fa fa-edit"></i> Update</button> --}}
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
                     </div>
                 </div>
@@ -356,7 +357,13 @@
                                         <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
                                             <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
                                             <div class="caption">
-                                                <h4>{{ $data->title }}</h4>
+                                                <h4>
+                                                    @if ($data->title)
+                                                        {{ $data->title }}
+                                                    @else
+                                                        No Title Yet
+                                                    @endif
+                                                </h4>
                                                 <hr>
                                                 <div class="row">
                                                     <div class="col-xs-6">
@@ -858,6 +865,30 @@
             show_photo_single_form_modal(id);
         });
         
+        // photo multiple upload
+        $('body').on('click', '.js-manage_photo_multi', function (e) {
+            e.preventDefault();
+
+            data = {_token:"{{ csrf_token() }}", film_id:{{ $Film->id }} };
+
+            $.ajax({
+                url : "{{ route('film_photo_multi_upload_form_modal') }}",
+                type : 'POST',
+                data : data,
+                success : function (data){
+                    $('#js-modal_holder').html(data);
+                    $('#js-film_photo_multi_upload_form_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+            });
+
+        });
+        //"{{ route('film_photo_fetch', $Film->id) }}", $('.js-film_photo_content_holder')
+        // Update the list of film photos
+        $('body').on('hidden.bs.modal', '#js-film_photo_multi_upload_form_modal', function () {
+            fetch_record("{{ route('film_photo_fetch', $Film->id) }}", $('.js-film_photo_content_holder'), 1, '');
+        });
+
+
         // show modal for crop
         $('body').on('click', '.js-film_photo_crop',  function (e) {
             e.preventDefault();
@@ -943,7 +974,6 @@
 
 
         $('.bootbox').on('hidden.bs.modal', function (e) {
-            alert('fasf');
             if($('.modal.in')){
                 $('body').addClass('modal-open');
             }

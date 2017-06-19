@@ -751,13 +751,14 @@ class FilmController extends Controller
     {
         
         $rules = [
-            'title'         => 'required',
-            'image_filename'    => 'required|mimes:jpeg,png'
+            //'title'         => 'nullable',
+            'image_filename'    => 'required|mimes:jpeg,png|max:2048'
         ];
         $messages = [
-            'title.required'        => 'Image title is required.',
+            //'title.required'        => 'Image title is required.',
             'image_filename.required'   => 'Film photo is required.',
-            'image_filename.mimes'      => 'Film photo is invalid format it should be :jpeg,png.'
+            'image_filename.mimes'      => 'Film photo is invalid format it should be :jpeg,png.',
+            'image_filename.required'   => 'Film photo filesize should be only 2MB.',
         ];
 
         if ($request->photo_id)
@@ -769,11 +770,23 @@ class FilmController extends Controller
         
         if ($validator->fails())
         {
-            return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
+            $initialPreview = [];
+            $initialPreviewConfig = [
+                []
+            ];
+            return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true, 'error' => 'Poster photo should not exceeds file size of 2mb.']);
+        
+            /**
+             *  the code below that returns a json response is for single upload only 
+             *  
+             */
+            //return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
+            
         }
 
         if ($request->photo_id) // this is for edit
         {
+
             $Photo = Photo::where('id', $request->photo_id)->first();
 
             if ($Photo == NULL) // no award selected
@@ -791,7 +804,7 @@ class FilmController extends Controller
                 $random_str = str_random(100);
                 $filename   = $random_str . '.' . $ext; // generate random filename and append the extension
                 $thumb_file = $filename . '-thumbnail' . $ext;
-                //$old_filename = $Photo->filename;
+                $old_filename = $Photo->filename;
 
                 File::delete(public_path('content\\film\\photos\\' . $old_filename));
 
@@ -820,6 +833,17 @@ class FilmController extends Controller
         $Photo->film_id     = $id;
         $Photo->save();
         
+        if ($request->upload_type)
+        {
+            $initialPreview = [
+                asset('content/film/photos').'/'.$filename
+            ];
+            $initialPreviewConfig = [
+                ['caption' => "", 'size' => 0, 'width' => "120px", 'url' => route('photo_single_delete'), 'key' => $Photo->id, 'extra' => [' _token' => csrf_token(), 'id' => $Photo->id ] ]
+            ];
+            return response()->json([ 'initialPreview' => $initialPreview, 'initialPreviewConfig' => $initialPreviewConfig, 'initialPreviewThumbTags' => [], 'append' => true]);
+        }
+
         return response()->json(['errCode' => 0, 'messages' => 'Photo information successfully editted.']); // return an success message
     }
 
@@ -831,9 +855,27 @@ class FilmController extends Controller
         }
 
         $Photo = Photo::where('id', $request->id)->first();
-        File::delete(public_path('content\\film\\photos\\' . $Photo->filename));
+        
+        $file_path = public_path('content/film/photos/');
+
+        if (File::exists($file_path . $Photo->filename))
+        {
+            File::delete($file_path . $Photo->filename);
+        }
+
+        if (File::exists($file_path . $Photo->thumb_filename))
+        {
+            File::delete($file_path . $Photo->thumb_filename);
+        }
+
         $Photo->delete();
         return response()->json(['errCode' => 0, 'messages' => 'Photo successfully deleted.', 'closeModal' => true]);
+    }
+
+    public function film_photo_multi_upload_form_modal (Request $request) 
+    {
+        $Photo = Photo::where('film_id', $request->film_id)->get();
+        return view('cms.film.specific_film.partials.film_photo_multi_upload_form_modal', ['Photo' => $Photo, 'film_id' => $request->film_id])->render();
     }
 
     public function film_photo_crop_modal (Request $request)
