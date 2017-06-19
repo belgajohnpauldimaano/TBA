@@ -36,7 +36,7 @@ Route::get('/about', 'Frontend\FilmController@about')->name('about');
 
 Route::get('/contact', 'Frontend\FilmController@contact')->name('contact');
 
-Route::get('/film/info', 'Frontend\FilmController@film_info')->name('film_info');
+Route::get('/film/{id}', 'Frontend\FilmController@film_info')->name('film_info');
 
 Route::get('/trailers', 'Frontend\FilmController@trailers')->name('trailers');
 

@@ -11,7 +11,9 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-9">
-                        <img src="{{ asset('frontend/assets/img/info.jpg') }}" class="w-100">
+                        @if ($film_info->photos->count() > 0)
+                            <img src="{{ asset('content/film/photos/' . $film_info->photos[0]->filename) }}" class="w-100">
+                        @endif
                         <div class="row">
                            <div class="col-md-4 col-sm-5">
                               <div class="info-img">
@@ -31,8 +33,8 @@
                            </div>
                            <div class="col-md-8 col-sm-7">
                               <div class="info-desc">
-                                  <h1 class="h2">I'm Drunk, I Love You!</h1>
-                                  <p class="m-b-6">Days before graduation, two college best friends go on one last road trip where they settle how they really feel for each other. But to put it upfront, this is not that a love story.</p>
+                                  <h1 class="h2">{{ $film_info->title }}</h1>
+                                  <p class="m-b-6">{!! $film_info->synopsis !!}</p>
                                   <ul class="list-inline m-b-4">
                                       <li><strong>GENRE:</strong></li>
                                       <li>Offbeat,</li>

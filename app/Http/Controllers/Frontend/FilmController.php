@@ -27,8 +27,17 @@ class FilmController extends Controller
     public function contact(){
     	return view('frontend.contact');
     }
-    public function film_info(){
-        return view('frontend.film_info');
+    public function film_info(Request $request){
+        $film_info = Film::with(
+            [
+                'photos' => function ($q) {
+                    $q->where('photo_sorter' , 1);
+                }
+            ]
+        )
+        ->where('id', $request->id)->first();
+
+        return view('frontend.film_info', ['film_info' => $film_info]);
     }
     public function trailers(){
         return view('frontend.trailers');
