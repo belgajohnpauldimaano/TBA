@@ -864,7 +864,15 @@
             var id = $(this).data('id');
             show_photo_single_form_modal(id);
         });
-        
+
+        $('body').on('ifChecked', '#film_photo_featured', function(event){
+            $('#film_photo_featured').val('true');
+        });
+
+        $('body').on('ifUnchecked', '#film_photo_featured', function(event){
+            $('#film_photo_featured').val('false');
+        });
+
         // photo multiple upload
         $('body').on('click', '.js-manage_photo_multi', function (e) {
             e.preventDefault();

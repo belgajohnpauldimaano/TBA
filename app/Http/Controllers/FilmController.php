@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use File;
-//use Image;
-use Intervention\Image\Facades\Image as Image;
+use DB;
+use Intervention\Image\Facades\Image as Image; // or use Image;
 
 use App\Film;
 use App\Genre;
@@ -306,7 +306,7 @@ class FilmController extends Controller
         
         $Poster         = Poster::where('film_id', $id)->orderBy('poster_image_sorter', 'ASC')->get();
         $Award          = Award::where('film_id', $id)->orderBy('award_image_sorter', 'ASC')->get();
-        $Photo          = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->get();
+        $Photo          = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->orderBy('updated_at', 'DESC')->get();
         $Quote          = Quote::where('film_id', $id)->first();
         $PressRelease   = PressRelease::where('film_id', $id)->first();
         $FilmCrew       = FilmCrew::with('person')->where('film_id', $id)->orderBy('role')->get();
@@ -794,28 +794,72 @@ class FilmController extends Controller
                 return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of award.']); // return an error message
             }
             
-
             // award is existing
+            DB::beginTransaction();
 
+            $Photo_List = Photo::where('film_id', $Photo->film_id)->get();
+            
+            if ($Photo_List)
+            {
+                foreach ($Photo_List as $data)
+                {
+                    $data->featured = NULL;
+                    $data->save();
+                }
+            }
 
+            $old_filename = '';
+            $old_thumb_filename = '';
             if ($request->hasFile('image_filename')) // check if there is new file uploaded
             {
                 $ext = $request->image_filename->getClientOriginalExtension(); // get the file extension name
                 $random_str = str_random(100);
                 $filename   = $random_str . '.' . $ext; // generate random filename and append the extension
-                $thumb_file = $filename . '-thumbnail' . $ext;
+                //$thumb_file = $filename . '-thumbnail' . $ext;
                 $old_filename = $Photo->filename;
-
-                File::delete(public_path('content\\film\\photos\\' . $old_filename));
+                $old_thumb_filename = $Photo->thumb_filename;
+                /**
+                 * Code below is the previous code to delete the old image, it was changed by the code under the DB::commit()
+                 */
+                //File::delete(public_path('content\\film\\photos\\' . $old_filename)); 
 
                 $request->image_filename->move(public_path('content/film/photos'), $filename); // upload the file
                 
                 $Photo->filename    = $filename;
+                $Photo->thumb_filename    = NULL;
             
             }
 
+            if ($Photo->thumb_filename == NULL)
+            {
+
+                DB::rollback();
+                return response()->json(['errCode' => 2, 'messages' => 'To set as featured photo it should have a cropped thumbnail.']); // return an success message
+                
+            }
+
+            if ($request->film_photo_featured)
+            {
+                $Photo->featured = 1;
+            }
             $Photo->title = $request->title;
             $Photo->save();
+
+            DB::commit();
+            if ($request->hasFile('image_filename')) // check if there is new file uploaded
+            {
+                $file_path = public_path('content/film/photos/');
+
+                if (File::exists($file_path . $old_filename))
+                {
+                    File::delete($file_path . $old_filename);
+                }
+
+                if (File::exists($file_path . $old_thumb_filename))
+                {
+                    File::delete($file_path . $old_thumb_filename);
+                }
+            }
             return response()->json(['errCode' => 0, 'messages' => 'Photo information successfully editted.']); // return an success message
         }
 
@@ -855,7 +899,7 @@ class FilmController extends Controller
         }
 
         $Photo = Photo::where('id', $request->id)->first();
-        
+
         $file_path = public_path('content/film/photos/');
 
         if (File::exists($file_path . $Photo->filename))
@@ -918,14 +962,14 @@ class FilmController extends Controller
             return response()->json(['errCode' => 2, 'messages' => 'Invalid selected film photo.']);
         }
         
-        $origFilename = $Photo->filename;
-        $origFilename_arr = explode('.', $origFilename);
-        $ext =  array_pop($origFilename_arr);
-        $origFilename = implode('.', $origFilename_arr);
-        $filename = $origFilename . '-thumbnail';
-        $cropFilename =  $filename . '.' . $ext;
+        $origFilename           = $Photo->filename;
+        $origFilename_arr       = explode('.', $origFilename);
+        $ext                    =  array_pop($origFilename_arr);
+        $origFilename           = implode('.', $origFilename_arr);
+        $filename               = $origFilename . '-thumbnail';
+        $cropFilename           =  $filename . '.' . $ext;
 
-        $Photo->thumb_filename = $cropFilename;
+        $Photo->thumb_filename  = $cropFilename;
         $Photo->save();
 
         $film_thumbnail = \Image::make(public_path('content/film/photos/' . $Photo->filename));

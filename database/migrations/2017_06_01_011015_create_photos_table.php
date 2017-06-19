@@ -19,6 +19,7 @@ class CreatePhotosTable extends Migration
             $table->string('filename');
             $table->string('thumb_filename');
             $table->tinyInteger('photo_sorter')->nullable();
+            $table->tinyInteger('featured')->nullable();
             $table->integer('film_id')->unsigned();
             $table->timestamps();
         });

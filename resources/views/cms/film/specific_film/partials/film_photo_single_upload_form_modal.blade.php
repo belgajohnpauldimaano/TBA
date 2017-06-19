@@ -40,6 +40,13 @@
                 </div>
                 <div class="help-block text-center" id="image_filename-error"></div>
             </div>
+            <div class="form-group">
+                <label>
+                  <input type="checkbox" name="film_photo_featured" id="film_photo_featured" class="minimal-red" value="{{ ($Photo->featured == 1 ? 'true' : '') }}" {{ ($Photo->featured == 1 ? 'checked' : '') }}> Set as Featured Film Photo
+                </label>
+                <div class="help-block text-center" id="title-error"></div>
+            </div>
+
         </div>
         <div class="modal-footer">
             {{-- <div class="pull-left">
@@ -55,3 +62,10 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<script>
+    //Red color scheme for iCheck
+    $('input[type="checkbox"].minimal-red').iCheck({
+      checkboxClass: 'icheckbox_minimal-red',
+      radioClass: 'iradio_minimal-red'
+    });
+</script>
