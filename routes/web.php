@@ -46,10 +46,8 @@ Route::get('/on-dvd', 'Frontend\FilmController@on_dvd')->name('on_dvd');
 
 
 Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
-    
     Route::get('/', function () {
             return redirect('cms/carousel/home_page_carousel');
-            //return "fsaf";
     });
     Route::group(['prefix' => '/carousel'], function () {
         Route::get('/home_page_carousel', 'HomeCarouselController@index')->name('home_page_carousel');

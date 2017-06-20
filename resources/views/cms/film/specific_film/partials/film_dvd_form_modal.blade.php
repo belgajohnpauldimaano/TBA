@@ -104,7 +104,7 @@
 
             <div class="form-group">
                 <label for="">Description <span class="text-danger"></span></label>
-                <textarea class="form-control" name="dvd_description" id="press_release_blurb" cols="30" rows="10">{{ ($Dvd ? $Dvd->blurb : '') }}</textarea>
+                <textarea class="form-control" name="dvd_description" id="press_release_blurb" cols="30" rows="10">{{ ($Dvd ? $Dvd->description : '') }}</textarea>
                 <div class="help-block text-center" id="dvd_description-error"></div>
             </div>
 
