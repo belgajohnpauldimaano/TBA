@@ -50,7 +50,7 @@ class FilmController extends Controller
         })
         ->orderBy('title', 'asc')
         ->orderBy('release_date', 'DESC')
-        ->paginate(2);
+        ->paginate(5);
 
         $RATINGS = Film::RATINGS;
         
@@ -92,7 +92,7 @@ class FilmController extends Controller
         // })
         ->orderBy('title', 'asc')
         ->orderBy('release_date', 'DESC')
-        ->paginate(2);
+        ->paginate(5);
         $RATINGS = Film::RATINGS;
         return view('cms.film.partials.film_records', ['Film' => $Film, 'request_data' => $request, 'RATINGS' => $RATINGS]);
     }
@@ -1304,8 +1304,8 @@ class FilmController extends Controller
     {
         $rules = [
             'film_id'   => 'required',
-            'dvd_case_cover' => 'required|mimes:png|max:2048',//|dimensions:max_width:300,max_height:600,min_width:300,min_height:600',
-            'dvd_disc_image' => 'required|mimes:png|max:2048',//|dimensions:max_width:300,max_height:600,min_width:300,min_height:600',
+            'dvd_case_cover' => 'required|mimes:png|max:2048|dimensions:max_width:300,max_height:600,min_width:300,min_height:600',
+            'dvd_disc_image' => 'required|mimes:png|max:2048|dimensions:max_width:300,max_height:600,min_width:300,min_height:600',
             'dvd_languages' => 'required',
             'dvd_subtitles' => 'required',
             'dvd_running_time' => 'nullable|digits_between:1,5',

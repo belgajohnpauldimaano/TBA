@@ -8,7 +8,11 @@
     <link href="{{ asset('frontend/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('frontend/node_modules/owl.carousel/dist/assets/owl.carousel.min.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('frontend/node_modules/owl.carousel/dist/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    
+    <link href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('cms/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet">
     @yield('styles')
 
     <link href="{{ asset('frontend/assets/css/app.css') }}" / rel="stylesheet">

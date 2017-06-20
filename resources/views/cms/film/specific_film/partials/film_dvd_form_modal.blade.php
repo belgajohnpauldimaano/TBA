@@ -102,9 +102,9 @@
                 <div class="help-block text-center" id="dvd_running_time-error"></div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group js-wysiwyg_editor_holder">
                 <label for="">Description <span class="text-danger"></span></label>
-                <textarea class="form-control" name="dvd_description" id="press_release_blurb" cols="30" rows="10">{{ ($Dvd ? $Dvd->description : '') }}</textarea>
+                <textarea class="form-control js-wysiwyg_editor" name="dvd_description" id="dvd_description" cols="30" rows="10">{{ ($Dvd ? $Dvd->description : '') }}</textarea>
                 <div class="help-block text-center" id="dvd_description-error"></div>
             </div>
 
@@ -120,3 +120,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+                    <script>
+                        $(".js-wysiwyg_editor").wysihtml5();
+                    </script>

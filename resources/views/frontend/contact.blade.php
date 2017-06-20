@@ -46,18 +46,30 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <form action="">
+                            <form id="form_inquiry">
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="NAME">
+                                    <div class="help-block text-center" id="inquiry_type-error"></div>
+                                    <select name="inquiry_type" id="inquiry_type" class="form-control">
+                                        @foreach (App\MailInquiry::EMAIL_INQUIRY_TYPES as $key => $inquiry)
+                                            <option value="{{ $key }}">{{ $inquiry['type'] }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="EMAIL ADDRESS">
+                                    <div class="help-block text-center" id="inquiry_name-error"></div>
+                                    <input type="text" class="form-control" name="inquiry_name" id="inquiry_name" placeholder="NAME">
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="10" placeholder="MESSAGE"></textarea>
+                                    <div class="help-block text-center" id="inquiry_email-error"></div>
+                                    <input type="text" class="form-control" name="inquiry_email" id="inquiry_email" placeholder="EMAIL ADDRESS">
                                 </div>
+                                <div class="form-group">
+                                    <div class="help-block text-center" id="inquiry_message-error"></div>
+                                    <textarea class="form-control" name="inquiry_message" id="inquiry_message" rows="10" placeholder="MESSAGE"></textarea>
+                                </div>
+                                {{ csrf_field() }}
                                 <div class="text-center">
-                                  <button type="button" class="btn btn-default">Submit</button>
+                                  <button type="submit" class="btn btn-default btn-block">Submit</button>
                                 </div>
                             </form>
                         </div>
@@ -67,4 +79,43 @@
             <div id="mapContact"></div>
         </section>
     </main>
+@endsection
+
+@section ('scripts')
+    <script>
+        $('body').on('submit', '#form_inquiry', function (e) {
+            e.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+                url : "{{ route('inquiry_save') }}",
+                type : 'POST',
+                data : formData,
+                contentType : false,
+                processData : false,
+                success     : function (data) {
+                    
+                    $('.form-group').removeClass('has-error');
+                    $('.form-group').children('.help-block').html('');
+
+                    if (data.errCode == 1)
+                    {
+                        var errMessages = '';
+                        for(var err in data.messages)  {{-- loop to each error --}}
+                        {
+                            errMessages = data.messages[err]; {{-- pass the error message to variable --}}
+                            $('#' + err).parents('.form-group').addClass('has-error');
+                            $('#'+ err + '-error').html('<code>' + errMessages + '</code>'); {{-- add error text to inputs --}}
+                        }
+                    }
+                    else
+                    {
+                            alertify.success('' + data.messages + '');
+                            swal("Success", data.messages, "success");
+                            $('#form_inquiry')[0].reset();
+                    }
+                }
+            });
+
+        });
+    </script>
 @endsection

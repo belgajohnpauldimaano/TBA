@@ -69,7 +69,7 @@
                                     <th width="369px">Sell Sheet</th>
                                     <td>
                                         @if ($Film->sell_sheet != NULL)
-                                            <a href="{{ asset('content/sell_sheets/' . $Film->sell_sheet) }}" target="_blank" class="btn btn-flat btn-danger btn-md"> Download sell sheet</a>
+                                            <a href="{{ asset('content/sell_sheets/' . $Film->sell_sheet) }}" target="_blank" class="btn btn-flat btn-danger btn-md"> View sell sheet</a>
                                         @else
                                             None uploaded
                                         @endif
@@ -1405,6 +1405,7 @@
                     $('#js-modal_holder').html(data);
                     $('#js-film_dvd_form_modal').modal({keyboard : false, backdrop : 'static'});
                     
+                    $(".form-group .wysihtml5-toolbar").addClass('hidden');
                 }
             });
         }

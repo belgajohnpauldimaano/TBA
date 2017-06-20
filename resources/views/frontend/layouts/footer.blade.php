@@ -14,9 +14,10 @@
                                 <li class="footer__social__item"><a class="footer__social__item__link" target="_blank" href=""><i class="fa fa-instagram"></i></a></li>
                                 <li class="footer__social__item"><a class="footer__social__item__link" target="_blank" href="https://www.youtube.com/channel/UChh0rmwGvToBd3owvN2vRMg"><i class="fa fa-youtube"></i></a></li>
                             </ul>
-                            <form method="POST" action="">
+                            <form method="POST" id="form_subsciption" action="{{ route('add_mailing_list') }}">
+                                {{ csrf_field() }}
                                 <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Email Address" aria-describedby="basic-addon1">
+                                    <input name="email" type="text" class="form-control" placeholder="Email Address" aria-describedby="basic-addon1">
                                 </div>
                             </form>
                         </div>
@@ -48,6 +49,8 @@
     <script src="{{ asset('frontend/node_modules/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('frontend/node_modules/owl.carousel/dist/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('frontend/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
+    <script src="{{ asset('cms/plugins/sweetalert/sweetalert.min.js') }}"></script>
 
     @yield('scripts')
 
@@ -113,6 +116,35 @@
           }, 700);
       });
 
+      $('#form_subsciption').on('submit', function (e) {
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
+        $.ajax({
+            url : "{{ route('add_mailing_list') }}",
+            type : 'POST',
+            data : formData,
+            contentType : false,
+            processData : false,
+            success     : function (data) {
+                console.log(data);
+                if (data.errCode == 1)
+                {
+                    var errMessages = '';
+                    for(var err in data.messages)
+                    {
+                        alertify.error('' + data.messages[err] + '');
+                        errMessages = data.messages[err];
+                    }
+                    sweetAlert("Invalid", errMessages, "error");
+                }
+                else
+                {
+                        alertify.success('' + data.messages + '');
+                        swal("Success", data.messages, "success")
+                }
+            }
+        });
+      });
     </script>
 
     <script async defer

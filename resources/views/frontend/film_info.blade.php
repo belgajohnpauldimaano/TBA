@@ -30,8 +30,6 @@
 
                                     @if ($film_info->sell_sheet != NULL)
                                         <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-flat btn-default btn-block btn-default--border">Sell Sheet</a>
-                                    @else
-                                        None uploaded
                                     @endif
                                     {{-- <button class="btn btn-default btn-default--border btn-block">Sell Sheet</button> --}}
                                  </div>

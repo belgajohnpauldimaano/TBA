@@ -34,13 +34,19 @@ Route::get('/films', 'Frontend\FilmController@films')->name('films');
 
 Route::get('/about', 'Frontend\FilmController@about')->name('about');
 
-Route::get('/contact', 'Frontend\FilmController@contact')->name('contact');
 
 Route::get('/film/{id}', 'Frontend\FilmController@film_info')->name('film_info');
 
 Route::get('/trailers', 'Frontend\FilmController@trailers')->name('trailers');
 
 Route::get('/on-dvd', 'Frontend\FilmController@on_dvd')->name('on_dvd');
+
+Route::group(['prefix' => '/contact'], function () {
+    Route::get('/', 'Frontend\FilmController@contact')->name('contact');
+    Route::post('/add_mailing_list', 'MailingListController@add_mailing_list')->name('add_mailing_list');
+    Route::post('/inquiry_save', 'MailingListController@inquiry_save')->name('inquiry_save');
+    
+});
 
 //Route::get('/home', 'HomeController@index')->name('home');
 

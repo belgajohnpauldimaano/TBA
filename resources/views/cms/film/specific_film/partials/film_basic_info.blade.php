@@ -33,7 +33,7 @@
                                 <th width="369px">Sell Sheet</th>
                                 <td>
                                     @if ($Film->sell_sheet != NULL)
-                                        <a href="{{ asset('content/sell_sheets/' . $Film->sell_sheet) }}" target="_blank" class="btn btn-flat btn-danger btn-md"> Download sell sheet</a>
+                                        <a href="{{ asset('content/sell_sheets/' . $Film->sell_sheet) }}" target="_blank" class="btn btn-flat btn-danger btn-md"> View sell sheet</a>
                                     @else
                                         None uploaded
                                     @endif
