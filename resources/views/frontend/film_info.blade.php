@@ -7,7 +7,6 @@
 
 @section('container')
     <main>
-        {{ $film_info }}
         <section>
             <div class="container">
                 <div class="row">
@@ -19,15 +18,32 @@
                            <div class="col-md-4 col-sm-5">
                               <div class="info-img">
                                  <div class="hidden-xs">
-                                    <img src="{{ asset('frontend/assets/img/info-vertical.jpg') }}" class="w-100">
-                                    <button class="btn btn-default btn-default--border btn-block">Sell Sheet</button>
+                                    @if ($film_info->posters->where('featured', 1)->count() == 1)
+                                        @foreach ($film_info->posters->where('featured', 1) as $poster)
+                                            <img src="{{ asset('content/film/posters/' . $poster->label) }}" class="w-100">
+                                        @endforeach
+                                    @else
+                                        <img src="{{ asset('content/film/posters/' . $film_info->posters[0])->label }}" class="w-100">
+                                    @endif
+
+                                    @if ($film_info->sell_sheet != NULL)
+                                        <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-flat btn-default btn-block btn-default--border">Sell Sheet</a>
+                                    @else
+                                        None uploaded
+                                    @endif
+                                    {{-- <button class="btn btn-default btn-default--border btn-block">Sell Sheet</button> --}}
                                  </div>
                                  <div class="btn-group btn-group-justified visible-xs" role="group" aria-label="...">
                                       <div class="btn-group" role="group">
                                           <button type="button" class="btn btn-default">View Poster</button>
                                       </div>
                                       <div class="btn-group" role="group">
-                                          <button type="button" class="btn btn-default">Sell Sheet</button>
+                                            @if ($film_info->sell_sheet != NULL)
+                                                <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-flat btn-default btn-md">Sell Sheet</a>
+                                            @else
+                                                None uploaded
+                                            @endif
+                                          {{-- <button type="button" class="btn btn-default">Sell Sheet</button> --}}
                                       </div>
                                  </div>
                               </div>
@@ -37,14 +53,46 @@
                                   <h1 class="h2">{{ $film_info->title }}</h1>
                                   <p class="m-b-6">{!! $film_info->synopsis !!}</p>
                                   <ul class="list-inline m-b-4">
-                                      <li><strong>GENRE:</strong></li>
-                                      <li>Offbeat,</li>
-                                      <li>Romantic Comedy,</li>
-                                      <li>Music Film</li>
+                                        
+                                            <strong>GENRE:</strong>
+                                            <?php
+                                                /*$genres = $film_info->genre;
+                                                $genre_display = '';
+                                                $genre_arr = explode(',', $genres);
+                                                */
+                                            ?>
+                                            {{-- @if ($genre_arr)
+                                                @foreach ($genre_arr as $genre)
+                                                    <li><span class="">{{$genre}}</span></li>
+                                                @endforeach
+                                            @endif --}}
+
+                                            {{-- USE CODE ABOVE TO SPECIFY STYLE TO EACH GENRE --}}
+
+                                            <li><span class="">{{$film_info->genre}}</span></li>
                                   </ul>
-                                  <ul class="list-inline">
+
+                                  @foreach (App\FilmCrew::ROLE as $key => $role)
+                                        @if ($film_info->film_crews->where('role', $key)->count() > 0)
+                                            <ul class="list-inline">
+                                                <li>
+                                                    <strong>{{ $role }}:</strong>
+                                                </li>
+                                                <li>
+                                                    @foreach ($film_info->film_crews->where('role', $key) as $crew)
+                                                        <span class=""> {{ $crew->person->name }} </span>
+                                                    @endforeach
+                                                </li>
+                                            </ul>
+                                        @endif
+                                    @endforeach
+
+                                  {{-- <ul class="list-inline">
+                                        
+
                                       <li><strong>DIRECTOR:</strong></li>
-                                      <li>Jp Habac</li>
+                                      <li>
+                                      </li>
                                   </ul>
                                   <ul class="list-inline m-b-4">
                                       <li><strong>CAST:</strong></li>
@@ -62,7 +110,7 @@
                                   <ul class="list-unstyled m-b-4">
                                       <li><strong>TOTAL RUNNING TIME:</strong> 1 hour 50 minutes</li>
                                       <li><strong>RELEASE DATE:</strong> February 15, 2017</li>
-                                  </ul>
+                                  </ul> --}}
                               </div>
                            </div>
                        </div>
@@ -70,11 +118,30 @@
                     <div class="col-md-3 hidden-xs hidden-sm">
                         <img src="http://via.placeholder.com/359x700" class="img-responsive">
                         <ul class="list-inline social-icon text-center m-y-3">
-                           <li class="p-x-2"><a href="https://www.facebook.com/ImDrunkILoveYou/"><i class="fa fa-facebook"></i></a></li>
-                           <li class="p-x-2"><a href="https://www.facebook.com/ImDrunkILoveYou/"><i class="fa fa-twitter"></i></a></li>
-                           <li class="p-x-2"><a href="https://www.facebook.com/ImDrunkILoveYou/"><i class="fa fa-instagram"></i></a></li>
+                            @if ($film_info->links)
+                            
+                                @if ($film_info->links->facebook_url)
+                                
+                                    <li class="p-x-2"><a href="{{ $film_info->links->facebook_url }}"><i class="fa fa-facebook"></i></a></li>
+                                @endif
+                                
+                                @if ($film_info->links->twitter_url)
+                                
+                                    <li class="p-x-2"><a href="{{ $film_info->links->twitter_url }}"><i class="fa fa-twitter"></i></a></li>
+                                @endif
+                                
+                                @if ($film_info->links->instagram_url)
+                                
+                                    <li class="p-x-2"><a href="{{ $film_info->links->instagram_url }}"><i class="fa fa-instagram"></i></a></li>
+                                @endif
+
+                            @endif
                        </ul>
-                       <h4 class="text-center">#I'm Drunk I Love You</h4>
+                       <h4 class="text-center">
+                            @if ($film_info->hash_tags)
+                                {{ $film_info->hash_tags }}
+                            @endif
+                       </h4>
                     </div>
                 </div>
             </div>
@@ -86,7 +153,18 @@
                     <h2 class="header-title__tag">Awards / Festivals</h2>
                 </div>
                 <div class="row">
-                   <div class="col-md-10 col-md-offset-1">
+                    @if ($film_info->awards)
+                        <div class="col-md-10 col-md-offset-1">
+                            <div class="film-award-owl m-b-6 owl-carousel">
+                                @foreach ($film_info->awards as $award)
+                                    <div class="item">
+                                        <img src="{{ asset('content/film/awards/' . $award->award_image) }}">
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+                   {{-- <div class="col-md-10 col-md-offset-1">
                       <div class="film-award-owl m-b-6 owl-carousel">
                           <div class="item">
                               <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
@@ -101,7 +179,7 @@
                               <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
                           </div>
                       </div>
-                   </div>
+                   </div> --}}
                </div>
             </div>
         </section>
@@ -111,6 +189,14 @@
                 <h2 class="header-title__tag">Gallery</h2>
             </div>
             <div class="owl-gallery owl-carousel">
+                @if ($film_info->photos)
+                    @foreach ($film_info->photos as $photo)
+                        <a href="#" class="owl-gallery__item" title="{{$photo->title}}">
+                            <img src="{{ asset('content/film/photos/'.$photo->filename) }}" alt="">
+                        </a>
+                    @endforeach
+                @endif
+{{-- 
                 <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="">
                 </a>
@@ -125,7 +211,7 @@
                 </a>
                 <a href="#" class="owl-gallery__item">
                     <img src="{{ asset('frontend/assets/img/films/line-up/f5.jpg') }}" alt="">
-                </a>
+                </a> --}}
             </div>
         </section>
 
@@ -137,9 +223,11 @@
                             <h2 class="header-title__tag">Quotes</h2>
                         </div>
                        <div class="text-center h3">
-                           <p><i>“I’m Drunk, I Love You. is a film that subtly explains truth without hurting, narrates pain without shouting. Beautifully done!”</i></p>
-                           <p class="m-y-6"><strong>-Rod Magaru</strong></p>
-                           <a href="#" class="read-more">[READ MORE]</a>
+                            @if ($film_info->quote)
+                                <p><i>“{{ $film_info->quote->main_quote }}”</i></p>
+                                <p class="m-y-6"><strong>-{{ $film_info->quote->name_of_person }}</strong></p>
+                                <a href="{{ $film_info->quote->url }}" class="read-more">[READ MORE]</a>
+                            @endif
                        </div>
                    </div>
                </div>
@@ -160,11 +248,15 @@
                             <h2 class="header-title__tag">Press Realease</h2>
                         </div>
                        <div class="text-center">
-                           <h3><strong>“I’M DRUNK, I LOVE YOU” SERVES LOVE, <br>MUSIC AND A SHOT OF REALITY</strong></h3>
-                           <div class="h3">
-                               <p class="m-b-6">“I’m Drunk, I Love You.” is not your usual love story. The highly anticipated offbeat romantic comedy that stars Paulo Avelino and Maja Salvador tackles the hilariously painful side of falling hopelessly in love.</p>
-                               <a href="#" class="read-more" id="readMorePR_info">[READ MORE]</a>
-                           </div>
+                            @if ($film_info->press_release)
+                                <h3><strong>{{ $film_info->press_release->title }}</strong></h3>
+                                <div class="h3">
+                                    <p class="m-b-6">
+                                        {!! $film_info->press_release->blurb !!}
+                                    </p>
+                                    <a href="#" class="read-more" id="readMorePR_info">[READ MORE]</a>
+                                </div>
+                            @endif
                        </div>
                    </div>
                </div>
@@ -172,24 +264,25 @@
          </section>
     </main>
 
+@if ($film_info->press_release)
     <div class="modal fade" tabindex="-1" role="dialog" id="modalPressRelease">
        <div class="modal-dialog modal-lg m-t-0" role="document">
            <div class="modal-content">
-               <img src="{{ asset('frontend/assets/img/hero/2.jpg') }}" alt="" class="img-responsive center-block">
+               <img src="{{ asset('content/film/press_release/'.$film_info->press_release->article_image) }}" alt="" class="img-responsive center-block">
                <div class="modal-body">
                   <div class="row">
                      <div class="col-md-10 col-md-offset-1">
-                        <h2 class="text-center">"I'm drunk i love you" serve love, music and a shot of reality</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quisquam animi, quidem? Perspiciatis alias rem, debitis expedita voluptatum. Quaerat accusamus ipsa sint magnam officia eligendi temporibus in excepturi fugiat facilis.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quisquam animi, quidem? Perspiciatis alias rem, debitis expedita voluptatum. Quaerat accusamus ipsa sint magnam officia eligendi temporibus in excepturi fugiat facilis.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur quisquam animi, quidem? Perspiciatis alias rem, debitis expedita voluptatum. Quaerat accusamus ipsa sint magnam officia eligendi temporibus in excepturi fugiat facilis.</p>
+                        <h2 class="text-center">{{ $film_info->press_release->title }}</h2>
+                        <div>
+                                        {!! $film_info->press_release->blurb !!}
+                        </div>
                      </div>
                   </div>
                </div>
            </div>
        </div>
     </div>
-
+@endif
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 

@@ -16,12 +16,14 @@
             
                 <div class="row">
                     @if($Film)
-                        @foreach ($Film as $film)
+                        @foreach ($Film->where('release_status', 1) as $film)
                                  <div class="col-md-3 col-xs-6">
                                     <div class="film">
                                         <a href="film/{{ $film->id }}" class="film__link">
                                             @if($film->photos->count() > 0)
-                                            <img src="{{ asset('content/film/photos/' . $film->photos[0]->thumb_filename) }}" alt="" class="w-100">
+                                                <img src="{{ asset('content/film/photos/' . $film->photos[0]->thumb_filename) }}" alt="" class="w-100">
+                                            @else
+                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48j3XJHxZa9S_Fp9BUg3k2krK8u16W6nlNQFgrirWWMEw26lUaA" alt="" class="w-100">
                                             @endif
                                         </a>
                                         <h3 class="film__title text-center">
@@ -33,107 +35,6 @@
                     @endif
                 </div>
 
-                <div class="row">
-                    <div class="col-md-3 col-xs-6">
-                        <div class="film">
-                            <a href="#" class="film__link">
-                              <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="" class="w-100">
-                            </a>
-                            <div class="film__title text-center">
-                                <span>1-2-3</span>
-                                <p>(Lorem ipsum dolor)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="film">
-                            <a href="#" class="film__link">
-                              <img src="{{ asset('frontend/assets/img/films/line-up/f2.jpg') }}" alt="" class="w-100">
-                            </a>
-                            <div class="film__title text-center">
-                                <span>1-2-3</span>
-                                <p>(Lorem ipsum dolor)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="film">
-                            <a href="#" class="film__link">
-                              <img src="{{ asset('frontend/assets/img/films/line-up/f3.jpg') }}" alt="" class="w-100">
-                            </a>
-                            <div class="film__title text-center">
-                                <span>1-2-3</span>
-                                <p>(Lorem ipsum dolor)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="film">
-                            <a href="#" class="film__link">
-                              <img src="{{ asset('frontend/assets/img/films/line-up/f4.jpg') }}" alt="" class="w-100">
-                            </a>
-                            <div class="film__title text-center">
-                                <span>1-2-3</span>
-                                <p>(Lorem ipsum dolor)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="film">
-                            <a href="#" class="film__link">
-                              <img src="{{ asset('frontend/assets/img/films/line-up/f5.jpg') }}" alt="" class="w-100">
-                            </a>
-                            <div class="film__title text-center">
-                                <span>1-2-3</span>
-                                <p>(Lorem ipsum dolor)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="film">
-                            <a href="#" class="film__link">
-                              <img src="{{ asset('frontend/assets/img/films/line-up/f6.jpg') }}" alt="" class="w-100">
-                            </a>
-                            <div class="film__title text-center">
-                                <span>1-2-3</span>
-                                <p>(Lorem ipsum dolor)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="film">
-                            <a href="#" class="film__link">
-                              <img src="{{ asset('frontend/assets/img/films/line-up/f7.jpg') }}" alt="" class="w-100">
-                            </a>
-                            <div class="film__title text-center">
-                                <span>1-2-3</span>
-                                <p>(Lorem ipsum dolor)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="film">
-                            <a href="#" class="film__link">
-                              <img src="{{ asset('frontend/assets/img/films/line-up/f8.jpg') }}" alt="" class="w-100">
-                            </a>
-                            <div class="film__title text-center">
-                                <span>1-2-3</span>
-                                <p>(Lorem ipsum dolor)</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-xs-6">
-                        <div class="film">
-                            <a href="#" class="film__link">
-                              <img src="{{ asset('frontend/assets/img/films/line-up/f9.jpg') }}" alt="" class="w-100">
-                            </a>
-                            <div class="film__title text-center">
-                                <span>1-2-3</span>
-                                <p>(Lorem ipsum dolor)</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </section>
         
@@ -143,6 +44,26 @@
             </div>
             <div class="container">
                 <div class="row">
+                    @if($Film)
+                        @foreach ($Film->where('release_status', 2) as $film)
+                                 <div class="col-md-3 col-xs-6">
+                                    <div class="film">
+                                        <a href="film/{{ $film->id }}" class="film__link">
+                                            @if($film->photos->count() > 0)
+                                                <img src="{{ asset('content/film/photos/' . $film->photos[0]->thumb_filename) }}" alt="" class="w-100">
+                                            @else
+                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48j3XJHxZa9S_Fp9BUg3k2krK8u16W6nlNQFgrirWWMEw26lUaA" alt="" class="w-100">
+                                            @endif
+                                        </a>
+                                        <h3 class="film__title text-center">
+                                            <span>{{ $film->title }}</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                        @endforeach
+                    @endif
+                </div>
+                {{-- <div class="row">
                     <div class="col-md-3 col-xs-6">
                         <div class="film">
                             <a href="#" class="film__link">
@@ -176,7 +97,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </section>
 
@@ -186,6 +107,27 @@
             </div>
             <div class="container">
                 <div class="row">
+                    @if($Film)
+                        @foreach ($Film->where('release_status', 3) as $film)
+                                 <div class="col-md-3 col-xs-6">
+                                    <div class="film">
+                                        <a href="film/{{ $film->id }}" class="film__link">
+                                            @if($film->photos->count() > 0)
+                                                <img src="{{ asset('content/film/photos/' . $film->photos[0]->thumb_filename) }}" alt="" class="w-100">
+                                            @else
+                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48j3XJHxZa9S_Fp9BUg3k2krK8u16W6nlNQFgrirWWMEw26lUaA" alt="" class="w-100">
+                                            @endif
+                                        </a>
+                                        <h3 class="film__title text-center">
+                                            <span>{{ $film->title }}</span>
+                                        </h3>
+                                    </div>
+                                </div>
+                        @endforeach
+                    @endif
+                </div>
+                
+                {{-- <div class="row">
                     <div class="col-md-3 col-xs-6">
                         <div class="film">
                             <a href="#" class="film__link">
@@ -274,7 +216,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </section>
     </main>

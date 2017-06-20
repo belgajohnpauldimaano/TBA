@@ -182,6 +182,7 @@ class FilmController extends Controller
 
         if($request->has('id')) // has id then it is updating of record
         {
+
             $Film                   = Film::where('id', $request->id)->first();
             $Film->title            = $request->title;
             $Film->genre            = $request->genre;
@@ -190,16 +191,27 @@ class FilmController extends Controller
             $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : NULL);
             $Film->rating           = $request->rating;
             $Film->running_time     = $request->running_time;
-            $Film->sell_sheet       = $request->sellsheet;
             $Film->hash_tags        = $request->hashtags;
-            $Film->save();
             
-            if ($request->has('sellsheet'))
+            $filename = '';
+            if ($request->hasFile('sellsheet'))
             {
-                $ext        = $request->sellsheet->getClientOriginalExtension();
-                $filename   = str_random(100).  '.' . $ext;
+                if ($Film->sell_sheet == '')
+                {
+                    $sellsheet_ext  = $request->sellsheet->getClientOriginalExtension();
+                    $filename       = str_random(20) . '.' . $sellsheet_ext;
+                }
+                else
+                {
+                    $filename = $Film->sell_sheet; 
+                }
+
+                $Film->sell_sheet = $filename; 
+
                 $request->sellsheet->move(public_path('content/sell_sheets'),$filename);
             }
+
+            $Film->save();
 
             if($request->facebook_link || $request->twitter_link || $request->instagram_link)
             {
@@ -226,6 +238,11 @@ class FilmController extends Controller
         }
 
         // adding of record
+
+
+        $sellsheet_ext  = $request->sellsheet->getClientOriginalExtension();
+        $filename       = str_random(20) . '.' . $sellsheet_ext; 
+
         $Film                   = new Film();
         $Film->title            = $request->title;
         $Film->genre            = $request->genre;
@@ -234,16 +251,15 @@ class FilmController extends Controller
         $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : NULL);
         $Film->rating           = $request->rating;
         $Film->running_time     = $request->running_time;
-        $Film->sell_sheet       = $request->sellsheet;
         $Film->hash_tags        = $request->hashtags;
-        $Film->save();
 
         if ($request->has('sellsheet'))
         {
-            $ext        = $request->sellsheet->getClientOriginalExtension();
-            $filename   = str_random(40) . '.' . $ext;
+            $Film->sell_sheet       = $filename;
             $request->sellsheet->move(public_path('content/sell_sheets'),$filename);
         }
+
+        $Film->save();
 
         if($request->facebook_link || $request->twitter_link || $request->instagram_link)
         {

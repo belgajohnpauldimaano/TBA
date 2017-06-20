@@ -15,9 +15,9 @@ class CreateRelatedLinksTable extends Migration
     {
         Schema::create('related_links', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('facebook_url');
-            $table->string('twitter_url');
-            $table->string('instagram_url');
+            $table->string('facebook_url')->nullable();
+            $table->string('twitter_url')->nullable();
+            $table->string('instagram_url')->nullable();
             $table->integer('film_id')->unsigned();
             $table->timestamps();
         });

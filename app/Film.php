@@ -54,8 +54,28 @@ class Film extends Model
         return $this->hasMany(FilmCrew::class, 'film_id', 'id');
     }
 
+    public function posters ()
+    {
+        return $this->hasMany(Poster::class, 'film_id', 'id');
+    }
+
     public function photos ()
     {
         return $this->hasMany(Photo::class, 'film_id', 'id');
+    }
+
+    public function awards ()
+    {
+        return $this->hasMany(Award::class, 'film_id', 'id');
+    }
+    
+    public function quote ()
+    {
+        return $this->hasOne(Quote::class, 'film_id', 'id');
+    }
+    
+    public function press_release ()
+    {
+        return $this->hasOne(PressRelease::class, 'film_id', 'id');
     }
 }
