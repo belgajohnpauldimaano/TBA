@@ -10,6 +10,7 @@
     <link href="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/css/fileinput.css') }}" media="all" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="{{ asset('cms/plugins/cropper/cropper.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/style.css') }}">
 
 @endsection
     {{-- <div class="thumbnail">
@@ -484,6 +485,70 @@
                 </div>
             </div>
             {{-- PRESS RELEASE --}}
+            
+            {{-- DVD --}}
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
+                    <h3 class="box-title">On DVD</h3>
+                    <div class="box-tools">
+                        <button class="btn btn-sm btn-flat btn-primary js-manage_dvd"><i class="fa fa-edit"></i> Update</button>
+                        {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
+                    </div>
+                </div>
+                <div class="collapse">
+                    <div class="box-body js-film_dvd_content_holder  box box-solid">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        <div class="btn-group">
+                            <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
+                            </span>List</a> <a href="#" id="grid" class="btn btn-default btn-sm"><span
+                                class="glyphicon glyphicon-th"></span>Grid</a>
+                        </div>
+                        <div class="js-dvd_container list-group">
+                            @if($Dvd->count() > 0) 
+                                 @foreach($Dvd as $data)
+                                 
+                                    <div class="col-xs-6 col-md-4 item">
+                                        <div class="thumbnail js-dvd_data" data-id="{{ $data->id }}">
+                                            <img style="max-width:150px" class="group list-group-image" src="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" alt="" />
+                                            <div class="caption">
+                                                <h4 class="group inner list-group-item-heading">
+                                                    {{ $data->name }} <label for="" class="label label-warning pull-right"><i class="fa fa-clock-o"></i> {{ $data->running_time }} mins</label>
+                                                </h4>
+                                                <p class="group inner list-group-item-text">
+                                                    {!! $data->description !!}   
+                                                </p>
+                                                <button class="btn btn-flat btn-success btn-xs js-dvd_update" data-id="{{ $data->id }}">Update</button>
+                                                <button class="btn btn-flat btn-danger btn-xs js-dvd_delete" data-id="{{ $data->id }}">Delete</button>
+                                                <div class="row">
+                                                    <div class="col-xs-12 col-md-12">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                @endforeach
+                            @else
+                                <div class="col-sm-12">
+                                    <h5>No photo yet</h5>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <p>Instructions : </p>
+                        <p class="text-primary">a. Click UPDATE to add/modify a DVD entry</p>
+                        <p class="text-primary">b. DVD Set Name can be left blank; if so, name in website will appear as “Film Title DVD”. Otherwise, it will appear as “Film Title DVD Set Name”.</p>
+                        <p class="text-primary">c. Drag & drop each row to re-order the DVDs as to how it will appear in the website.</p>
+                        <p class="text-primary">d. Untick the checkbox to hide the product from the website.</p>
+                    </div>
+                </div>
+            </div>
+            {{-- DVD --}}
+
         </div>
     </div>
     <div id="js-modal_holder"></div>
@@ -865,6 +930,22 @@
             show_photo_single_form_modal(id);
         });
 
+        $('body').on('click', '.film_photo_featured_switch_ui', function () {
+            var checkbox_switch = $(this).parents('.material-switch').children('#film_photo_featured_switch');
+            
+            if (checkbox_switch.val() == 'true')
+            {
+                checkbox_switch.val('false');
+            }
+            else
+            {
+                checkbox_switch.val('true');
+            }
+
+            //!checkbox_switch.val()
+            //alert(checkbox_switch.val());
+        });
+
         $('body').on('ifChecked', '#film_photo_featured', function(event){
             $('#film_photo_featured').val('true');
         });
@@ -1235,6 +1316,103 @@
             e.preventDefault();
             $(this).parent().parent().find('.collapse').collapse('toggle');
             $(this).find('.fa-caret-square-o-down').toggleClass('fa-rotate-180');
+        });
+
+        /**
+         * FILM DVD
+         */
+
+        $('body').on('click', '#list',function(event){
+            event.preventDefault();
+            $('.js-dvd_container .item').addClass('list-group-item');
+        });
+
+        $('body').on('click', '#grid',function(event){
+            event.preventDefault();
+            $('.js-dvd_container .item').removeClass('list-group-item');
+            $('.js-dvd_container .item').addClass('grid-group-item');
+        });
+        
+        $('body').on('click', '.js-manage_dvd', function (e) {
+            e.preventDefault();
+            show_film_dvd_form_modal('');
+
+        });
+
+        $('body').on('click', '.js-dvd_update', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            show_film_dvd_form_modal(id);
+        });
+
+        $('body').on('click', '.js-dvd_delete', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            bootbox.confirm({
+                title: "Confirm",
+                message: "Are you sure you want to delete?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result)
+                    {
+                        delete_record("{{ route('film_dvd_delete') }}", "{{ route('film_dvd_data_fetch', $Film->id) }}", $('.js-film_dvd_content_holder'), id);
+                    }
+                }
+            });
+        });
+
+        function show_film_dvd_form_modal (id)
+        {
+            var data = {
+                _token  :'{{ csrf_token() }}', 
+                film_id : {{ $Film->id }}
+            }; 
+            if (id != '')
+            {
+                data = {
+                    _token  :'{{ csrf_token() }}', 
+                    film_id : {{ $Film->id }},
+                    dvd_id  : id
+                }; 
+            }
+
+            $.ajax({
+                url     : "{{ route('film_dvd_form_modal') }}",
+                type    : 'POST',
+                data    : data,
+                success : function (data) {
+                    $('#js-modal_holder').html(data);
+                    $('#js-film_dvd_form_modal').modal({keyboard : false, backdrop : 'static'});
+                    
+                }
+            });
+        }
+
+        $('body').on('submit', '#js-frm_dvd', function (e) {
+            e.preventDefault();
+
+            save_data($(this), "{{ route('film_dvd_save') }}", "{{ route('film_dvd_data_fetch', $Film->id) }}", $('.js-film_dvd_content_holder'));
+
+        });
+
+        $('body').on('click', '#js-dvd_button', function (e) {
+            e.preventDefault();
+            $(this).parents('.input-group-btn').children('input:file').click();
+        })
+        
+        $('body').on('change', '#dvd_disc_image, #dvd_case_cover', function () {
+            $(this).parents('.input-group').children('.form-control').val($(this).val().replace(/.*(\/|\\)/, ''));
+        });
+        $('body').on('dblclick', '.js-dvd_data', function (e) {
+            e.preventDefault();
+            alert('fds');
         });
     </script>
 @endsection
