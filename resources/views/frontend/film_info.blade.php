@@ -23,7 +23,9 @@
                                             <img src="{{ asset('content/film/posters/' . $poster->label) }}" class="w-100">
                                         @endforeach
                                     @else
-                                        <img src="{{ asset('content/film/posters/' . $film_info->posters[0])->label }}" class="w-100">
+                                        @foreach ($film_info->posters->where('featured', 0) as $poster)
+                                            <img src="{{ asset('content/film/posters/' . $poster->label) }}" class="w-100">
+                                        @endforeach
                                     @endif
 
                                     @if ($film_info->sell_sheet != NULL)

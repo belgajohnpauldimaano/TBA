@@ -239,10 +239,6 @@ class FilmController extends Controller
 
         // adding of record
 
-
-        $sellsheet_ext  = $request->sellsheet->getClientOriginalExtension();
-        $filename       = str_random(20) . '.' . $sellsheet_ext; 
-
         $Film                   = new Film();
         $Film->title            = $request->title;
         $Film->genre            = $request->genre;
@@ -253,8 +249,10 @@ class FilmController extends Controller
         $Film->running_time     = $request->running_time;
         $Film->hash_tags        = $request->hashtags;
 
-        if ($request->has('sellsheet'))
+        if ($request->hasFile('sellsheet'))
         {
+        $sellsheet_ext  = $request->sellsheet->getClientOriginalExtension();
+        $filename       = str_random(20) . '.' . $sellsheet_ext; 
             $Film->sell_sheet       = $filename;
             $request->sellsheet->move(public_path('content/sell_sheets'),$filename);
         }
