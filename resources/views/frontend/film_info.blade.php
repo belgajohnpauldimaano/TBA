@@ -7,6 +7,7 @@
 
 @section('container')
     <main>
+        {{ $film_info }}
         <section>
             <div class="container">
                 <div class="row">

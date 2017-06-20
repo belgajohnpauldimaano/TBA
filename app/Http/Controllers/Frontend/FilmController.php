@@ -16,7 +16,7 @@ class FilmController extends Controller
     }
     public function films(){
         $Film = Film::with(['photos' => function ($q) {
-            $q->where('photo_sorter' , 1);
+            $q->where('featured' , 1);
         }])->where('release_status', 1)->get();
         //return json_encode($Film);
     	return view('frontend.films', ['Film' => $Film]);
@@ -31,7 +31,7 @@ class FilmController extends Controller
         $film_info = Film::with(
             [
                 'photos' => function ($q) {
-                    $q->where('photo_sorter' , 1);
+                    $q->where('featured' , 1);
                 }
             ]
         )
