@@ -176,6 +176,9 @@ main{
     .owl-item{
     	margin-right: 0 !important;
     }
+    .owl-stage{
+    	margin: 0 auto;
+    }
 	a{
 		&:after {
 		    content: "";

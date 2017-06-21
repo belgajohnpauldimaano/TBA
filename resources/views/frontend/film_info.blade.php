@@ -1,5 +1,9 @@
 @extends('frontend.layouts.main')
 
+@section('page_title')
+<title>{{ $film_info->title }}, a film by TBA</title>
+@endsection
+
 @section ('styles')
   <link href="{{ asset('frontend/node_modules/photoswipe/dist/photoswipe.css') }}" rel="stylesheet">
   <link href="{{ asset('frontend/node_modules/photoswipe/dist/default-skin/default-skin.css') }}" rel="stylesheet">
