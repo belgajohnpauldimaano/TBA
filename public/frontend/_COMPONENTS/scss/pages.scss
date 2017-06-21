@@ -124,6 +124,7 @@ main{
 	
 	&__link{
 		display: block;
+		position: relative;
 	}
 	&__title{
 	    padding: 10px;
@@ -131,6 +132,19 @@ main{
 	    margin: 0;
 	    font-size: 16px;
     	text-transform: none;
+
+    	&--height{
+	    	min-height: 0;
+    	}
+	}
+
+	&__no__thumb{
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		width: 100%;
+		color: #fff;
 	}
 }
 
@@ -151,6 +165,9 @@ main{
 	@media (min-width: $md){
 		margin: 60px 0;
 	}
+    .owl-stage{
+    	margin: 0 auto;
+    }
 }
 
 .films-gallery{
@@ -158,6 +175,9 @@ main{
     padding: 25px 0 45px 0;
     .owl-item{
     	margin-right: 0 !important;
+    }
+    .owl-stage{
+    	margin: 0 auto;
     }
 	a{
 		&:after {

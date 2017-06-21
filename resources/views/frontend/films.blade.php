@@ -10,7 +10,7 @@
         @include('frontend.layouts.film_categ')
         <section>
             <div class="header-title">
-                <h2 class="header-title__tag"><span class="text-calibri">2016 - 2017</span> Film Line Up</h2>
+                <h2 class="header-title__tag"><span class="text-calibri">{{ date("Y") - 1 }} - {{ date("Y") }}</span> Film Line Up</h2>
             </div>
             <div class="container">
             
@@ -23,12 +23,25 @@
                                             @if($film->photos->count() > 0)
                                                 <img src="{{ asset('content/film/photos/' . $film->photos[0]->thumb_filename) }}" alt="" class="w-100">
                                             @else
-                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48j3XJHxZa9S_Fp9BUg3k2krK8u16W6nlNQFgrirWWMEw26lUaA" alt="" class="w-100">
+                                                <img src="{{ asset('content/film/photos/thumbnail.jpg') }}" alt="" class="w-100">
+                                                <div class="film__no__thumb">
+                                                    <div class="va-block">
+                                                        <div class="va-middle">
+                                                            <div class="film__title film__title--height text-center">
+                                                                <span>{{ $film->title }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         </a>
-                                        <h3 class="film__title text-center">
-                                            <span>{{ $film->title }}</span>
-                                        </h3>
+                                        @if($film->photos->count() > 0)
+                                            <h3 class="film__title text-center">
+                                                <span>{{ $film->title }}</span>
+                                            </h3>
+                                        @else
+                                            <div class="film__title"></div>
+                                        @endif
                                     </div>
                                 </div>
                         @endforeach

@@ -1,5 +1,9 @@
 @extends('frontend.layouts.main')
 
+@section('page_title')
+<title>{{ $film_info->title }}, a film by TBA</title>
+@endsection
+
 @section ('styles')
   <link href="{{ asset('frontend/node_modules/photoswipe/dist/photoswipe.css') }}" rel="stylesheet">
   <link href="{{ asset('frontend/node_modules/photoswipe/dist/default-skin/default-skin.css') }}" rel="stylesheet">
@@ -52,65 +56,40 @@
                               <div class="info-desc">
                                   <h1 class="h2">{{ $film_info->title }}</h1>
                                   <p class="m-b-6">{!! $film_info->synopsis !!}</p>
+
                                   <ul class="list-inline m-b-4">
-                                        
-                                            <strong>GENRE:</strong>
-                                            <?php
-                                                /*$genres = $film_info->genre;
-                                                $genre_display = '';
-                                                $genre_arr = explode(',', $genres);
-                                                */
-                                            ?>
-                                            {{-- @if ($genre_arr)
-                                                @foreach ($genre_arr as $genre)
-                                                    <li><span class="">{{$genre}}</span></li>
-                                                @endforeach
-                                            @endif --}}
+                                      <strong>GENRE:</strong>
+                                      <?php
+                                          /*$genres = $film_info->genre;
+                                          $genre_display = '';
+                                          $genre_arr = explode(',', $genres);
+                                          */
+                                      ?>
+                                      {{-- @if ($genre_arr)
+                                          @foreach ($genre_arr as $genre)
+                                              <li><span class="">{{$genre}}</span></li>
+                                          @endforeach
+                                      @endif --}}
 
-                                            {{-- USE CODE ABOVE TO SPECIFY STYLE TO EACH GENRE --}}
+                                      {{-- USE CODE ABOVE TO SPECIFY STYLE TO EACH GENRE --}}
 
-                                            <li><span class="">{{$film_info->genre}}</span></li>
+                                      <li><span class="">{{$film_info->genre}}</span></li>
                                   </ul>
 
                                   @foreach (App\FilmCrew::ROLE as $key => $role)
-                                        @if ($film_info->film_crews->where('role', $key)->count() > 0)
-                                            <ul class="list-inline">
-                                                <li>
-                                                    <strong>{{ $role }}:</strong>
-                                                </li>
-                                                <li>
-                                                    @foreach ($film_info->film_crews->where('role', $key) as $crew)
-                                                        <span class=""> {{ $crew->person->name }} </span>
-                                                    @endforeach
-                                                </li>
-                                            </ul>
-                                        @endif
-                                    @endforeach
-
-                                  {{-- <ul class="list-inline">
-                                        
-
-                                      <li><strong>DIRECTOR:</strong></li>
-                                      <li>
-                                      </li>
-                                  </ul>
-                                  <ul class="list-inline m-b-4">
-                                      <li><strong>CAST:</strong></li>
-                                      <li>Maja Salvador,</li>
-                                      <li>Paulo Avelino,</li>
-                                      <li>Dominic Roco,</li>
-                                      <li>Jasmine Curtis-Smith</li>
-                                  </ul>
-                                  <ul class="list-unstyled m-b-4">
-                                      <li><strong>EXECUTIVE PRODUCERS:</strong> Fernando Ortigas, E. A. Rocha</li>
-                                      <li><strong>CO-EXECUTIVE PRODUCER:</strong> Vincent Nebrida</li>
-                                      <li><strong>PRODUCERS:</strong> Armi Rae Cacanindin, Daphne O. Chiu</li>
-                                      <li><strong>CO-PRODUCER:</strong> Paulo Avelino</li>
-                                  </ul>
-                                  <ul class="list-unstyled m-b-4">
-                                      <li><strong>TOTAL RUNNING TIME:</strong> 1 hour 50 minutes</li>
-                                      <li><strong>RELEASE DATE:</strong> February 15, 2017</li>
-                                  </ul> --}}
+                                      @if ($film_info->film_crews->where('role', $key)->count() > 0)
+                                          <ul class="list-inline">
+                                              <li>
+                                                  <strong>{{ $role }}:</strong>
+                                              </li>
+                                              <li>
+                                                  @foreach ($film_info->film_crews->where('role', $key) as $crew)
+                                                      <span class=""> {{ $crew->person->name }} </span>
+                                                  @endforeach
+                                              </li>
+                                          </ul>
+                                      @endif
+                                  @endforeach
                               </div>
                            </div>
                        </div>
@@ -164,22 +143,6 @@
                             </div>
                         </div>
                     @endif
-                   {{-- <div class="col-md-10 col-md-offset-1">
-                      <div class="film-award-owl m-b-6 owl-carousel">
-                          <div class="item">
-                              <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
-                          </div>
-                          <div class="item">
-                              <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
-                          </div>
-                          <div class="item">
-                              <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
-                          </div>
-                          <div class="item">
-                              <img src="{{ asset('frontend/assets/img/Sample_award.png') }}">
-                          </div>
-                      </div>
-                   </div> --}}
                </div>
             </div>
         </section>
@@ -190,28 +153,12 @@
             </div>
             <div class="owl-gallery owl-carousel">
                 @if ($film_info->photos)
-                    @foreach ($film_info->photos as $photo)
-                        <a href="#" class="owl-gallery__item" title="{{$photo->title}}">
-                            <img src="{{ asset('content/film/photos/'.$photo->filename) }}" alt="">
+                    @foreach ($film_info->photos as $key => $photo)
+                        <a href="{{ asset('content/film/photos/'.$photo->filename) }}" class="owl-gallery__item" title="{{$photo->title}}" data-no="{{ $key }}">
+                            <img src="{{ asset('content/film/photos/'.$photo->thumb_filename) }}" alt="">
                         </a>
                     @endforeach
                 @endif
-{{-- 
-                <a href="#" class="owl-gallery__item">
-                    <img src="{{ asset('frontend/assets/img/films/line-up/f1.jpg') }}" alt="">
-                </a>
-                <a href="#" class="owl-gallery__item">
-                    <img src="{{ asset('frontend/assets/img/films/line-up/f2.jpg') }}" alt="">
-                </a>
-                <a href="#" class="owl-gallery__item">
-                    <img src="{{ asset('frontend/assets/img/films/line-up/f3.jpg') }}" alt="">
-                </a>
-                <a href="#" class="owl-gallery__item">
-                    <img src="{{ asset('frontend/assets/img/films/line-up/f4.jpg') }}" alt="">
-                </a>
-                <a href="#" class="owl-gallery__item">
-                    <img src="{{ asset('frontend/assets/img/films/line-up/f5.jpg') }}" alt="">
-                </a> --}}
             </div>
         </section>
 
@@ -264,25 +211,26 @@
          </section>
     </main>
 
-@if ($film_info->press_release)
-    <div class="modal fade" tabindex="-1" role="dialog" id="modalPressRelease">
-       <div class="modal-dialog modal-lg m-t-0" role="document">
-           <div class="modal-content">
-               <img src="{{ asset('content/film/press_release/'.$film_info->press_release->article_image) }}" alt="" class="img-responsive center-block">
-               <div class="modal-body">
-                  <div class="row">
-                     <div class="col-md-10 col-md-offset-1">
-                        <h2 class="text-center">{{ $film_info->press_release->title }}</h2>
-                        <div>
-                                        {!! $film_info->press_release->blurb !!}
-                        </div>
-                     </div>
-                  </div>
+    @if ($film_info->press_release)
+        <div class="modal fade" tabindex="-1" role="dialog" id="modalPressRelease">
+           <div class="modal-dialog modal-lg m-t-0" role="document">
+               <div class="modal-content">
+                   <img src="{{ asset('content/film/press_release/'.$film_info->press_release->article_image) }}" alt="" class="img-responsive center-block">
+                   <div class="modal-body">
+                      <div class="row">
+                         <div class="col-md-10 col-md-offset-1">
+                            <h2 class="text-center">{{ $film_info->press_release->title }}</h2>
+                            <div>
+                                {!! $film_info->press_release->blurb !!}
+                            </div>
+                         </div>
+                      </div>
+                   </div>
                </div>
            </div>
-       </div>
-    </div>
-@endif
+        </div>
+    @endif
+
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -357,10 +305,31 @@
     <script src="{{ asset('frontend/assets/js/app.js') }}"></script>
 
     <script type="text/javascript">
+
+      $('.film-award-owl').owlCarousel({
+          items: 4,
+          //loop: true,
+          loop: ($(".film-award-owl .item").length > 4) ? true : false,
+          margin: 30,
+          nav: false,
+          autoplay: true,
+          autoplaySpeed: 1000,
+          autoplayTimeout: 5000,
+          responsive: {
+              0: {
+                  items: 3
+              },
+              768: {
+                  items: 4
+              }
+          }
+      });
+      
       var owl = $('.owl-gallery');
       options = {
           items: 4,
-          loop: true,
+          //loop: true,
+          loop: ($(".owl-gallery .item").length > 4) ? true : false,
           margin: 1,
           autoplay: true,
           autoplaySpeed: 1000,
@@ -376,24 +345,6 @@
       };
       owl.owlCarousel(options);
 
-      $('.film-award-owl').owlCarousel({
-          items: 4,
-          loop: true,
-          margin: 30,
-          nav: false,
-          autoplay: true,
-          autoplaySpeed: 1000,
-          autoplayTimeout: 5000,
-          responsive: {
-              0: {
-                  items: 3
-              },
-              768: {
-                  items: 4
-              }
-          }
-      });
-
       $('#readMorePR_info').on('click', function(e) {
           e.preventDefault();
           $('#modalPressRelease').modal('show');
@@ -403,43 +354,30 @@
       var openPhotoSwipe = function(goTo) {
           var pswpElement = document.querySelectorAll('.pswp')[0];
           // build items array
-          var items = [{
-              src: '{{ asset("frontend/assets/img/hero/1.jpg") }}',
-              w: 1600,
-              h: 900
-          }, {
-              src: '{{ asset("frontend/assets/img/hero/2.jpg") }}',
-              w: 1600,
-              h: 900
-          },{
-              src: '{{ asset("frontend/assets/img/hero/3.jpg") }}',
-              w: 1600,
-              h: 900
-              //title: "img title",
-          }, {
-              src: '{{ asset("frontend/assets/img/hero/4.jpg") }}',
-              w: 1600,
-              h: 900
-              //title: "img title"
-          }, {
-              src: '{{ asset("frontend/assets/img/hero/5.jpg") }}',
-              w: 1600,
-              h: 900
-              //title: "img title"
-          }];
+          var items = [
+                @if ($film_info->photos)
+                    @foreach ($film_info->photos as $photo)
+                        {
+                            src: '{{ asset('content/film/photos/'.$photo->filename) }}',
+                            w: {{ Image::make(asset('content/film/photos/'.$photo->filename))->width() }},
+                            h: {{ Image::make(asset('content/film/photos/'.$photo->filename))->height() }},
+                        },
+                    @endforeach
+                @endif
+          ];
 
           // define options (if needed)
           var options = {
               history: false,
               focus: false,
-              index: goTo,
+              index: parseInt(goTo),
               maxSpreadZoom: 1,
               getDoubleTapZoom: function(isMouseClick, item) {
                   return item.initialZoomLevel;
               },
 
               showAnimationDuration: 0,
-              hideAnimationDuration: 0,
+              hideAnimationDuration: 0, 
 
               bgOpacity: 0.9,
               fullscreenEl: false,
@@ -453,14 +391,12 @@
           gallery.init();
       };
 
+
       $('.films-gallery').on('click', '.owl-gallery__item', function(e) {
-          e.preventDefault();
-          var id = 3;
+          var id = $(this).attr('data-no');
           openPhotoSwipe(id);
+          e.preventDefault();
       });
 
-      @section ('mapContact')
-        getMapId('mapContact');
-      @endsection
     </script>
 @endsection
