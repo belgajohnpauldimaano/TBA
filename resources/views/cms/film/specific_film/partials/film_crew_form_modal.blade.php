@@ -27,18 +27,19 @@
                             ?>
                             <div class="form-group">
                                 <label for="">{{ strtolower($val) }}</label>
-                                <div class="input-group">
+                                {{-- <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-user"></i>
-                                    </div>
+                                    </div> --}}
                                         <?php $data = ''; ?>
                                         @if ($c->count() > 0)
                                             @foreach ($c as $crew)
                                                 <?php $data .= $crew->person->name . ', '; ?>
                                             @endforeach
                                         @endif
-                                        <input type="text" name="{{ strtolower($elName) }}" id="{{ strtolower($elName) }}" class="form-control tokenfield-typeahead" value="{{$data}}">
-                                    </div>
+                                        <input type="text" autoComplete="off" name="{{ strtolower($elName) }}" id="{{ strtolower($elName) }}" class="form-control tokenfield-typeahead js-crew_inputs" value="{{$data}}">
+                                        
+                                    {{-- </div> --}}
                                 <div class="help-block text-center" id="{{ strtolower($elName) }}-error"></div>
                             </div>
                         </p>

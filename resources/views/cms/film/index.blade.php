@@ -204,10 +204,6 @@
         /*
          * QUOTE JS SCRIPT
          */
-        function load_quote_form_modal ()
-        {
-
-        }
         /*function save_data (form, route, fetch_route, elem)
         {
             var formData = new FormData(form[0]);

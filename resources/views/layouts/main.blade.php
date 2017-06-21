@@ -147,6 +147,8 @@
         </li> -->
         <li class="home_page_carousel"><a href="{{ route('home_page_carousel') }}"><i class="fa fa-circle-o text-red"></i> <span>TBA Reel</span></a></li>
         <li class="film"><a href="{{ route('film') }}"><i class="fa fa-circle-o text-yellow"></i> <span>Films</span></a></li>
+        <li class="mailing"><a href="{{ route('mailing') }}"><i class="fa fa-circle-o text-aqua"></i> <span>Mailing</span></a></li>
+        
       </ul>
     </section>
     <!-- /.sidebar -->

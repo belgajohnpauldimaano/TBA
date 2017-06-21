@@ -69,7 +69,10 @@
                                     <th width="369px">Sell Sheet</th>
                                     <td>
                                         @if ($Film->sell_sheet != NULL)
-                                            <a href="{{ asset('content/sell_sheets/' . $Film->sell_sheet) }}" target="_blank" class="btn btn-flat btn-danger btn-md"> View sell sheet</a>
+                                            <div class="btn-group" role="group" aria-label="...">
+                                            <a href="{{ asset('content/sell_sheets/' . $Film->sell_sheet) }}" target="_blank" class="btn btn-flat btn-md bg-olive"> View sell sheet</a>
+                                            <a href="#" class="btn btn-flat btn-danger js-remove_sellsheet"><i class="fa fa-trash"></i> remove</a>
+                                            </div>
                                         @else
                                             None uploaded
                                         @endif
@@ -574,6 +577,30 @@
     <!-- iCheck 1.0.1 -->
     <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
     <script>
+
+        $('body').on('click' , '.js-remove_sellsheet', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            bootbox.confirm({
+                title: "Confirm",
+                message: "Are you sure you want to delete?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result)
+                    {
+                        delete_record("{{ route('delete_sellsheet', $Film->id) }}", "{{ route('film_basic_info_fetch', $Film->id) }}", $('.js-film_info_content_holder'), id);
+                    }
+                }
+            });
+        });
+
         // modal edit film info show
         $('body').on('click', '.js-edit_film', function (e) {
             e.preventDefault();
@@ -1302,7 +1329,27 @@
                     $('#js-modal_holder').html(data);
                     $('#js-film_crew_form_modal').modal({keyboard : false, backdrop : 'static'});
                     
-                    $('.tokenfield-typeahead').tokenfield();
+                    //$('.tokenfield-typeahead').tokenfield();
+
+                    
+                    var engine = new Bloodhound({
+                        local: [
+                            @if($Person)
+                                @foreach ($Person as $data)
+                                    {value: '{{ $data->name }}'},
+                                @endforeach
+                            @endif 
+                        ],
+                        datumTokenizer: function(d) {
+                            return Bloodhound.tokenizers.whitespace(d.value);
+                        },
+                        queryTokenizer: Bloodhound.tokenizers.whitespace
+                    });
+
+                    engine.initialize();
+                    $('.js-crew_inputs').tokenfield({
+                        typeahead: [null, { source: engine.ttAdapter() }]
+                    });
                 }
             });
         })
