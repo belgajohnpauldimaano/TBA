@@ -756,13 +756,23 @@ main {
 .film {
   margin-bottom: 15px; }
   .film__link {
-    display: block; }
+    display: block;
+    position: relative; }
   .film__title {
     padding: 10px;
     min-height: 55px;
     margin: 0;
     font-size: 16px;
     text-transform: none; }
+    .film__title--height {
+      min-height: 0; }
+  .film__no__thumb {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    color: #fff; }
 
 .info-img {
   margin-top: 15px; }

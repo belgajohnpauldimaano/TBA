@@ -23,12 +23,23 @@
                                             @if($film->photos->count() > 0)
                                                 <img src="{{ asset('content/film/photos/' . $film->photos[0]->thumb_filename) }}" alt="" class="w-100">
                                             @else
-                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT48j3XJHxZa9S_Fp9BUg3k2krK8u16W6nlNQFgrirWWMEw26lUaA" alt="" class="w-100">
+                                                <img src="{{ asset('content/film/photos/thumbnail.jpg') }}" alt="" class="w-100">
+                                                <div class="film__no__thumb">
+                                                    <div class="va-block">
+                                                        <div class="va-middle">
+                                                            <div class="film__title film__title--height text-center">
+                                                                <span>{{ $film->title }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             @endif
                                         </a>
-                                        <h3 class="film__title text-center">
-                                            <span>{{ $film->title }}</span>
-                                        </h3>
+                                        @if($film->photos->count() > 0)
+                                            <h3 class="film__title text-center">
+                                                <span>{{ $film->title }}</span>
+                                            </h3>
+                                        @endif
                                     </div>
                                 </div>
                         @endforeach
