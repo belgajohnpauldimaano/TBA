@@ -45,8 +45,9 @@ class FilmController extends Controller
                     $q->select(['award_name', 'award_image', 'film_id', 'award_image_sorter']);
                 },
                 'photos'  => function ($q) {
+                    $q->where('thumb_filename', '<>' , NULL);
                     $q->orderBy('photo_sorter', 'ASC');
-                    $q->select(['title', 'filename', 'film_id', 'photo_sorter']);
+                    $q->select(['title', 'filename', 'thumb_filename', 'film_id', 'photo_sorter']);
                 },
                 'quote'  => function ($q) {
                     $q->select(['main_quote', 'name_of_person', 'url', 'film_id']);

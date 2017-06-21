@@ -790,6 +790,9 @@ main {
   .film-award {
     margin: 60px 0; } }
 
+.film-award .owl-stage {
+  margin: 0 auto; }
+
 .films-gallery {
   background: #1c1c1c;
   padding: 25px 0 45px 0; }

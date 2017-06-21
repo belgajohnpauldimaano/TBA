@@ -165,6 +165,9 @@ main{
 	@media (min-width: $md){
 		margin: 60px 0;
 	}
+    .owl-stage{
+    	margin: 0 auto;
+    }
 }
 
 .films-gallery{
