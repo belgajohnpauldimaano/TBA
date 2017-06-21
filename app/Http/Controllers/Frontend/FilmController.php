@@ -16,11 +16,15 @@ class FilmController extends Controller
         return view('frontend.home', ['Carousel' => $Carousel, ]);
     }
     public function films(){
-        $Film = Film::with(['photos' => function ($q) {
-            $q->where('featured' , 1);
-        }])
+        $Film = Film::with(
+            ['photos' => function ($q) {
+                $q->where('featured' , 1);
+            }
+        ])
         ->where('release_status', '<>', NULL)
+        ->orderBy('id', 'DESC')
         ->get();
+
         $f = $Film->where('release_status', 1);
         // return dd($Film);
                     
