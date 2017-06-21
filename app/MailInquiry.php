@@ -23,4 +23,12 @@ class MailInquiry extends Model
         '4' => ['type' => 'Film Screenings',            'email' => 'dev@build.com.ph'],
         '5' => ['type' => 'Cinema 76 Inquiries' ,       'email' => 'dev@build.com.ph']
     ];
+
+    const EMAIL_INQUIRY_TYPES_STYLE       = [
+        '1' => 'primary',
+        '2' => 'success',
+        '3' => 'warning',
+        '4' => 'danger',
+        '5' => 'default',
+    ];
 }

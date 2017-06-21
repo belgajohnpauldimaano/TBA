@@ -295,6 +295,32 @@ class FilmController extends Controller
         return response()->json(['errCode' => 0, 'messages' => 'Film successfully deleted.']);
     }
 
+    public function delete_sellsheet ($id) 
+    {
+        if (!$id)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of film sell sheet.']);
+        }
+
+        $Film = Film::where('id', $id)->first();
+
+        if (!$Film)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of film sell sheet.']);
+        }
+
+        $public_path = public_path('content/sell_sheets/');
+
+        if (File::exists($public_path . $Film->sell_sheet))
+        {
+            File::delete($public_path . $Film->sell_sheet);
+            $Film->sell_sheet = NULL;
+            $Film->save();
+            return response()->json(['errCode' => 0, 'messages' => 'Sell sheet successfully deleted.']);
+        }
+
+    }
+
     /* 
      * SPECIFIC FILM
      */
@@ -328,11 +354,13 @@ class FilmController extends Controller
         $FilmCrew       = FilmCrew::with('person')->where('film_id', $id)->orderBy('role')->get();
         $Dvd            = Dvd::where('film_id', $id)->get();
 
+        $Person         = Person::all(['name']);
+
         $RATINGS        = Film::RATINGS;    
         $RELEASE_STATUS = Film::RELEASE_STATUS;
         $PERSON_ROLES   = FilmCrew::ROLE;
         //return json_encode($Film);
-        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'PressRelease' => $PressRelease, 'FilmCrew' => $FilmCrew, 'Dvd' => $Dvd, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS, 'PERSON_ROLES' => $PERSON_ROLES]);
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'PressRelease' => $PressRelease, 'FilmCrew' => $FilmCrew, 'Dvd' => $Dvd, 'Person' => $Person, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS, 'PERSON_ROLES' => $PERSON_ROLES]);
      }
 
      public function film_basic_info_fetch ($id)

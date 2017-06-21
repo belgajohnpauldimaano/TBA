@@ -33,7 +33,10 @@
                                 <th width="369px">Sell Sheet</th>
                                 <td>
                                     @if ($Film->sell_sheet != NULL)
-                                        <a href="{{ asset('content/sell_sheets/' . $Film->sell_sheet) }}" target="_blank" class="btn btn-flat btn-danger btn-md"> View sell sheet</a>
+                                        <div class="btn-group" role="group" aria-label="...">
+                                            <a href="{{ asset('content/sell_sheets/' . $Film->sell_sheet) }}" target="_blank" class="btn btn-flat btn-md bg-olive"> View sell sheet</a>
+                                            <a href="#" class="btn btn-flat btn-danger js-remove_sellsheet"><i class="fa fa-trash"></i> remove</a>
+                                        </div>
                                     @else
                                         None uploaded
                                     @endif

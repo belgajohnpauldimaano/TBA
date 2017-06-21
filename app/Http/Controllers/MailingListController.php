@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use Illuminate\Support\Facades\Mail;
+use Image;
+use Excel;
 
 use App\Mail\MailInquiry as MailInquiryMailer;
 
@@ -14,9 +16,134 @@ use App\MailInquiry;
 class MailingListController extends Controller
 {
     public function index ()
+    {   
+        $MailInquiry = MailInquiry::paginate(10);
+        $EMAIL_INQUIRY_TYPES = MailInquiry::EMAIL_INQUIRY_TYPES;
+
+        $MailingList = MailingList::where('status', 1)->paginate(10);
+
+        return view('cms.mail_inquiry.index', ['MailInquiry' => $MailInquiry, 'EMAIL_INQUIRY_TYPES' => $EMAIL_INQUIRY_TYPES, 'MailingList' => $MailingList]);
+    }
+
+    public function search_inquiries (Request $request)
     {
+        $MailInquiry = MailInquiry::where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->mail_inquiry_search . '%');
+                $q->orWhere('email', 'like', '%' . $request->mail_inquiry_search . '%');
+            })
+            ->where(function ($q) use ($request) {
+                if ($request->mail_inquiry_type != 0)
+                {
+                    $q->where('inquiry_type', '=', $request->mail_inquiry_type);
+                }
+            })
+            ->paginate(10);
+        $EMAIL_INQUIRY_TYPES = MailInquiry::EMAIL_INQUIRY_TYPES;
+
+        return view('cms.mail_inquiry.partials.search_inquiry_data', ['MailInquiry' => $MailInquiry, 'EMAIL_INQUIRY_TYPES' => $EMAIL_INQUIRY_TYPES, 'request' => $request->all()])->render();
+    }
+
+    public function mailing_list (Request $request)
+    {
+        $MailingList = MailingList::
+            where('status', 1)
+            ->where('email', 'like', '%' . $request->mail_list_search . '%')
+            ->paginate(10);
+        return view('cms.mail_inquiry.partials.mailing_list_data', ['MailingList' => $MailingList])->render();
+    }
+
+    public function delete_mail (Request $request)
+    {
+        if (!$request->id)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of email.']);
+        }
+        $MailingList = MailingList::
+            where('id', $request->id)
+            ->first();
+        
+        if (!$MailingList)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of email.']);
+        }
+
+        $MailingList->status = 0;
+        $MailingList->save();
+
+        return response()->json(['errCode' => 0, 'messages' => 'Email address successfully removed.']);
 
     }
+
+    public function view_inquiry (Request $request)
+    {
+        if (!$request->id)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of inquiry.']);
+        }
+
+        $MailInquiry = MailInquiry::where('id', $request->id)->first(['name', 'email', 'message', 'inquiry_type']);
+
+        if (!$MailInquiry)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of inquiry.']);
+        }
+
+        return response()->json(['errCode' => 0, 'messages' => 'successfully fetched.', 'MailInquiry' => $MailInquiry, 'EMAIL_INQUIRY_TYPES' => MailInquiry::EMAIL_INQUIRY_TYPES, 'EMAIL_INQUIRY_TYPES_STYLE' => MailInquiry::EMAIL_INQUIRY_TYPES_STYLE]);
+    }
+
+    public function mail_inquiry_export (Request $request)
+    {
+        $MailInquiry = MailInquiry::where(function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->mail_inquiry_search . '%');
+                $q->orWhere('email', 'like', '%' . $request->mail_inquiry_search . '%');
+            })
+            ->where(function ($q) use ($request) {
+                if ($request->mail_inquiry_type != 0)
+                {
+                    $q->where('inquiry_type', '=', $request->mail_inquiry_type);
+                }
+            })->get(['name', 'email', 'message', 'inquiry_type']);
+
+        if ($MailInquiry->count() < 1)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'System could not able to generate CSV file because query doesn\'t have a result.']);
+        }
+        $EMAIL_INQUIRY_TYPES = MailInquiry::EMAIL_INQUIRY_TYPES;
+
+        Excel::create('exported-inquiry-list', function ($excel) use ($MailInquiry, $EMAIL_INQUIRY_TYPES) {
+                    
+            $excel->setTitle('Our new awesome title');
+
+            $excel->setCreator('TBA')
+                    ->setCompany('TBA');
+                    
+            $excel->setDescription('List of inquiries');
+            
+            $excel->sheet('Inquiries', function ($sheet) use ($MailInquiry, $EMAIL_INQUIRY_TYPES) {
+                
+                     $sheet->row(1, [
+                                'Name', 'Email Address', 'Message', 'Inquiry Type'
+                            ]);
+                    if ($MailInquiry->count() > 0)
+                    {
+                        foreach ($MailInquiry as $key => $mail_inquiry) 
+                        {
+                           $sheet->row($key + 2, [
+                                $mail_inquiry->name, 
+                                $mail_inquiry->email, 
+                                $mail_inquiry->message,
+                                $EMAIL_INQUIRY_TYPES[$mail_inquiry->inquiry_type]['type'] 
+                            ]);
+                        }
+                    }
+
+            }); 
+            })->store('csv', public_path('content'));
+
+        return response()->json(['errCode' => 0, 'messages' => 'CSV successfully exported.']);
+    }
+
+
 
     public function inquiry_save (Request $request)
     {
@@ -48,7 +175,7 @@ class MailingListController extends Controller
         $MailInquiry->name = $request->inquiry_name;
         $MailInquiry->email = $request->inquiry_email;
         $MailInquiry->message = $request->inquiry_message;
-        $MailInquiry->inqury_type = $request->inquiry_type;
+        $MailInquiry->inquiry_type = $request->inquiry_type;
         $MailInquiry->save();
 
         $other = MailInquiry::EMAIL_INQUIRY_TYPES[$request->inquiry_type];

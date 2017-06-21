@@ -31,6 +31,7 @@
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.428571429;
+  padding-left: 0;
 }
 .twitter-typeahead .input-sm.tt-input,
 .twitter-typeahead .hint-sm.tt-hint {

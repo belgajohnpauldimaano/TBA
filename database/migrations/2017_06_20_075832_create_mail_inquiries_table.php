@@ -18,8 +18,8 @@ class CreateMailInquiriesTable extends Migration
             $table->string('name');
             $table->string('email');
             $table->string('message');
-            $table->tinyInteger('inqury_type');
-            $table->tinyInteger('inqury_status')->default(1);
+            $table->tinyInteger('inquiry_type');
+            $table->tinyInteger('inquiry_status')->default(1);
             $table->tinyInteger('send_status')->default(0);
             $table->timestamps();
         });

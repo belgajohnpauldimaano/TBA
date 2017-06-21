@@ -73,8 +73,10 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
         Route::post('/fetch_record', 'FilmController@fetch_record')->name('film_fetch_record');
         Route::post('/delete_film', 'FilmController@delete_film')->name('delete_film');
         Route::post('/film_synopsis_save', 'FilmController@film_synopsis_save')->name('film_synopsis_save');
-        
         Route::get('/{id}/view', 'FilmController@specific_film_index')->name('specific_film_index');
+        Route::post('/delete_sellsheet/{id}/delete_sellsheet', 'FilmController@delete_sellsheet')->name('delete_sellsheet');
+        Route::post('/film_basic_info_fetch/{id}/fetch', 'FilmController@film_basic_info_fetch')->name('film_basic_info_fetch');
+
         Route::group(['prefix' => '/trailer'], function () {
             Route::post('/trailer_order_save', 'FilmController@trailer_order_save')->name('trailer_order_save');
             Route::post('/show_hide_toggle', 'FilmController@show_hide_toggle')->name('show_hide_toggle');
@@ -82,7 +84,6 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
             Route::post('/film_trailer_fetch_record/{id}/fetch', 'FilmController@film_trailer_fetch_record')->name('film_trailer_fetch_record');
             Route::post('/film_trailer_form_modal', 'FilmController@film_trailer_form_modal')->name('film_trailer_form_modal');
             Route::post('/save_trailer/{id}/save', 'FilmController@save_trailer')->name('save_trailer');
-            Route::post('/film_basic_info_fetch/{id}/fetch', 'FilmController@film_basic_info_fetch')->name('film_basic_info_fetch');
         });
         
         Route::group(['prefix' => '/poster'], function () {
@@ -144,4 +145,15 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
         });
         
     });
+    
+    Route::group(['middleware' => 'auth','prefix' => '/mailing'], function () {
+        Route::get('/', 'MailingListController@index')->name('mailing');
+        Route::post('/search_inquiries', 'MailingListController@search_inquiries')->name('search_inquiries');
+        Route::post('/view_inquiry', 'MailingListController@view_inquiry')->name('view_inquiry');
+        Route::post('/mailing_list', 'MailingListController@mailing_list')->name('mailing_list');
+        Route::post('/delete_mail', 'MailingListController@delete_mail')->name('delete_mail');
+        Route::post('/mail_inquiry_export', 'MailingListController@mail_inquiry_export')->name('mail_inquiry_export');
+        
+    });
 });
+
