@@ -22,7 +22,7 @@ class FilmController extends Controller
             }
         ])
         ->where('release_status', '<>', NULL)
-        ->orderBy('id', 'DESC')
+        ->orderBy('title', 'ASC')
         ->get();
 
         $f = $Film->where('release_status', 1);
