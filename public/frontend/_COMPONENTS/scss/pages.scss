@@ -26,6 +26,30 @@ main{
 		}
 	}
 }
+
+.film-trailers-owl{
+	&__item{
+		position: relative;
+		display: block;
+
+		&__play{
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+
+			&:hover, &:active, &:focus{
+				.play-icon{
+				    -ms-transform: scale(1.3,1.3);
+				    transform: scale(1.3,1.3);	
+				}
+			}
+		}
+	}
+}
+
+
 /* End Set Default */
 
 .header-title{
@@ -85,6 +109,25 @@ main{
 }
 
 /* Homepage */
+
+
+.fotorama{
+	&--homepage{
+		@media (max-width: $md - 1){
+			//padding-top: $navbarHeight;
+			padding-top: 50px;
+		}
+		.fotorama__wrap--video .fotorama__video-close {
+		    background: url(http://avidaland.com/assets/img/fotorama-close.png) no-repeat;
+		    top: 85px;
+		    right: 30px;
+		    width: 70px;
+		    height: 70px;
+		    -webkit-transform: scale(0.6, 0.6);
+		    transform: scale(0.6, 0.6);
+		}
+	}
+}
 
 .hero{
 	position: relative;
@@ -300,6 +343,16 @@ main{
 	&__block{
 		display: block;
 		overflow: hidden;
+
+		@extend .film-trailers-owl__item;
+
+		&__play{
+			@extend .film-trailers-owl__item__play;
+
+		    -ms-transform: scale(0.8, 0.8);
+		    -webkit-transform: scale(0.8, 0.8);
+		    transform: scale(0.8, 0.8);
+		}
 	}
 	&:hover img{
 	  -moz-transform: scale(1.1);

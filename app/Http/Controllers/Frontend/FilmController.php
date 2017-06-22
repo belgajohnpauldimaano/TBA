@@ -22,7 +22,7 @@ class FilmController extends Controller
             }
         ])
         ->where('release_status', '<>', NULL)
-        ->orderBy('id', 'DESC')
+        ->orderBy('title', 'ASC')
         ->get();
 
         $f = $Film->where('release_status', 1);
@@ -39,6 +39,11 @@ class FilmController extends Controller
     public function film_info(Request $request){
         $film_info = Film::with(
             [
+                'trailers' => function ($q) {
+                    //$q->where('trailer_show' , 1);
+                    $q->orderBy('trailer_show', 'ASC');
+                    $q->orderBy('trailer_image_sorter', 'ASC');
+                },
                 'photos' => function ($q) {
                     $q->where('featured' , 1);
                 },
@@ -80,7 +85,18 @@ class FilmController extends Controller
         return view('frontend.film_info', ['film_info' => $film_info]);
     }
     public function trailers(){
-        return view('frontend.trailers');
+        $film_trailer = Film::with(
+            [
+                'trailers' => function ($q) {
+                    $q->orderBy('trailer_show', 'ASC');
+                    $q->orderBy('trailer_image_sorter', 'ASC');
+                }
+            ]
+        )
+        //->where('release_status', 1)
+        ->get();
+
+        return view('frontend.trailers', ['film_trailer' => $film_trailer]);
     }
     public function on_dvd(){
     	return view('frontend.on_dvd');

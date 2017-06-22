@@ -11,12 +11,39 @@
 
 @section('container')
     <main>
+        {{-- <pre>{{ json_encode($film_info->trailers, JSON_PRETTY_PRINT)}}</pre> --}}
+        {{-- <pre>{{ json_encode($film_info, JSON_PRETTY_PRINT)}}</pre> --}}
         <section>
             <div class="container">
                 <div class="row">
                     <div class="col-md-9">
                         @if ($film_info->trailers->count() > 0)
-                            <img src="{{ asset('content/film/trailers/' . $film_info->trailers[0]->image_preview) }}" class="w-100">
+                          <div class="film-trailers-owl owl-carousel">
+                              @foreach ($film_info->trailers->where('trailer_show', 1) as $show)
+                                  <a href="{{ $show->trailer_url }}" class="film-trailers-owl__item" caption="{{ $film_info->title }}">
+                                      <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}">
+                                      <div class="film-trailers-owl__item__play">
+                                          <div class="va-block">
+                                              <div class="va-middle">
+                                                  <div class="play-icon"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </a>
+                              @endforeach
+                              @foreach ($film_info->trailers->where('trailer_show', 2) as $show)
+                                  <a href="{{ $show->trailer_url }}" class="film-trailers-owl__item" caption="{{ $film_info->title }}">
+                                      <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}">
+                                      <div class="film-trailers-owl__item__play">
+                                          <div class="va-block">
+                                              <div class="va-middle">
+                                                  <div class="play-icon"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </a>
+                              @endforeach
+                          </div>
                         @endif
                         <div class="row">
                            <div class="col-md-4 col-sm-5">
@@ -231,6 +258,24 @@
         </div>
     @endif
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="modalTrailer">
+       <div class="modal-dialog modal-lg" role="document">
+           <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" class="close t-ease" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"><i class="fa fa-times-circle" aria-hidden="true"></i></span>
+                    </button>
+                    <h4 class="modal-title hidden">This title is dynamic</h4>
+               </div>
+               <div class="modal-body">
+                   <div class="video-wrapper">
+                        <iframe id="trailerVideo" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+                   </div>
+               </div>
+           </div>
+       </div>
+    </div> 
+
     <!-- Root element of PhotoSwipe. Must have class pswp. -->
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
@@ -305,6 +350,16 @@
     <script src="{{ asset('frontend/assets/js/app.js') }}"></script>
 
     <script type="text/javascript">
+
+      var owlTrailer = $('.film-trailers-owl');
+      owlTrailer.owlCarousel({
+          items: 1,
+          loop: true,
+          nav: false,
+          autoplay: true,
+          autoplaySpeed: 1000,
+          autoplayTimeout: 5000
+      });
 
       $('.film-award-owl').owlCarousel({
           items: 4,
@@ -396,6 +451,40 @@
           var id = $(this).attr('data-no');
           openPhotoSwipe(id);
           e.preventDefault();
+      });
+
+
+
+      $(function(){
+
+          var url = '', caption = '';
+
+          $('.film-trailers-owl').on('click', '.film-trailers-owl__item', function(e) {
+              $('#modalTrailer').modal('show');
+              url = $(this).attr('href');
+              caption = $(this).attr('caption');
+
+              var videoid = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+              if (videoid != null) {
+                  //console.log("video id = ", videoid[1]);
+                  url = "//www.youtube.com/embed/"+videoid[1]+"?rel=0&showinfo=0&autoplay=1"
+              } else {
+                  console.log("The youtube url is not valid.");
+              }
+
+              e.preventDefault();
+          });
+
+
+          $("#modalTrailer").on('hide.bs.modal', function() {
+              $("#trailerVideo").attr('src', '');
+              $("#modalTrailer h4").html('').fadeOut().addClass('hidden');
+          });
+
+          $("#modalTrailer").on('shown.bs.modal', function() {
+              $("#trailerVideo").attr('src', url);
+              $("#modalTrailer h4").html(caption).fadeIn().removeClass();
+          });
       });
 
     </script>
