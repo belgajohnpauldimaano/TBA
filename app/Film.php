@@ -12,7 +12,23 @@ class Film extends Model
 
     const RELEASE_STATUS = ['','Current Line-up','Coming Soon','Film Catalogue'];
 
+    const RELEASE_STATUS_STYLE = [
+        '0' => 'bg-gray',
+        '1' => 'bg-aqua',
+        '2' => 'bg-purple',
+        '3' => 'bg-blue',
+    ];
+
     const RATINGS = ['1'=>'G', '2'=>'PG', '3'=>'R-13', '4'=>'R-16', '5'=>'R-18', '6'=>'X'];
+    
+    const RATING_STYLE = [
+        '1' => 'bg-green',
+        '2' => 'bg-blue',
+        '3' => 'bg-yellow',
+        '4' => 'bg-orange',
+        '5' => 'bg-red',
+        '6' => 'bg-black'
+    ];
     
     const ROLE = [
         'DIRECTOR',

@@ -10,6 +10,9 @@
     <link href="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/css/fileinput.css') }}" media="all" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="{{ asset('cms/plugins/cropper/cropper.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
+    <link href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/bootstrap-switch/css/bootstrap3/bootstrap-switch.min.css') }}">
     <link rel="stylesheet" href="{{ asset('cms/style.css') }}">
 
 @endsection
@@ -385,9 +388,13 @@
                         <div class="js-photo_container row ">
                             @if($Photo->count() > 0)
                                 @foreach($Photo as $data)
-                                    <div class="col-xs-6 col-md-3">
+                                    <div class="col-xs-6 col-md-4 col-lg-3">
                                         <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
+                                        @if ($data->thumb_filename)
+                                            <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->thumb_filename) }}" class=" margin">
+                                        @else
                                             <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
+                                        @endif
                                             <div class="caption">
                                                 <h4>
                                                     @if ($data->title)
@@ -396,6 +403,12 @@
                                                         No Title Yet
                                                     @endif
                                                 </h4>
+                                                
+                                                @if ($data->featured == 1)
+                                                    <strong>Featured</strong>
+                                                @endif
+                                                
+                                                <input type="radio" name="gallery_featured" {{ ($data->featured == 1 ? 'checked' : '') }} data-size="mini" data-on-color="danger" data-label-text="" data-on-text="featured" data-off-text="set featured" data-id="{{ $data->id }}" data-film-id="{{ $data->film_id }}" class="bs-switch-radio">
                                                 <hr>
                                                 <div class="row">
                                                     <div class="col-xs-6">
@@ -604,11 +617,48 @@
     <script src="{{ asset('cms/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
     <script src="{{ asset('cms/plugins/cropper/cropper.js') }}"></script>
     <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('cms/plugins/bootstrap-switch/js/bootstrap-switch.min.js') }}"></script>
+    <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
 
     <!-- iCheck 1.0.1 -->
     <script src="{{ asset('cms/plugins/iCheck/icheck.min.js') }}"></script>
     <script>
-
+        
+        $('.bs-switch-radio').bootstrapSwitch();
+        
+        $('body').on('switchChange.bootstrapSwitch', '.bs-switch-radio', function(event, state) {
+            console.log($(this).data('id')); // DOM element
+            console.log(state); // true | false
+            var id = $(this).data('id');
+            $.ajax({
+                url         : "{{ route('film_photo_set_featured') }}",
+                type        : 'POST',
+                data        : {_token: '{{ csrf_token() }}', id : id, film_id : '{{ $Film->id }}'},
+                dataType    : 'JSON',
+                success     : function (data) {
+                    if (data.errCode == 1)
+                    {
+                        alertify.error('' + data.messages + '');
+                    }
+                    else
+                    {
+                        alertify.success('' + data.messages + '');
+                    }
+                },
+                /*error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } */
+            });
+        });
         $('body').on('click' , '.js-remove_sellsheet', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -1143,8 +1193,10 @@
                 success : function (data){
                     if(data.errCode == 0)
                     {
+                        fetch_record("{{ route('film_photo_fetch', $Film->id) }}", $('.js-film_photo_content_holder'), 1, '');
                         $('#js-film_photo_crop_modal').modal('hide');
                         bootbox.alert(data.messages);
+                        
                     }
                 }
             });
@@ -1533,6 +1585,9 @@
                             "size":'sm' // options are xs, sm, lg
                         }
                     });
+                    
+                    $('#dvd_languages').tokenfield();
+                    $('#dvd_subtitles').tokenfield();
                     //$(".form-group .wysihtml5-toolbar").addClass('hidden');
                 }
             });

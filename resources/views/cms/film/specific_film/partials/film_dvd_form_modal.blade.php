@@ -8,7 +8,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">DVD Details</h4>
       </div>
-      <form id="js-frm_dvd">
+      <form id="js-frm_dvd" enctype="multipart/form-data">
         <div class="modal-body">
             <div class="form-group">
                 <div>
@@ -101,7 +101,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-clock-o"></i>
                     </div>
-                    <input type="text" name="dvd_running_time" id="dvd_running_time" class="form-control" value="{{ ($Dvd ? $Dvd->running_time : '') }}">
+                    <input type="number" min="1" name="dvd_running_time" id="dvd_running_time" class="form-control" value="{{ ($Dvd ? $Dvd->running_time : '') }}">
                     </div>
                 <div class="help-block text-center" id="dvd_running_time-error"></div>
             </div>

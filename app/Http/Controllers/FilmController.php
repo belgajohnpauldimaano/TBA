@@ -89,6 +89,7 @@ class FilmController extends Controller
         
         $Film = Film::where(function ($query) use($request) {
             $query->where('title', 'LIKE', '%'. $request->search .'%');
+            $query->orWhere('genre', 'LIKE', '%'. $request->search .'%');
             $query->where(function ($q) {
                 //$q->where('release_status', '!=', 0);
                 $q->where('release_status', '=', NULL);
@@ -102,7 +103,7 @@ class FilmController extends Controller
         ->orderBy('release_date', 'DESC')
         ->paginate($per_page);
         $RATINGS = Film::RATINGS;
-        return view('cms.film.partials.film_records', ['Film' => $Film, 'request_data' => $request, 'RATINGS' => $RATINGS, 'per_page' => $per_page]);
+        return view('cms.film.partials.film_records', ['Film' => $Film, 'RATINGS' => $RATINGS, 'per_page' => $per_page, 'request' => $request]);
     }
 
     public function show_film_form (Request $request)
@@ -801,6 +802,37 @@ class FilmController extends Controller
         return response()->json(['errCode' => 0, 'message' => 'Awards successfully ordered.']);
     }
 
+    public function film_photo_set_featured (Request $request)
+    {
+        if (!$request->id || !$request->film_id)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of photo galler or film.']);
+        }
+
+        $Photo = Photo::where('id', $request->id)->where('film_id', $request->film_id)->first();
+
+        if ($Photo == NULL) // no photo
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of gallery photo.']); // return an error message
+        }
+
+        $Photo_List = Photo::where('film_id', $Photo->film_id)->get();
+            
+        if ($Photo_List)
+        {
+            foreach ($Photo_List as $data)
+            {
+                $data->featured = NULL;
+                $data->save();
+            }
+        }
+
+        $Photo->featured = 1;
+        $Photo->save();
+
+        return response()->json(['errCode' => 0, 'messages' => 'Successfully set as featured.']);
+    }
+
     public function film_photo_single_save ($id, Request $request) 
     {
         
@@ -850,9 +882,9 @@ class FilmController extends Controller
 
             $Photo = Photo::where('id', $request->photo_id)->first();
 
-            if ($Photo == NULL) // no award selected
+            if ($Photo == NULL) // no photo
             {
-                return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of award.']); // return an error message
+                return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of gallery photo.']); // return an error message
             }
             
             if ($request->film_photo_featured_switch && $request->hasFile('image_filename'))
@@ -869,13 +901,15 @@ class FilmController extends Controller
 
             $Photo_List = Photo::where('film_id', $Photo->film_id)->get();
             
-            if ($Photo_List)
+            if ($Photo_List && $request->film_photo_featured_switch)
             {
                 foreach ($Photo_List as $data)
                 {
                     $data->featured = NULL;
                     $data->save();
                 }
+
+                $Photo->featured = 1;
             }
 
             $old_filename = '';
@@ -900,11 +934,11 @@ class FilmController extends Controller
             
             }
 
-            if ($request->film_photo_featured_switch)
-            {
-                $Photo->featured = 1;
-            }
-            
+            // if ($request->film_photo_featured_switch)
+            // {
+            //     $Photo->featured = 1;
+            // }
+
             $Photo->title = ($request->title ? $request->title : $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')');
             $Photo->save();
 
@@ -987,20 +1021,12 @@ class FilmController extends Controller
 
     public function film_photo_crop_modal (Request $request)
     {
-        //$film_thumbnail = Image::make(public_path('content\\film\\photos\\img3.jpg'));
-        //$film_thumbnail->crop(300,300,100,100);
-        //$film_thumbnail->save(public_path('content\\film\\photos\\img3_1.jpg'));
-        //film_photo_crop_modal
-
         $Photo = Photo::where(['id' => $request->photo_id, 'film_id' => $request->film_id])->first(['id', 'filename', 'film_id']);
-
         return view('cms.film.specific_film.partials.film_photo_crop_modal', ['Photo' => $Photo])->render();
     }
 
     public function film_photo_crop_save (Request $request)
     {
-        //return json_encode($request->all());
-
         $rules = [
             'left'      => 'required',
             'top'       => 'required',
@@ -1024,7 +1050,7 @@ class FilmController extends Controller
         {
             return response()->json(['errCode' => 2, 'messages' => 'Invalid selected film photo.']);
         }
-        
+
         $origFilename           = $Photo->filename;
         $origFilename_arr       = explode('.', $origFilename);
         $ext                    =  array_pop($origFilename_arr);
@@ -1034,6 +1060,12 @@ class FilmController extends Controller
 
         $Photo->thumb_filename  = $cropFilename;
         $Photo->save();
+
+        // $file_path = public_path('content/film/photos/');
+        // if (File::exists($file_path . $Photo->filename))
+        // {
+        //     File::delete($file_path . $Photo->filename);
+        // }
 
         $film_thumbnail = \Image::make(public_path('content/film/photos/' . $Photo->filename));
 
@@ -1350,8 +1382,8 @@ class FilmController extends Controller
     {
         $rules = [
             'film_id'   => 'required',                      
-            'dvd_case_cover' => 'required|mimes:png|max:2048|dimensions:max_width=300,max_height=600,min_width=300,min_height=600',
-            'dvd_disc_image' => 'required|mimes:png|max:2048|dimensions:max_width=300,max_height=600,min_width=300,min_height=600',
+            'dvd_case_cover' => 'required|mimes:png|max:2048|dimensions:max_width=300,max_height=500,min_width=300,min_height=500',
+            'dvd_disc_image' => 'required|mimes:png|max:2048|dimensions:max_width=300,max_height=300,min_width=300,min_height=300',
             'dvd_languages' => 'required',
             'dvd_subtitles' => 'required',
             'dvd_running_time' => 'nullable|digits_between:1,5',
@@ -1362,7 +1394,7 @@ class FilmController extends Controller
             'film_id.required'                  => 'Invalid selection of film.',
             'dvd_case_cover.required'           => 'DVD case image cover is required.',
             'dvd_case_cover.mimes'              => 'DVD case image cover should only be a PNG file type.',
-            'dvd_case_cover.dimensions'         => 'DVD case image cover should only be 300 x 600 pixels.',
+            'dvd_case_cover.dimensions'         => 'DVD case image cover should only be 300 x 500 pixels.',
             'dvd_case_cover.max'                => 'DVD case image cover should not exceeds 2MB.',
             'dvd_disc_image.required'           => 'DVD disc image is required.',
             'dvd_disc_image.mimes'              => 'DVD disc image should only be a PNG file type.',
@@ -1375,7 +1407,7 @@ class FilmController extends Controller
 
         if ($request->dvd_id)
         {
-            $rules['dvd_case_cover'] = 'nullable|mimes:png|max:2048|dimensions:max_width=300,max_height=600,min_width=300,min_height=600';
+            $rules['dvd_case_cover'] = 'nullable|mimes:png|max:2048|dimensions:max_width=300,max_height=500,min_width=300,min_height=500';
             $rules['dvd_disc_image'] = 'nullable|mimes:png|max:2048|dimensions:max_width=300,max_height=300,min_width=300,min_height=300';
         }
 
@@ -1416,7 +1448,7 @@ class FilmController extends Controller
 
                 if (File::exists($public_path . $Dvd->dvd_case_cover))
                 {
-                    File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_case_cover));
+                    File::delete(public_path('content/film/dvds/' . $Dvd->dvd_case_cover));
                 }
 
                 $Dvd->dvd_case_cover    = $dvd_case_cover;
@@ -1430,7 +1462,7 @@ class FilmController extends Controller
 
                 if (File::exists($public_path . $Dvd->dvd_disc_image))
                 {
-                    File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_disc_image));
+                    File::delete(public_path('content/film/dvds/' . $Dvd->dvd_disc_image));
                 }
 
                 $Dvd->dvd_disc_image    = $dvd_disc_image;
@@ -1494,12 +1526,12 @@ class FilmController extends Controller
 
         if (File::exists($public_path . $Dvd->dvd_case_cover))
         {
-            File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_case_cover));
+            File::delete(public_path('content/film/dvds/' . $Dvd->dvd_case_cover));
         }
 
         if (File::exists($public_path . $Dvd->dvd_disc_image))
         {
-            File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_disc_image));
+            File::delete(public_path('content/film/dvds/' . $Dvd->dvd_disc_image));
         }
         $Dvd->delete();
         return response()->json(['errCode' => 0, 'messages' => 'Film DVD data successfully deleted.']);

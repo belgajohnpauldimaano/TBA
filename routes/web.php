@@ -114,6 +114,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
             Route::post('/film_photo_crop_modal', 'FilmController@film_photo_crop_modal')->name('film_photo_crop_modal');
             Route::post('/film_photo_crop_save', 'FilmController@film_photo_crop_save')->name('film_photo_crop_save');
             Route::post('/film_photo_multi_upload_form_modal', 'FilmController@film_photo_multi_upload_form_modal')->name('film_photo_multi_upload_form_modal');
+            Route::post('/film_photo_set_featured', 'FilmController@film_photo_set_featured')->name('film_photo_set_featured');
             
         });
         
