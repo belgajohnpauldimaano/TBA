@@ -46,7 +46,7 @@
                           </div>
                         @endif
                         <div class="row">
-                           <div class="col-md-4 col-sm-5">
+                           <div class="{{ $film_info->posters->count() < 1 ? 'hidden' : 'col-md-4 col-sm-5' }}">
                               <div class="info-img">
                                  <div class="hidden-xs">
                                     @if ($film_info->posters->where('featured', 1)->count() == 1)
@@ -59,24 +59,27 @@
                                         @endforeach
                                     @endif
                                     @if ($film_info->sell_sheet != NULL)
-                                        <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-default btn-default--border btn-block"">Sell Sheet</a>
+                                      <div class="hidden-xs">
+                                        <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-default btn-default--border btn-block">Sell Sheet</a>
+                                      </div>
                                     @endif
                                  </div>
                                  <div class="btn-group btn-group-justified visible-xs" role="group" aria-label="...">
                                       <div class="btn-group" role="group">
-                                          <button type="button" class="btn btn-default">View Poster</button>
+                                          <button type="button" class="btn btn-default btn-default__black">View Poster</button>
                                       </div>
                                       <div class="btn-group" role="group">
                                             @if ($film_info->sell_sheet != NULL)
                                                 <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-default">Sell Sheet</a>
                                             @else
-                                                None uploaded
+                                                {{-- None uploaded --}}
+                                              <a class="btn btn-default disabled">None uploaded</a>
                                             @endif
                                       </div>
                                  </div>
                               </div>
                            </div>
-                           <div class="col-md-8 col-sm-7">
+                           <div class="{{ $film_info->posters->count() < 1 ? 'col-xs-12 col-md-12' : 'col-md-8 col-sm-7' }}">
                               <div class="info-desc">
                                   <h1 class="h2">{{ $film_info->title }}</h1>
                                   <p class="m-b-6">{!! $film_info->synopsis !!}</p>
@@ -99,6 +102,15 @@
                                           </ul>
                                       @endif
                                   @endforeach
+
+                                  @if($film_info->posters->count() < 1)
+                                      @if ($film_info->sell_sheet != NULL)
+                                          <div class="hidden-xs">
+                                            <hr>
+                                            <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-default btn-default--border p-x-6">Sell Sheet</a>
+                                          </div>
+                                      @endif
+                                  @endif
                               </div>
                            </div>
                        </div>
