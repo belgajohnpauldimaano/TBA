@@ -94,6 +94,17 @@ class FilmController extends Controller
         return view('frontend.trailers', ['film_trailer' => $film_trailer]);
     }
     public function on_dvd(){
-    	return view('frontend.on_dvd');
+        
+        $dvds = Film::with(
+            [
+                'dvds' => function ($q) {
+                    // $q->orderBy('trailer_show', 'ASC');
+                    // $q->orderBy('trailer_image_sorter', 'ASC');
+                }
+            ]
+        )
+        ->get();
+
+        return view('frontend.on_dvd', ['dvds' => $dvds]);
     }
 }

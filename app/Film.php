@@ -78,4 +78,9 @@ class Film extends Model
     {
         return $this->hasOne(PressRelease::class, 'film_id', 'id');
     }
+    
+    public function dvds ()
+    {
+        return $this->hasMany(Dvd::class, 'film_id', 'id');
+    }
 }
