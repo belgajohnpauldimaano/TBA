@@ -80,7 +80,18 @@ class FilmController extends Controller
         return view('frontend.film_info', ['film_info' => $film_info]);
     }
     public function trailers(){
-        return view('frontend.trailers');
+        $film_trailer = Film::with(
+            [
+                'trailers' => function ($q) {
+                    $q->orderBy('trailer_show', 'ASC');
+                    $q->orderBy('trailer_image_sorter', 'ASC');
+                }
+            ]
+        )
+        //->where('release_status', 1)
+        ->get();
+
+        return view('frontend.trailers', ['film_trailer' => $film_trailer]);
     }
     public function on_dvd(){
     	return view('frontend.on_dvd');

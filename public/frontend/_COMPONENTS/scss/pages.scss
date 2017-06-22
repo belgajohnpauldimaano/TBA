@@ -343,6 +343,16 @@ main{
 	&__block{
 		display: block;
 		overflow: hidden;
+
+		@extend .film-trailers-owl__item;
+
+		&__play{
+			@extend .film-trailers-owl__item__play;
+
+		    -ms-transform: scale(0.8, 0.8);
+		    -webkit-transform: scale(0.8, 0.8);
+		    transform: scale(0.8, 0.8);
+		}
 	}
 	&:hover img{
 	  -moz-transform: scale(1.1);
