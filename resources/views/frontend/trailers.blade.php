@@ -4,6 +4,17 @@
 <title>Film Trailers by TBA</title>
 @endsection
 
+@section('styles')
+	
+	<style>
+		@media (min-width: 992px){
+			.modal-lg {
+			    width: 1200px;
+			}
+		}
+	</style>
+@endsection
+
 @section('container')
 	<main class="trailers-page">
 		@include('frontend.layouts.film_categ')

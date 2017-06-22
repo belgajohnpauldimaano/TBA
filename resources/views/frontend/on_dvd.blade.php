@@ -1,5 +1,9 @@
 @extends('frontend.layouts.main')
 
+@section('page_title')
+<title>Films by TBA, DVD Release</title>
+@endsection
+
 @section('container')
     <main class="dvd-page">
         @include('frontend.layouts.film_categ')
