@@ -730,6 +730,20 @@ main {
       margin: 30px 0; } }
 
 /* Homepage */
+@media (max-width: 767px) {
+  .fotorama--homepage {
+    padding-top: 50px; } }
+
+.fotorama--homepage .fotorama__wrap--video .fotorama__video-close {
+  background: url(http://avidaland.com/assets/img/fotorama-close.png) no-repeat;
+  top: 85px;
+  right: 30px;
+  width: 70px;
+  height: 70px;
+  -webkit-transform: scale(0.6, 0.6);
+  -ms-transform: scale(0.6, 0.6);
+  transform: scale(0.6, 0.6); }
+
 .hero {
   position: relative;
   background: #000;
