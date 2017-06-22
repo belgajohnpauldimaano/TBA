@@ -39,6 +39,11 @@ class FilmController extends Controller
     public function film_info(Request $request){
         $film_info = Film::with(
             [
+                'trailers' => function ($q) {
+                    //$q->where('trailer_show' , 1);
+                    $q->orderBy('trailer_show', 'ASC');
+                    $q->orderBy('trailer_image_sorter', 'ASC');
+                },
                 'photos' => function ($q) {
                     $q->where('featured' , 1);
                 },
