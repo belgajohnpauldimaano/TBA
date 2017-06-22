@@ -904,7 +904,7 @@ class FilmController extends Controller
             {
                 $Photo->featured = 1;
             }
-            
+
             $Photo->title = ($request->title ? $request->title : $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')');
             $Photo->save();
 
@@ -1350,7 +1350,7 @@ class FilmController extends Controller
     {
         $rules = [
             'film_id'   => 'required',                      
-            'dvd_case_cover' => 'required|mimes:png|max:2048|dimensions:max_width=300,max_height=600,min_width=300,min_height=600',
+            'dvd_case_cover' => 'required|mimes:png|max:2048|dimensions:max_width=300,max_height=500,min_width=300,min_height=500',
             'dvd_disc_image' => 'required|mimes:png|max:2048|dimensions:max_width=300,max_height=600,min_width=300,min_height=600',
             'dvd_languages' => 'required',
             'dvd_subtitles' => 'required',
@@ -1362,7 +1362,7 @@ class FilmController extends Controller
             'film_id.required'                  => 'Invalid selection of film.',
             'dvd_case_cover.required'           => 'DVD case image cover is required.',
             'dvd_case_cover.mimes'              => 'DVD case image cover should only be a PNG file type.',
-            'dvd_case_cover.dimensions'         => 'DVD case image cover should only be 300 x 600 pixels.',
+            'dvd_case_cover.dimensions'         => 'DVD case image cover should only be 300 x 500 pixels.',
             'dvd_case_cover.max'                => 'DVD case image cover should not exceeds 2MB.',
             'dvd_disc_image.required'           => 'DVD disc image is required.',
             'dvd_disc_image.mimes'              => 'DVD disc image should only be a PNG file type.',
@@ -1375,7 +1375,7 @@ class FilmController extends Controller
 
         if ($request->dvd_id)
         {
-            $rules['dvd_case_cover'] = 'nullable|mimes:png|max:2048|dimensions:max_width=300,max_height=600,min_width=300,min_height=600';
+            $rules['dvd_case_cover'] = 'nullable|mimes:png|max:2048|dimensions:max_width=300,max_height=500,min_width=300,min_height=500';
             $rules['dvd_disc_image'] = 'nullable|mimes:png|max:2048|dimensions:max_width=300,max_height=300,min_width=300,min_height=300';
         }
 
@@ -1416,7 +1416,7 @@ class FilmController extends Controller
 
                 if (File::exists($public_path . $Dvd->dvd_case_cover))
                 {
-                    File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_case_cover));
+                    File::delete(public_path('content/film/dvds/' . $Dvd->dvd_case_cover));
                 }
 
                 $Dvd->dvd_case_cover    = $dvd_case_cover;
@@ -1430,7 +1430,7 @@ class FilmController extends Controller
 
                 if (File::exists($public_path . $Dvd->dvd_disc_image))
                 {
-                    File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_disc_image));
+                    File::delete(public_path('content/film/dvds/' . $Dvd->dvd_disc_image));
                 }
 
                 $Dvd->dvd_disc_image    = $dvd_disc_image;
@@ -1494,12 +1494,12 @@ class FilmController extends Controller
 
         if (File::exists($public_path . $Dvd->dvd_case_cover))
         {
-            File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_case_cover));
+            File::delete(public_path('content/film/dvds/' . $Dvd->dvd_case_cover));
         }
 
         if (File::exists($public_path . $Dvd->dvd_disc_image))
         {
-            File::delete(public_path('content\\film\\dvds\\' . $Dvd->dvd_disc_image));
+            File::delete(public_path('content/film/dvds/' . $Dvd->dvd_disc_image));
         }
         $Dvd->delete();
         return response()->json(['errCode' => 0, 'messages' => 'Film DVD data successfully deleted.']);

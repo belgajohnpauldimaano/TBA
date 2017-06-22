@@ -385,7 +385,7 @@
                         <div class="js-photo_container row ">
                             @if($Photo->count() > 0)
                                 @foreach($Photo as $data)
-                                    <div class="col-xs-6 col-md-3">
+                                    <div class="col-xs-6 col-md-4 col-lg-3">
                                         <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
                                             <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
                                             <div class="caption">
@@ -396,6 +396,10 @@
                                                         No Title Yet
                                                     @endif
                                                 </h4>
+                                                
+                                                @if ($data->featured == 1)
+                                                    <strong>Featured</strong>
+                                                @endif
                                                 <hr>
                                                 <div class="row">
                                                     <div class="col-xs-6">
@@ -1533,6 +1537,9 @@
                             "size":'sm' // options are xs, sm, lg
                         }
                     });
+                    
+                    $('#dvd_languages').tokenfield();
+                    $('#dvd_subtitles').tokenfield();
                     //$(".form-group .wysihtml5-toolbar").addClass('hidden');
                 }
             });

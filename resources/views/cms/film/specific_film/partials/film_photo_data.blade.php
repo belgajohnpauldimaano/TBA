@@ -4,7 +4,7 @@
                     <div class="js-photo_container row ">
                         @if($Photo->count() > 0)
                             @foreach($Photo as $data)
-                                <div class="col-xs-6 col-md-3">
+                                <div class="col-xs-6 col-md-4 col-lg-3">
                                     <div  data-id="{{ $data->id }}" class="thumbnail js-film_photo_item">
                                         <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/photos/' . $data->filename) }}" class=" margin">
                                         <div class="caption">
