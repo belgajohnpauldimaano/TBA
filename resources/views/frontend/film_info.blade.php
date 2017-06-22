@@ -183,20 +183,20 @@
             <div class="m-y-5 p-y-1"></div>
         @endif
 
-        <section class="films-gallery">
-            <div class="header-title">
-                <h2 class="header-title__tag">Gallery</h2>
-            </div>
-            <div class="owl-gallery owl-carousel">
-                @if ($film_info->photos)
+        @if ($film_info->photos)
+            <section class="films-gallery">
+                <div class="header-title">
+                    <h2 class="header-title__tag">Gallery</h2>
+                </div>
+                <div class="owl-gallery owl-carousel">
                     @foreach ($film_info->photos as $key => $photo)
                         <a href="{{ asset('content/film/photos/'.$photo->filename) }}" class="owl-gallery__item" title="{{$photo->title}}" data-no="{{ $key }}">
-                            <img src="{{ asset('content/film/photos/'.$photo->thumb_filename) }}" alt="">
+                            <img src="{{ asset('content/film/photos/'.$photo->thumb_filename) }}" title="{{$photo->title}}">
                         </a>
                     @endforeach
-                @endif
-            </div>
-        </section>
+                </div>
+            </section>
+        @endif
 
         @if ($film_info->quote)
             <section class="film-quotes">
@@ -209,7 +209,9 @@
                            <div class="text-center h3">
                                   <p><i>“{{ $film_info->quote->main_quote }}”</i></p>
                                   <p class="m-y-6"><strong>-{{ $film_info->quote->name_of_person }}</strong></p>
-                                  <a href="{{ $film_info->quote->url }}" class="read-more">[READ MORE]</a>
+                                  @if ($film_info->quote->url)
+                                      <a href="{{ $film_info->quote->url }}" class="read-more">[READ MORE]</a>
+                                  @endif
                            </div>
                        </div>
                    </div>
@@ -229,16 +231,16 @@
                  <div class="row">
                      <div class="col-md-8 col-md-offset-2">
                           <div class="header-title">
-                              <h2 class="header-title__tag">Press Realease</h2>
+                              <h2 class="header-title__tag">Press Release</h2>
                           </div>
                          <div class="text-center">
-                                  <h3><strong>{{ $film_info->press_release->title }}</strong></h3>
-                                  <div class="h3">
-                                      <p class="m-b-6">
-                                          {!! $film_info->press_release->blurb !!}
-                                      </p>
-                                      <a href="#" class="read-more" id="readMorePR_info">[READ MORE]</a>
-                                  </div>
+                              <h3><strong>{{ $film_info->press_release->title }}</strong></h3>
+                              <div class="h3">
+                                  <p class="m-b-6">
+                                      {!! $film_info->press_release->blurb !!}
+                                  </p>
+                                  <a href="#" class="read-more" id="readMorePR_info">[READ MORE]</a>
+                              </div>
                          </div>
                      </div>
                  </div>
@@ -257,7 +259,7 @@
                          <div class="col-md-10 col-md-offset-1">
                             <h2 class="text-center">{{ $film_info->press_release->title }}</h2>
                             <div>
-                                {!! $film_info->press_release->blurb !!}
+                                {!! $film_info->press_release->content !!}
                             </div>
                          </div>
                       </div>
