@@ -92,7 +92,7 @@
                                   @foreach (App\FilmCrew::ROLE as $key => $role)
                                       @if ($film_info->film_crews->where('role', $key)->count() > 0)
 
-                                          <ul class="list-inline {{ strtolower(str_replace(' ', '-', $role)) == 'director' ? 'm-b-5' : '' }}">
+                                          <ul class="list-inline {{ strtolower(str_replace(' ', '-', $role)) == 'cast' ? 'm-b-5' : '' }}">
                                               <li>
                                                   <strong class="text-NeutraTextTF">{{ $role }}:</strong>
                                               </li>
@@ -108,11 +108,11 @@
                                   @if ($film_info->running_time != '' || $film_info->release_date != '')
                                       <ul class="list-inline m-t-5">
                                           <li><strong class="text-NeutraTextTF">TOTAL RUNNIG TIME:</strong></li>
-                                          <li><span class="">{{$film_info->running_time}}</span></li>
+                                          <li><span class="">{{$film_info->running_time}}</span> minutes</li>
                                       </ul>
                                       <ul class="list-inline">
                                           <li><strong class="text-NeutraTextTF">RELEASE DATE:</strong></li>
-                                          <li><span class="">{{$film_info->release_date}}</span></li>
+                                          <li><span class="">{{ date('F d Y', strtotime($film_info->release_date)) }}</span></li>
                                       </ul>
                                   @endif
 
@@ -160,13 +160,13 @@
             </div>
         </section>
 
-        <section class="film-award">
-            <div class="container">
-                <div class="header-title">
-                    <h2 class="header-title__tag">Awards / Festivals</h2>
-                </div>
-                <div class="row">
-                    @if ($film_info->awards)
+        @if ($film_info->awards == NULL)
+            <section class="film-award">
+                <div class="container">
+                    <div class="header-title">
+                        <h2 class="header-title__tag">Awards / Festivals</h2>
+                    </div>
+                    <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <div class="film-award-owl m-b-6 owl-carousel">
                                 @foreach ($film_info->awards as $award)
@@ -176,10 +176,12 @@
                                 @endforeach
                             </div>
                         </div>
-                    @endif
-               </div>
-            </div>
-        </section>
+                   </div>
+                </div>
+            </section>
+        @else
+            <div class="m-y-5 p-y-1"></div>
+        @endif
 
         <section class="films-gallery">
             <div class="header-title">
