@@ -58,11 +58,9 @@
                                             <img src="{{ asset('content/film/posters/' . $poster->label) }}" class="w-100">
                                         @endforeach
                                     @endif
-
                                     @if ($film_info->sell_sheet != NULL)
-                                        <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-flat btn-default btn-block btn-default--border">Sell Sheet</a>
+                                        <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-default btn-default--border btn-block"">Sell Sheet</a>
                                     @endif
-                                    {{-- <button class="btn btn-default btn-default--border btn-block">Sell Sheet</button> --}}
                                  </div>
                                  <div class="btn-group btn-group-justified visible-xs" role="group" aria-label="...">
                                       <div class="btn-group" role="group">
@@ -70,11 +68,10 @@
                                       </div>
                                       <div class="btn-group" role="group">
                                             @if ($film_info->sell_sheet != NULL)
-                                                <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-flat btn-default btn-md">Sell Sheet</a>
+                                                <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-default">Sell Sheet</a>
                                             @else
                                                 None uploaded
                                             @endif
-                                          {{-- <button type="button" class="btn btn-default">Sell Sheet</button> --}}
                                       </div>
                                  </div>
                               </div>
@@ -84,25 +81,10 @@
                                   <h1 class="h2">{{ $film_info->title }}</h1>
                                   <p class="m-b-6">{!! $film_info->synopsis !!}</p>
 
-                                  <ul class="list-inline m-b-4">
-                                      <strong>GENRE:</strong>
-                                      <?php
-                                          /*$genres = $film_info->genre;
-                                          $genre_display = '';
-                                          $genre_arr = explode(',', $genres);
-                                          */
-                                      ?>
-                                      {{-- @if ($genre_arr)
-                                          @foreach ($genre_arr as $genre)
-                                              <li><span class="">{{$genre}}</span></li>
-                                          @endforeach
-                                      @endif --}}
-
-                                      {{-- USE CODE ABOVE TO SPECIFY STYLE TO EACH GENRE --}}
-
+                                  <ul class="list-inline">
+                                      <li><strong>GENRE:</strong></li>
                                       <li><span class="">{{$film_info->genre}}</span></li>
                                   </ul>
-
                                   @foreach (App\FilmCrew::ROLE as $key => $role)
                                       @if ($film_info->film_crews->where('role', $key)->count() > 0)
                                           <ul class="list-inline">
@@ -111,7 +93,7 @@
                                               </li>
                                               <li>
                                                   @foreach ($film_info->film_crews->where('role', $key) as $crew)
-                                                      <span class=""> {{ $crew->person->name }} </span>
+                                                      <span class=""> {{ $crew->person->name }}, </span>
                                                   @endforeach
                                               </li>
                                           </ul>

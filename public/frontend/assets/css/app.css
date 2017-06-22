@@ -681,6 +681,10 @@ main {
     main {
       padding-top: 70px; } }
 
+@media (min-width: 992px) {
+  #modalTrailer .modal-lg {
+    width: 1200px; } }
+
 .film-categ {
   padding-top: 20px; }
   .film-categ__item__link {

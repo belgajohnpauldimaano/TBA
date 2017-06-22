@@ -5,6 +5,12 @@ main{
 		padding-top: $navbarHeight;
 	}
 }
+
+#modalTrailer .modal-lg {
+	@media (min-width: 992px){
+	     width: 1200px;
+	 }
+}
 .film-categ{
 	padding-top: 20px;
 	&__list{
