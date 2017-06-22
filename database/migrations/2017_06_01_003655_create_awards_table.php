@@ -15,7 +15,7 @@ class CreateAwardsTable extends Migration
     {
         Schema::create('awards', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('award_name', 100);
+            $table->text('award_name');
             $table->string('award_image');
             $table->tinyInteger('award_image_sorter')->nullable();
             $table->integer('film_id')->unsigned();

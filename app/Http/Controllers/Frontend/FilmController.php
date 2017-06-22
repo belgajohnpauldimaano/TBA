@@ -53,21 +53,26 @@ class FilmController extends Controller
                     $q->orderBy('award_image_sorter', 'ASC');
                     $q->select(['award_name', 'award_image', 'film_id', 'award_image_sorter']);
                 },
-                'photos'  => function ($q) {
-                    $q->where('thumb_filename', '<>' , NULL);
+                'photos' => function ($q) {
+                    $q->where('thumb_filename', '!=' , NULL);
                     $q->orderBy('photo_sorter', 'ASC');
                     $q->select(['title', 'filename', 'thumb_filename', 'film_id', 'photo_sorter']);
                 },
-                'quote'  => function ($q) {
+                'quote' => function ($q) {
                     $q->select(['main_quote', 'name_of_person', 'url', 'film_id']);
                 },
                 'press_release'  => function ($q) {
                     $q->select(['id', 'title', 'article_image', 'blurb', 'content', 'film_id']);
                 },
-                'posters'  => function ($q) {
+                'posters' => function ($q) {
                     $q->where('featured', 1);
                     $q->orWhere('featured', 0);
                     $q->select(['id', 'label', 'featured', 'poster_image_sorter', 'film_id']);
+                },
+                'trailers' => function ($q) {
+                    $q->where('trailer_show', 1);
+                    //$q->orWhere('featured', 0);
+                    //$q->select(['id', 'label', 'featured', 'poster_image_sorter', 'film_id']);
                 },
             ]
         )

@@ -6,7 +6,7 @@
         </div>
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Press Release</h4>
+        <h4 class="modal-title">DVD Details</h4>
       </div>
       <form id="js-frm_dvd">
         <div class="modal-body">
@@ -39,29 +39,33 @@
                     <div class="input-group">
                         <div class="input-group-btn">
                             <input name="dvd_case_cover" id="dvd_case_cover"  type="file" class="file-input hidden">
-                            <button type="button" id="js-dvd_button" class="btn btn-default btn-flat">
+                            <button type="button" id="js-dvd_button" class="btn btn-default btn-flat btn-block">
                                 <i class="fa fa-image"></i>
+                                Click to upload image
+                                <span id="js-text_dvd_case_cover"> - <i>{{ ($Dvd ? 'Has uploaded file' : 'Not yet set') }}</i></span>
                             </button>
                         </div>
-                        <input type="text" class="form-control" id="js-text_dvd_case_cover" disabled="true"  value="{{ ($Dvd ? $Dvd->dvd_case_cover : '') }}">
+                        {{-- <input type="text" class="form-control" id="js-text_dvd_case_cover" disabled="true"  value="{{ ($Dvd ? $Dvd->dvd_case_cover : '') }}"> --}}
                     </div>
                 </div>
                 <div class="help-block text-center">
                 </div>
                 <div class="help-block text-center" id="dvd_case_cover-error"></div>
             </div>
-
+            
             <div class="form-group">
                 <label for="">DVD Disc Image <span class="text-danger">*</span></label>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-btn">
                             <input name="dvd_disc_image" id="dvd_disc_image"  type="file" class="file-input hidden">
-                            <button type="button" id="js-dvd_button" class="btn btn-default btn-flat">
+                            <button type="button" id="js-dvd_button" class="btn btn-default btn-flat btn-block">
                                 <i class="fa fa-image"></i>
+                                Click to upload image
+                                <span id="js-dvd_text"> - <i>{{ ($Dvd ? 'Has uploaded file' : 'Not yet set') }}</i></span>
                             </button>
                         </div>
-                        <input type="text" class="form-control" id="js-dvd_text" disabled="true"  value="{{ ($Dvd ? $Dvd->dvd_disc_image : '') }}">
+                        {{-- <input type="text" class="form-control" id="js-dvd_text" disabled="true"  value="{{ ($Dvd ? $Dvd->dvd_disc_image : '') }}"> --}}
                     </div>
                 </div>
                 <div class="help-block text-center">
@@ -104,7 +108,7 @@
 
             <div class="form-group js-wysiwyg_editor_holder">
                 <label for="">Description <span class="text-danger"></span></label>
-                <textarea class="form-control js-wysiwyg_editor" name="dvd_description" id="dvd_description" cols="30" rows="10">{{ ($Dvd ? $Dvd->description : '') }}</textarea>
+                <textarea class="form-control js-wysiwyg_editor_dvd" name="dvd_description" id="dvd_description" cols="30" rows="10">{{ ($Dvd ? $Dvd->description : '') }}</textarea>
                 <div class="help-block text-center" id="dvd_description-error"></div>
             </div>
 
@@ -120,7 +124,3 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
-                    <script>
-                        $(".js-wysiwyg_editor").wysihtml5();
-                    </script>

@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
 @endsection
 
+@section ('page_title')
+    Films by TBA
+@endsection
+
 @section ('content')
     
     <div class="row">
@@ -29,19 +33,31 @@
                         </div>
                         
                         <div class="row">
-                            <div class="col-sm-4">
                                 <form id="frm_search_film">
-                                    <label for="">Search</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="search" id="js-search_film" placeholder="search">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-flat btn-primary">Search</button>
-                                        </span>
+
+                                    <div class="col-sm-3">
+                                            <label for="">Search</label>
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" name="search" id="js-search_film" placeholder="search">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-flat btn-primary">Search</button>
+                                                </span>
+                                            </div>
                                     </div>
+                                    <div class="form-group col-sm-3">
+                                        
+                                        <label for="">Number per page</label>
+                                        <select name="per_page" class="form-control" id="per_page">
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="30">30</option>
+                                            <option value="30">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+
                                 </form>
-                            </div>
-                            <div class="col-sm-8">
-                                
+                            <div class="col-sm-6">
                                 <div class="pull-right">
                                     {{ $Film->links() }}
                                 </div>
@@ -53,7 +69,7 @@
                                 <th>Title</th>
                                 <th>Genre/s</th>
                                 <th>Running Time</th>
-                                <th>Film Status</th>
+                                <th>Release Status</th>
                                 <th>Release Date</th>
                                 <th>Rating</th>
                                 {{-- <th>Synopsis</th> --}}
@@ -68,7 +84,7 @@
                                             <td>{{ $data->genre }}</td>
                                             <td>{{ ($data->running_time ? $data->running_time . ' mins.' : 'Not yet set')  }}</td>
                                             <td>{{ ($data->release_status ? $data::RELEASE_STATUS[$data->release_status] : 'Not yet set') }}</td>
-                                            <td>{{ Date('l, jS \of F Y', strtotime($data->release_date)) }}</td>
+                                            <td>{{ ($data->release_date ? Date('m-d-Y', strtotime($data->release_date)) : 'Not yet set') }}</td>
                                             <td>{{ ( $data->rating ? $RATINGS[$data->rating] : 'Not yet set' ) }}</td>
                                             {{-- <td>{{ str_limit($data->synopsis, $limit=20, $end = '...') }}</td> --}}
                                             <td>
@@ -128,7 +144,7 @@
             $('#sellsheet').click();
         });
         $('body').on('change', '#sellsheet', function () {
-            $('#js-sellsheet_text').val($('#sellsheet').val().replace(/.*(\/|\\)/, ''));
+            $('#js-uploaded_file').html('- <i>'+ $('#sellsheet').val().replace(/.*(\/|\\)/, '') +'</i>');
         });
         
         $('body').on('submit', '#js-film_form', function (e) {
@@ -168,7 +184,10 @@
             //js-film_form_modal
             fetch_record_page_specific(1);
         });
-        
+        $('body').on('change', '#per_page', function (e) {
+            e.preventDefault();
+            fetch_record_page_specific(1);
+        });
         function fetch_record_page_specific (page)
         {
             var fetch_route = "{{ route('film_fetch_record') }}";

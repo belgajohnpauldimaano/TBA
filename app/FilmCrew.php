@@ -24,7 +24,8 @@ use Illuminate\Database\Eloquent\Model;
         '15' => 'SOUND DESIGNER',
         '16' => 'VFX',
         '17' => 'DISTRIBUTED BY',
-    ];
+        '18' => 'PRODUCTION',
+    ]; 
 
     public function person ()
     {

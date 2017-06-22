@@ -6,8 +6,12 @@
                                 <th width="369px">Title</th>
                                 <td>{{ $Film->title }}</td>
                             </tr>
+                            <tr class="">
+                                <th width="369px">English Title</th>
+                                <td>{{ $Film->english_title }}</td>
+                            </tr>
                             <tr>
-                                <th width="369px">Genre</th>
+                                <th width="369px">Genre/s</th>
                                 <td>{{ ($Film != NULL ? $Film->genre : 'Not yet set') }}</td>
                             </tr>
                             <tr>
@@ -26,7 +30,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th width="369px">Ratings</th>
+                                <th width="369px">Rating</th>
                                 <td>{{ ( $Film->rating ? $RATINGS[$Film->rating] : 'Not yet set' ) }}</td>
                             </tr>
                             <tr>
@@ -57,7 +61,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th width="369px">Social media urls</th>
+                                <th width="369px">Social media links</th>
                                 <td>
                                     @if($Film->links != NULL)
                                         @if ($Film->links->facebook_url != '')
@@ -94,5 +98,17 @@
                     </table>
                     
                     <script>
-                        $(".js-wysiwyg_editor").wysihtml5();
+                        $(".js-wysiwyg_editor").wysihtml5({
+                            toolbar: {
+                                "font-styles": true, // Font styling, e.g. h1, h2, etc.
+                                "emphasis": true, // Italics, bold, etc.
+                                "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
+                                "html": false, // Button which allows you to edit the generated HTML.
+                                "link": false, // Button to insert a link.
+                                "image": false, // Button to insert an image.
+                                "color": false, // Button to change color of font
+                                "blockquote": true, // Blockquote
+                                "size":'sm' // options are xs, sm, lg
+                            }
+                        });
                     </script>

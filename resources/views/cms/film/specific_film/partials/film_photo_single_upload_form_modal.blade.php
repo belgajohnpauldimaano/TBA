@@ -15,7 +15,7 @@
             <div class="help-block text-center" id="general-error"></div>
 
             <div class="form-group">
-                <label for="">Photo Title</label>
+                <label for="">Title/Caption</label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-link"></i>
@@ -31,11 +31,13 @@
                     <div class="input-group">
                         <div class="input-group-btn">
                             <input name="image_filename" id="image_filename"  type="file" class="file-input hidden">
-                            <button type="button" id="js-btn_image_filename" class="btn btn-default btn-flat">
+                            <button type="button" id="js-btn_image_filename" class="btn btn-default btn-flat btn-block">
                                 <i class="fa fa-image"></i>
+                                Click to upload image
+                                <span id="js-text_image_filename"> - <i>{{ ($Photo ? 'Has uploaded file' : 'Not yet set') }}</i></span>
                             </button>
                         </div>
-                        <input type="text" class="form-control" id="js-text_image_filename" disabled="true"  value="{{ ($Photo ? $Photo->filename : '') }}">
+                        {{-- <input type="text" class="form-control" id="js-text_image_filename hidden" disabled="true"  value="{{ ($Photo ? $Photo->filename : '') }}"> --}}
                     </div>
                 </div>
                 <div class="help-block text-center" id="image_filename-error"></div>
