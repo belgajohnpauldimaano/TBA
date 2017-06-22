@@ -479,6 +479,20 @@ btn */
     border: 2px solid #333;
     font-size: 22px; }
 
+.play-icon {
+  height: 80px;
+  width: 80px;
+  margin: 0 auto;
+  background: url(../../assets/img/play-icon.png) no-repeat;
+  cursor: pointer;
+  z-index: 1;
+  -webkit-backface-visibility: hidden;
+  -webkit-transition: -webkit-transform .1s ease;
+  transition: -webkit-transform .1s ease;
+  -o-transition: transform .1s ease;
+  transition: transform .1s ease;
+  transition: transform .1s ease, -webkit-transform .1s ease; }
+
 .t-ease, .films-gallery a:after {
   -moz-transition: all 300ms ease-in-out;
   -o-transition: all 300ms ease-in-out;
@@ -679,6 +693,20 @@ main {
       font-weight: bold; }
   .film-categ__item:nth-child(3) .film-categ__item__link {
     border-right: 0; }
+
+.film-trailers-owl__item {
+  position: relative;
+  display: block; }
+  .film-trailers-owl__item__play {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
+    .film-trailers-owl__item__play:hover .play-icon, .film-trailers-owl__item__play:active .play-icon, .film-trailers-owl__item__play:focus .play-icon {
+      -ms-transform: scale(1.3, 1.3);
+      -webkit-transform: scale(1.3, 1.3);
+      transform: scale(1.3, 1.3); }
 
 /* End Set Default */
 .header-title {

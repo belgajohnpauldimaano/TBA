@@ -11,7 +11,7 @@
 
 @section('container')
     <main>
-        <pre>{{ json_encode($film_info->trailers, JSON_PRETTY_PRINT)}}</pre>
+        {{-- <pre>{{ json_encode($film_info->trailers, JSON_PRETTY_PRINT)}}</pre> --}}
         {{-- <pre>{{ json_encode($film_info, JSON_PRETTY_PRINT)}}</pre> --}}
         <section>
             <div class="container">
@@ -22,11 +22,25 @@
                               @foreach ($film_info->trailers->where('trailer_show', 1) as $show)
                                   <a href="{{ $show->trailer_url }}" class="film-trailers-owl__item" caption="{{ $film_info->title }}">
                                       <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}">
+                                      <div class="film-trailers-owl__item__play">
+                                          <div class="va-block">
+                                              <div class="va-middle">
+                                                  <div class="play-icon"></div>
+                                              </div>
+                                          </div>
+                                      </div>
                                   </a>
                               @endforeach
                               @foreach ($film_info->trailers->where('trailer_show', 2) as $show)
                                   <a href="{{ $show->trailer_url }}" class="film-trailers-owl__item" caption="{{ $film_info->title }}">
-                                    <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}">
+                                      <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}">
+                                      <div class="film-trailers-owl__item__play">
+                                          <div class="va-block">
+                                              <div class="va-middle">
+                                                  <div class="play-icon"></div>
+                                              </div>
+                                          </div>
+                                      </div>
                                   </a>
                               @endforeach
                           </div>
@@ -337,7 +351,8 @@
 
     <script type="text/javascript">
 
-      $('.film-trailers-owl').owlCarousel({
+      var owlTrailer = $('.film-trailers-owl');
+      owlTrailer.owlCarousel({
           items: 1,
           loop: true,
           nav: false,
