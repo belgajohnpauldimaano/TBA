@@ -26,25 +26,20 @@
                 </div>
 
                 <div class="box-body">
-                
-                    <div class="js-content_holder box" style="border-top:0">
-                        <div class="overlay hidden">
-                            <i class="fa fa-refresh fa-spin"></i>
-                        </div>
-                        
-                        <div class="row">
+                    <div class="row">
+
                                 <form id="frm_search_film">
 
-                                    <div class="col-sm-3">
+                                    <div class="col-sm-4">
                                             <label for="">Search</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" name="search" id="js-search_film" placeholder="search">
+                                                <input type="text" class="form-control" autofocus name="search" id="js-search_film" placeholder="search">
                                                 <span class="input-group-btn">
                                                     <button class="btn btn-flat btn-primary">Search</button>
                                                 </span>
                                             </div>
                                     </div>
-                                    <div class="form-group col-sm-3">
+                                    <div class="form-group col-sm-3 pull-right">
                                         
                                         <label for="">Number per page</label>
                                         <select name="per_page" class="form-control" id="per_page">
@@ -54,16 +49,16 @@
                                             <option value="30">50</option>
                                             <option value="100">100</option>
                                         </select>
-                                    </div>
+                                    </div> 
 
                                 </form>
-                            <div class="col-sm-6">
-                                <div class="pull-right">
-                                    {{ $Film->links() }}
-                                </div>
-                            </div>
                         </div>
-                        <br>
+                    
+                    <div class="js-content_holder box" style="border-top:0">
+                        <div class="overlay hidden">
+                            <i class="fa fa-refresh fa-spin"></i>
+                        </div>
+                        
                         <table class="table table-bordered">
                             <tr>
                                 <th>Title</th>
@@ -83,9 +78,25 @@
                                             <td>{{ $data->title }}</td>
                                             <td>{{ $data->genre }}</td>
                                             <td>{{ ($data->running_time ? $data->running_time . ' mins.' : 'Not yet set')  }}</td>
-                                            <td>{{ ($data->release_status ? $data::RELEASE_STATUS[$data->release_status] : 'Not yet set') }}</td>
+                                            <td>
+                                                @if ($data->release_status)
+                                                    <label class="label {{ App\Film::RELEASE_STATUS_STYLE[$data->release_status] }}">
+                                                        {{ $data::RELEASE_STATUS[$data->release_status] }}
+                                                    </label>
+                                                @else
+                                                    <label for="" class="label label-default">Not yet set</label>
+                                                @endif
+                                            </td>
                                             <td>{{ ($data->release_date ? Date('m-d-Y', strtotime($data->release_date)) : 'Not yet set') }}</td>
-                                            <td>{{ ( $data->rating ? $RATINGS[$data->rating] : 'Not yet set' ) }}</td>
+                                            <td>
+                                                @if ($data->rating)
+                                                    <label class="label {{ App\Film::RATING_STYLE[$data->rating] }}">
+                                                        {{ $RATINGS[$data->rating] }}
+                                                    </label>
+                                                @else
+                                                    <label for="" class="label label-default">Not yet set</label>
+                                                @endif
+                                            </td>
                                             {{-- <td>{{ str_limit($data->synopsis, $limit=20, $end = '...') }}</td> --}}
                                             <td>
                                                 <!-- Single button -->
@@ -192,7 +203,7 @@
         {
             var fetch_route = "{{ route('film_fetch_record') }}";
             var elem = $('.js-content_holder');
-            $('.js-content_holder .overlay').removeClass('hidden');
+            //$('.js-content_holder .overlay').removeClass('hidden');
             fetch_record(fetch_route, elem, page, 'frm_search_film');
         }
 
