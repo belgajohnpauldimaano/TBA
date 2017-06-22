@@ -82,17 +82,19 @@
                            <div class="{{ $film_info->posters->count() < 1 ? 'col-xs-12 col-md-12' : 'col-md-8 col-sm-7' }}">
                               <div class="info-desc">
                                   <h1 class="h2">{{ $film_info->title }}</h1>
-                                  <p class="m-b-6">{!! $film_info->synopsis !!}</p>
+                                  <div class="m-b-5">{!! $film_info->synopsis !!}</div>
 
-                                  <ul class="list-inline">
-                                      <li><strong>GENRE:</strong></li>
+                                  <ul class="list-inline m-b-5">
+                                      <li><strong class="text-NeutraTextTF">GENRE:</strong></li>
                                       <li><span class="">{{$film_info->genre}}</span></li>
                                   </ul>
+
                                   @foreach (App\FilmCrew::ROLE as $key => $role)
                                       @if ($film_info->film_crews->where('role', $key)->count() > 0)
-                                          <ul class="list-inline">
+
+                                          <ul class="list-inline {{ strtolower(str_replace(' ', '-', $role)) == 'director' ? 'm-b-5' : '' }}">
                                               <li>
-                                                  <strong>{{ $role }}:</strong>
+                                                  <strong class="text-NeutraTextTF">{{ $role }}:</strong>
                                               </li>
                                               <li>
                                                   @foreach ($film_info->film_crews->where('role', $key) as $crew)
@@ -102,6 +104,17 @@
                                           </ul>
                                       @endif
                                   @endforeach
+
+                                  @if ($film_info->running_time != '' || $film_info->release_date != '')
+                                      <ul class="list-inline m-t-5">
+                                          <li><strong class="text-NeutraTextTF">TOTAL RUNNIG TIME:</strong></li>
+                                          <li><span class="">{{$film_info->running_time}}</span></li>
+                                      </ul>
+                                      <ul class="list-inline">
+                                          <li><strong class="text-NeutraTextTF">RELEASE DATE:</strong></li>
+                                          <li><span class="">{{$film_info->release_date}}</span></li>
+                                      </ul>
+                                  @endif
 
                                   @if($film_info->posters->count() < 1)
                                       @if ($film_info->sell_sheet != NULL)
@@ -183,53 +196,53 @@
             </div>
         </section>
 
-        <section class="film-quotes">
-           <div class="container">
-               <div class="row">
-                   <div class="col-md-8 col-md-offset-2">
-                        <div class="header-title">
-                            <h2 class="header-title__tag">Quotes</h2>
-                        </div>
-                       <div class="text-center h3">
-                            @if ($film_info->quote)
-                                <p><i>“{{ $film_info->quote->main_quote }}”</i></p>
-                                <p class="m-y-6"><strong>-{{ $film_info->quote->name_of_person }}</strong></p>
-                                <a href="{{ $film_info->quote->url }}" class="read-more">[READ MORE]</a>
-                            @endif
+        @if ($film_info->quote)
+            <section class="film-quotes">
+               <div class="container">
+                   <div class="row">
+                       <div class="col-md-8 col-md-offset-2">
+                            <div class="header-title">
+                                <h2 class="header-title__tag">Quotes</h2>
+                            </div>
+                           <div class="text-center h3">
+                                  <p><i>“{{ $film_info->quote->main_quote }}”</i></p>
+                                  <p class="m-y-6"><strong>-{{ $film_info->quote->name_of_person }}</strong></p>
+                                  <a href="{{ $film_info->quote->url }}" class="read-more">[READ MORE]</a>
+                           </div>
                        </div>
                    </div>
                </div>
-           </div>
-         </section>
+             </section>
+        @endif
          
-         <div class="container">
-            <div class="row">
-                <div class="col-md-8 col-md-offset-2"><hr class="m-b-0"></div>
-            </div>
-         </div>
+        @if ($film_info->press_release)
+           <div class="container">
+              <div class="row">
+                  <div class="col-md-8 col-md-offset-2"><hr class="m-b-0"></div>
+              </div>
+           </div>
 
-         <section class="film-press">
-            <div class="container">
-               <div class="row">
-                   <div class="col-md-8 col-md-offset-2">
-                        <div class="header-title">
-                            <h2 class="header-title__tag">Press Realease</h2>
-                        </div>
-                       <div class="text-center">
-                            @if ($film_info->press_release)
-                                <h3><strong>{{ $film_info->press_release->title }}</strong></h3>
-                                <div class="h3">
-                                    <p class="m-b-6">
-                                        {!! $film_info->press_release->blurb !!}
-                                    </p>
-                                    <a href="#" class="read-more" id="readMorePR_info">[READ MORE]</a>
-                                </div>
-                            @endif
-                       </div>
-                   </div>
-               </div>
-            </div>
-         </section>
+           <section class="film-press">
+              <div class="container">
+                 <div class="row">
+                     <div class="col-md-8 col-md-offset-2">
+                          <div class="header-title">
+                              <h2 class="header-title__tag">Press Realease</h2>
+                          </div>
+                         <div class="text-center">
+                                  <h3><strong>{{ $film_info->press_release->title }}</strong></h3>
+                                  <div class="h3">
+                                      <p class="m-b-6">
+                                          {!! $film_info->press_release->blurb !!}
+                                      </p>
+                                      <a href="#" class="read-more" id="readMorePR_info">[READ MORE]</a>
+                                  </div>
+                         </div>
+                     </div>
+                 </div>
+              </div>
+           </section>
+        @endif
     </main>
 
     @if ($film_info->press_release)
