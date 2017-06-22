@@ -160,7 +160,7 @@
             </div>
         </section>
 
-        @if ($film_info->awards == NULL)
+        @if ($film_info->awards)
             <section class="film-award">
                 <div class="container">
                     <div class="header-title">
