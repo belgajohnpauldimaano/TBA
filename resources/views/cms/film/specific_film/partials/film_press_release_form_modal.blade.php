@@ -32,11 +32,13 @@
                     <div class="input-group">
                         <div class="input-group-btn">
                             <input name="press_release_article_image" id="press_release_article_image"  type="file" class="file-input hidden">
-                            <button type="button" id="js-press_release_article_image" class="btn btn-default btn-flat">
+                            <button type="button" id="js-press_release_article_image" class="btn btn-default btn-flat btn-block">
                                 <i class="fa fa-image"></i>
+                                Click to upload image
+                                <span id="js-text_press_release_article_image"> - <i>{{ ($PressRelease ? 'Has uploaded file' : 'Not yet set') }}</i></span>
                             </button>
                         </div>
-                        <input type="text" class="form-control" id="js-text_press_release_article_image" disabled="true"  value="{{ ($PressRelease ? $PressRelease->article_image : '') }}">
+                        {{-- <input type="text" class="form-control" id="js-text_press_release_article_image" disabled="true"  value="{{ ($PressRelease ? $PressRelease->article_image : '') }}"> --}}
                     </div>
                 </div>
                 <div class="help-block text-center" id="press_release_article_image-error"></div>

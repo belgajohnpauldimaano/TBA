@@ -15,8 +15,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-9">
-                        @if ($film_info->photos->count() > 0)
-                            <img src="{{ asset('content/film/photos/' . $film_info->photos[0]->filename) }}" class="w-100">
+                        @if ($film_info->trailers->count() > 0)
+                            <img src="{{ asset('content/film/trailers/' . $film_info->trailers[0]->image_preview) }}" class="w-100">
                         @endif
                         <div class="row">
                            <div class="col-md-4 col-sm-5">

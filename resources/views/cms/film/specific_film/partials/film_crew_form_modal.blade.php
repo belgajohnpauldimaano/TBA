@@ -6,10 +6,15 @@
         </div>
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Manage Film Crew</h4>
+        <h4 class="modal-title">Update Film Crew</h4>
       </div>
       <form id="js-frm_film_crew">
         <div class="modal-body">
+            <div class="form-group">
+                <div class=""> 
+                    <span class="text-red"><span>Use a comma (,) to separate each crew.</span></span>
+                </div>
+            </div>
             {{ csrf_field() }}
             <input type="hidden" name="film_id" value="{{ $film_id }}">
             <div class="help-block text-center" id="general-error"></div>
@@ -26,7 +31,7 @@
                                     $elName = implode('_', $names);
                             ?>
                             <div class="form-group">
-                                <label for="">{{ strtolower($val) }}</label>
+                                <label for="">{{ ucwords(strtolower($val)) }}</label>
                                 {{-- <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-user"></i>

@@ -20,7 +20,7 @@ class CreateDvdsTable extends Migration
             $table->string('dvd_disc_image');
             $table->string('languages');
             $table->string('subtitles');
-            $table->integer('running_time');
+            $table->integer('running_time')->nullable();
             $table->text('description')->nullable();
             $table->integer('film_id')->unsigned();
             $table->timestamps();

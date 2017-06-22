@@ -15,7 +15,7 @@ class CreateQuotesTable extends Migration
     {
         Schema::create('quotes', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('main_quote');
+            $table->text('main_quote');
             $table->string('name_of_person', 100);
             $table->string('url');
             $table->integer('film_id')->unsigned();

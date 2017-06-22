@@ -18,6 +18,14 @@
         
     </div> --}}
 
+@section ('page_title')
+    {{$Film->title}} - a film by TBA
+@endsection
+
+@section ('title')
+    Film Details
+@endsection
+
 @section ('content')
     <div class="row row-film">
         <div class="col-sm-12">
@@ -25,8 +33,8 @@
             {{-- FILM BASIC INFO --}}
             <div class="box box-primary">
 
-                <div class="box-header with-border">
-                    <h3 class="box-title">Film</h3>
+                <div class="box-header with-border"  style="padding-left:15px">
+                    <h3 class="box-title">Film Basic Information</h3>
                     <div class="box-tools">
                         <button class="btn btn-primary btn-sm btn-flat js-edit_film" data-id="{{ $Film->id }}"><i class="fa fa-edit"></i> Update</button>
                     </div>
@@ -42,8 +50,12 @@
                                     <th width="369px">Title</th>
                                     <td>{{ $Film->title }}</td>
                                 </tr>
+                                <tr class="">
+                                    <th width="369px">English Title</th>
+                                    <td>{{ $Film->english_title }}</td>
+                                </tr>
                                 <tr>
-                                    <th width="369px">Genre</th>
+                                    <th width="369px">Genre/s</th>
                                     <td>{{ ($Film != NULL ? $Film->genre : 'Not yet set') }}</td>
                                 </tr>
                                 <tr>
@@ -93,7 +105,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th width="369px">Social media urls</th>
+                                    <th width="369px">Social media links</th>
                                     <td>
                                         @if($Film->links != NULL)
                                             @if ($Film->links->facebook_url != '')
@@ -160,7 +172,7 @@
                                                         <span class="label label-primary">{{ $crew->person->name }}</span>
                                                     @endforeach
                                                 @else
-                                                    <p style="margin-bottom: 0">No crew for this role</p>
+                                                    <p style="margin-bottom: 0">n/a</p>
                                                 @endif
                                             </td>
                                         </tr>
@@ -292,7 +304,7 @@
             <div class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
-                    <h3 class="box-title">Awards</h3>
+                    <h3 class="box-title">Awards & Festivals</h3>
                     <div class="box-tools">
                         <button class="btn btn-sm btn-flat btn-primary js-add_award"><i class="fa fa-edit"></i> Update</button>
                     </div>
@@ -341,8 +353,14 @@
                         </table>
                     </div>
                     <div class="box-footer">
-                        <p>Note : </p>
-                        <p class="text-primary">Drag the image to arrange the order.</p>
+                        <div class="callout callout-success">
+                            <p>Intructions : </p>
+                            <ol>
+                                <li>Drag & drop thumbnails to re-order awards in the FILM PAGE.</li>
+                                <li>Accepted File Types: JPG / JPEG / PNG</li>
+                                <li>Required Dimensions: 200 x 200 pixels (width x height)</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -352,7 +370,7 @@
             <div class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
-                    <h3 class="box-title">Film Photos</h3>
+                    <h3 class="box-title">Gallery</h3>
                     <div class="box-tools">
                         <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi"><i class="fa fa-edit"></i> Update</button>
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_single"><i class="fa fa-edit"></i> Update</button> --}}
@@ -399,9 +417,18 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        <p>Note : </p>
-                        <p class="text-primary">Double click the poster to edit data.</p>
-                        <p class="text-primary">Drag the image posters to arrange the order.</p>
+                        <div class="callout callout-success">
+                            <p>Instructions : </p>
+                            <ol>
+                                <li>Drag & drop images to re-order photos in the FILM PAGE gallery section. Click SAVE ORDER when done.</li>
+                                <li>Click MANAGE GALLERY to add or remove image/s.</li>
+                                <li>Click the TRASH ICON in the MANAGE GALLERY MODAL to remove the image/s.</li>
+                                <li>Click SET THUMBNAIL to crop the photo uploaded and set as preview thumbnail for the photo. Photos without a set thumbnail will not appear in the gallery.</li>
+                                <li>Double-click an image to add a caption.</li>
+                                <li>Place the photo in the first place to set it as the FEATURED IMAGE. Featured Images will be automatically used by the Film as its preview image in the Film Line-Up.</li>
+                                <li>Accepted File Types: JPG / JPEG / PNG</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -411,7 +438,7 @@
             <div class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
-                    <h3 class="box-title">Film Quote</h3>
+                    <h3 class="box-title">Quotes</h3>
                     <div class="box-tools">
                         <button class="btn btn-sm btn-flat btn-primary js-managa_quote"><i class="fa fa-edit"></i> Update</button>
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
@@ -543,17 +570,21 @@
                                 @endforeach
                             @else
                                 <div class="col-sm-12">
-                                    <h5>No photo yet</h5>
+                                    <h5>No data yet</h5>
                                 </div>
                             @endif
                         </div>
                     </div>
                     <div class="box-footer">
-                        <p>Instructions : </p>
-                        <p class="text-primary">a. Click UPDATE to add/modify a DVD entry</p>
-                        <p class="text-primary">b. DVD Set Name can be left blank; if so, name in website will appear as “Film Title DVD”. Otherwise, it will appear as “Film Title DVD Set Name”.</p>
-                        <p class="text-primary">c. Drag & drop each row to re-order the DVDs as to how it will appear in the website.</p>
-                        <p class="text-primary">d. Untick the checkbox to hide the product from the website.</p>
+                        <div class="callout callout-success">
+                            <p>Instructions : </p>
+                            <ol>
+                                <li>Click UPDATE to add/modify a DVD entry</li>
+                                <li>DVD Set Name can be left blank; if so, name in website will appear as “Film Title DVD”. Otherwise, it will appear as “Film Title DVD Set Name”.</li>
+                                <li>Drag & drop each row to re-order the DVDs as to how it will appear in the website.</li>
+                                <li>Untick the checkbox to hide the product from the website.</li>
+                            </ol>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -731,7 +762,7 @@
         });
         
         $('body').on('change', '#image_preview', function () {
-            $('#js-image_preview_text').val($('#image_preview').val().replace(/.*(\/|\\)/, ''));
+            $('#js-image_preview_text').html(' - <i>' + $('#image_preview').val().replace(/.*(\/|\\)/, '') + '</i>');
         });
 
         function show_hide_toggle(is_show, id, show_hide_route)
@@ -863,7 +894,7 @@
         });
         
         $('body').on('change', '#award_image', function () {
-            $('#js-text_award_image').val($('#award_image').val().replace(/.*(\/|\\)/, ''));
+            $('#js-text_award_image').html(' - <i>'+ $('#award_image').val().replace(/.*(\/|\\)/, '') +'</>');
         });
 
         $('body').on('submit', '#js-frm_award', function (e) {
@@ -896,7 +927,25 @@
         $('body').on('click', '.js-delete_award', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
-            delete_record ("{{ route('film_award_delete') }}", "{{ route('film_awards_fetch', $Film->id) }}", $('.js-award_content_holder'), id)
+            bootbox.confirm({
+                message: "Are you sure you want to delete photo?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-danger btn-flat'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-default btn-flat'
+                    }
+                },
+                callback: function (result) {
+                    if (result)
+                    {
+                        delete_record ("{{ route('film_award_delete') }}", "{{ route('film_awards_fetch', $Film->id) }}", $('.js-award_content_holder'), id)
+                    }
+                }
+            });
         });
 
         /*
@@ -951,7 +1000,7 @@
         });
         
         $('body').on('change', '#image_filename', function () {
-            $('#js-text_image_filename').val($('#image_filename').val().replace(/.*(\/|\\)/, ''));
+            $('#js-text_image_filename').html(' - <i>' + $('#image_filename').val().replace(/.*(\/|\\)/, '') + '</i>');
         });
 
         $('body').on('submit', '#js-frm_film_photo', function (e) {
@@ -1191,7 +1240,6 @@
          */
         $('body').on('click', '.js-update_sysnopsis', function (e) {
             e.preventDefault();
-            $(".js-synopsis_editor ul.wysihtml5-toolbar").hide();
 
             if ($(this).data('edit') == true)
             {
@@ -1209,7 +1257,6 @@
 
                         $('.js-film_synopsis_content_holder').slideToggle();
                         $('.js-synopsis_editor').slideToggle();
-
                     }
                 });
             }
@@ -1224,9 +1271,19 @@
         });
 
         //bootstrap WYSIHTML5 - text editor
-        $(".js-wysiwyg_editor").wysihtml5();
-        //$.ajax();
-
+        $(".js-wysiwyg_editor").wysihtml5({
+            toolbar: {
+                "font-styles": true, // Font styling, e.g. h1, h2, etc.
+                "emphasis": true, // Italics, bold, etc.
+                "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
+                "html": false, // Button which allows you to edit the generated HTML.
+                "link": false, // Button to insert a link.
+                "image": false, // Button to insert an image.
+                "color": false, // Button to change color of font
+                "blockquote": true, // Blockquote
+                "size":'sm' // options are xs, sm, lg
+            }
+        });
         /*
          * PRESS RELEASE
          */
@@ -1240,9 +1297,21 @@
                     $('#js-modal_holder').html(data);
                     $('#js-film_press_release_form_modal').modal({keyboard : false, backdrop : 'static'});
                     
-                    $("#press_release_blurb").wysihtml5();
-                    $("#press_release_content").wysihtml5();
-                    $("#js-frm_press_release ul.wysihtml5-toolbar").addClass('hidden');
+                    
+                    $("#press_release_blurb, #press_release_content").wysihtml5({
+                        toolbar: {
+                            "font-styles": true, // Font styling, e.g. h1, h2, etc.
+                            "emphasis": true, // Italics, bold, etc.
+                            "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
+                            "html": false, // Button which allows you to edit the generated HTML.
+                            "link": false, // Button to insert a link.
+                            "image": false, // Button to insert an image.
+                            "color": false, // Button to change color of font
+                            "blockquote": true, // Blockquote
+                            "size":'sm' // options are xs, sm, lg
+                        }
+                    });
+
                 }
             });
         });
@@ -1253,7 +1322,7 @@
         });
 
         $('body').on('change', '#press_release_article_image', function () {
-            $('#js-text_press_release_article_image').val($('#press_release_article_image').val().replace(/.*(\/|\\)/, ''));
+            $('#js-text_press_release_article_image').html('<i>' + $('#press_release_article_image').val().replace(/.*(\/|\\)/, '') + '</i>');
         });
 
         $('body').on('submit', '#js-frm_press_release', function (e) {
@@ -1451,8 +1520,20 @@
                 success : function (data) {
                     $('#js-modal_holder').html(data);
                     $('#js-film_dvd_form_modal').modal({keyboard : false, backdrop : 'static'});
-                    
-                    $(".form-group .wysihtml5-toolbar").addClass('hidden');
+                    $(".js-wysiwyg_editor_dvd").wysihtml5({
+                        toolbar: {
+                            "font-styles": true, // Font styling, e.g. h1, h2, etc.
+                            "emphasis": true, // Italics, bold, etc.
+                            "lists": true, // (Un)ordered lists, e.g. Bullets, Numbers.
+                            "html": false, // Button which allows you to edit the generated HTML.
+                            "link": false, // Button to insert a link.
+                            "image": false, // Button to insert an image.
+                            "color": false, // Button to change color of font
+                            "blockquote": true, // Blockquote
+                            "size":'sm' // options are xs, sm, lg
+                        }
+                    });
+                    //$(".form-group .wysihtml5-toolbar").addClass('hidden');
                 }
             });
         }
@@ -1469,12 +1550,14 @@
             $(this).parents('.input-group-btn').children('input:file').click();
         })
         
-        $('body').on('change', '#dvd_disc_image, #dvd_case_cover', function () {
-            $(this).parents('.input-group').children('.form-control').val($(this).val().replace(/.*(\/|\\)/, ''));
+        $('body').on('change', '#dvd_disc_image', function () {
+            $('#js-dvd_text').html('- <i>' + $(this).val().replace(/.*(\/|\\)/, '') + '</i>');
+        });
+        $('body').on('change', '#dvd_case_cover', function () {
+            $('#js-text_dvd_case_cover').html('- <i>' + $(this).val().replace(/.*(\/|\\)/, '') + '</i>');
         });
         $('body').on('dblclick', '.js-dvd_data', function (e) {
             e.preventDefault();
-            alert('fds');
         });
     </script>
 @endsection

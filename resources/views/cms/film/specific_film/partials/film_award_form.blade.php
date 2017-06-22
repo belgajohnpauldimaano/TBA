@@ -31,11 +31,13 @@
                     <div class="input-group">
                         <div class="input-group-btn">
                             <input name="award_image" id="award_image"  type="file" class="file-input hidden">
-                            <button type="button" id="js-btn_award_image" class="btn btn-default btn-flat">
+                            <button type="button" id="js-btn_award_image" class="btn btn-default btn-flat btn-block">
                                 <i class="fa fa-image"></i>
+                                Click to upload image 
+                                <span id="js-text_award_image"> - <i>{{ ($Award ? 'Has uploaded file' : 'Not yet set') }}</i></span>
                             </button>
                         </div>
-                        <input type="text" class="form-control" id="js-text_award_image" disabled="true"  value="{{ ($Award ? $Award->award_image : '') }}">
+                        {{-- <input type="text" class="form-control" id="js-text_award_image" disabled="true"  value="{{ ($Award ? $Award->award_image : '') }}"> --}}
                     </div>
                 </div>
                 <div class="help-block text-center" id="award_image-error"></div>

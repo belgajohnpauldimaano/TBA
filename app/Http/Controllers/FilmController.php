@@ -50,7 +50,7 @@ class FilmController extends Controller
         })
         ->orderBy('title', 'asc')
         ->orderBy('release_date', 'DESC')
-        ->paginate(5);
+        ->paginate(10);
 
         $RATINGS = Film::RATINGS;
         
@@ -79,6 +79,14 @@ class FilmController extends Controller
 
     public function fetch_record (Request $request)
     {
+
+        $per_page = 10;
+
+        if ($request->per_page)
+        {
+            $per_page = $request->per_page;
+        }
+        
         $Film = Film::where(function ($query) use($request) {
             $query->where('title', 'LIKE', '%'. $request->search .'%');
             $query->where(function ($q) {
@@ -92,9 +100,9 @@ class FilmController extends Controller
         // })
         ->orderBy('title', 'asc')
         ->orderBy('release_date', 'DESC')
-        ->paginate(5);
+        ->paginate($per_page);
         $RATINGS = Film::RATINGS;
-        return view('cms.film.partials.film_records', ['Film' => $Film, 'request_data' => $request, 'RATINGS' => $RATINGS]);
+        return view('cms.film.partials.film_records', ['Film' => $Film, 'request_data' => $request, 'RATINGS' => $RATINGS, 'per_page' => $per_page]);
     }
 
     public function show_film_form (Request $request)
@@ -177,18 +185,16 @@ class FilmController extends Controller
         //     $genre_id = $Genre->id;
         // }
 
-
-        
-
         if($request->has('id')) // has id then it is updating of record
         {
 
             $Film                   = Film::where('id', $request->id)->first();
             $Film->title            = $request->title;
+            $Film->english_title    = $request->english_title;
             $Film->genre            = $request->genre;
             //$Film->synopsis         = $request->synopsis;
             $Film->release_status   = ($request->release_status != '' ? $request->release_status : NULL);
-            $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : NULL);
+            $Film->release_date     = ($request->has('release_date') ? Date('Y-m-d', strtotime($request->release_date)) : null);
             $Film->rating           = $request->rating;
             $Film->running_time     = $request->running_time;
             $Film->hash_tags        = $request->hashtags;
@@ -241,6 +247,7 @@ class FilmController extends Controller
 
         $Film                   = new Film();
         $Film->title            = $request->title;
+        $Film->english_title    = $request->english_title;
         $Film->genre            = $request->genre;
         //$Film->synopsis         = $request->synopsis;
         $Film->release_status   = ($request->release_status != '' ? $request->release_status : NULL);
@@ -456,14 +463,16 @@ class FilmController extends Controller
 
         if(!$request->has('trailer_id')) 
         {
-            $rules['image_preview'] = 'required|mimes:jpeg,png|dimensions:min_width=1600,min_height=900,max_width=1600,max_height=900';
-            $messages['image_preview.required'] = 'Image preview is a required field.';
-            $messages['image_preview.dimensions'] = 'Image preview is should 1600px width and 900px in height.';
+            $rules['image_preview']                 = 'required|mimes:jpeg,png|dimensions:min_width=1600,min_height=900,max_width=1600,max_height=900|max:1024';
+            $messages['image_preview.required']     = 'Image preview is a required field.';
+            $messages['image_preview.dimensions']   = 'Image preview is should 1600px width and 900px in height.';
+            $messages['image_preview.max']          = 'Image preview is should only 1MB and below in size.';
         }
         else
         {   //ratio=16/9
-            $rules['image_preview'] = 'mimes:jpg,jpeg,png|dimensions:min_width=1600,min_height=900,max_width=1600,max_height=900';
-            $messages['image_preview.dimensions'] = 'Image preview is should 1600px width and 900px in height.';
+            $rules['image_preview']                 = 'mimes:jpg,jpeg,png|dimensions:min_width=1600,min_height=900,max_width=1600,max_height=900|max:1024';
+            $messages['image_preview.dimensions']   = 'Image preview is should 1600px width and 900px in height.';
+            $messages['image_preview.max']          = 'Image preview is should only 1MB and below in size.';
         }
 
         $validator = Validator::make($request->all(), $rules, $messages);
@@ -828,6 +837,13 @@ class FilmController extends Controller
             //return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
             
         }
+        
+        $Film = Film::where('id', $id)->first(['title', 'release_date']);
+        if (!$Film)
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid film selection.']); // return an error message 
+        }
+
 
         if ($request->photo_id) // this is for edit
         {
@@ -839,6 +855,15 @@ class FilmController extends Controller
                 return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of award.']); // return an error message
             }
             
+            if ($request->film_photo_featured_switch && $request->hasFile('image_filename'))
+            {
+                return response()->json(['errCode' => 2, 'messages' => 'You should upload first then crop it to set as featured photo.']); // return an success message
+            }
+
+            if ($request->film_photo_featured_switch && $Photo->thumb_filename == NULL) 
+            {
+                return response()->json(['errCode' => 2, 'messages' => 'To set as featured photo it should have a cropped thumbnail.']); // return an success message
+            }
             // award is existing
             DB::beginTransaction();
 
@@ -875,19 +900,12 @@ class FilmController extends Controller
             
             }
 
-            if ($Photo->thumb_filename == NULL)
-            {
-
-                DB::rollback();
-                return response()->json(['errCode' => 2, 'messages' => 'To set as featured photo it should have a cropped thumbnail.']); // return an success message
-                
-            }
-
             if ($request->film_photo_featured_switch)
             {
                 $Photo->featured = 1;
             }
-            $Photo->title = $request->title;
+            
+            $Photo->title = ($request->title ? $request->title : $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')');
             $Photo->save();
 
             DB::commit();
@@ -917,7 +935,7 @@ class FilmController extends Controller
         $request->image_filename->move(public_path('content/film/photos'), $filename); // upload the file
 
         $Photo = new Photo();
-        $Photo->title       = $request->title;
+        $Photo->title       = ($request->title ? $request->title : $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')');
         $Photo->filename    = $filename;
         $Photo->film_id     = $id;
         $Photo->save();
@@ -1331,9 +1349,9 @@ class FilmController extends Controller
     public function film_dvd_save (Request $request)
     {
         $rules = [
-            'film_id'   => 'required',
-            'dvd_case_cover' => 'required|mimes:png|max:2048|dimensions:max_width:300,max_height:600,min_width:300,min_height:600',
-            'dvd_disc_image' => 'required|mimes:png|max:2048|dimensions:max_width:300,max_height:600,min_width:300,min_height:600',
+            'film_id'   => 'required',                      
+            'dvd_case_cover' => 'required|mimes:png|max:2048|dimensions:max_width=300,max_height=600,min_width=300,min_height=600',
+            'dvd_disc_image' => 'required|mimes:png|max:2048|dimensions:max_width=300,max_height=600,min_width=300,min_height=600',
             'dvd_languages' => 'required',
             'dvd_subtitles' => 'required',
             'dvd_running_time' => 'nullable|digits_between:1,5',
@@ -1357,8 +1375,8 @@ class FilmController extends Controller
 
         if ($request->dvd_id)
         {
-            $rules['dvd_case_cover'] = 'nullable|mimes:png|max:2048';//|dimensions:max_width:300,max_height:600,min_width:300,min_height:600';
-            $rules['dvd_disc_image'] = 'nullable|mimes:png|max:2048';//|dimensions:max_width:300,max_height:300,min_width:300,min_height:300';
+            $rules['dvd_case_cover'] = 'nullable|mimes:png|max:2048|dimensions:max_width=300,max_height=600,min_width=300,min_height=600';
+            $rules['dvd_disc_image'] = 'nullable|mimes:png|max:2048|dimensions:max_width=300,max_height=300,min_width=300,min_height=300';
         }
 
         $validator = Validator::make($request->all(), $rules, $messages);

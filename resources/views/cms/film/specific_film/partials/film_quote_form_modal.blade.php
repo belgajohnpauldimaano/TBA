@@ -21,7 +21,7 @@
                 <div class="help-block text-center" id="main_quote-error"></div>
             </div>
             <div class="form-group">
-                <label for="">Name of person quoting <span class="text-danger">*</span></label>
+                <label for="">Source <span class="text-danger">*</span></label>
                 <div class="input-group">
                     <div class="input-group-addon">
                         <i class="fa fa-user"></i>

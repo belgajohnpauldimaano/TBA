@@ -20,7 +20,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-link"></i>
                     </div>
-                    <input type="text" name="url" id="url" class="form-control" value="{{ ($Trailer ? $Trailer->trailer_url : 'http://') }}">
+                    <input type="text" name="url" id="url" class="form-control" value="{{ ($Trailer ? $Trailer->trailer_url : '') }}" placeholder="https://www.youtube.com/">
                 </div>
                 <div class="help-block text-center" id="url-error"></div>
             </div>
@@ -31,11 +31,13 @@
                     <div class="input-group">
                         <div class="input-group-btn">
                             <input name="image_preview" id="image_preview"  type="file" class="file-input hidden">
-                            <button type="button" id="js-sellsheet" class="btn btn-default btn-flat">
+                            <button type="button" id="js-sellsheet" class="btn btn-default btn-flat btn-block">
                                 <i class="fa fa-image"></i>
+                                Click to upload image
+                                <span id="js-image_preview_text"> - <i>{{ ($Trailer ? 'Has file uploaded' : 'Not yet set') }}</i></span>
                             </button>
                         </div>
-                        <input type="text" class="form-control" id="js-image_preview_text" disabled="true"  value="{{ ($Trailer ? $Trailer->image_preview : '') }}">
+                        {{-- <input type="text" class="form-control hidden" id="js-image_preview_text" disabled="true"  value="{{ ($Trailer ? $Trailer->image_preview : '') }}"> --}}
                     </div>
                 </div>
                 <div class="help-block text-center" id="image_preview-error"></div>

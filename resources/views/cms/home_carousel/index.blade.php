@@ -6,6 +6,10 @@
     <link href="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/css/fileinput.css') }}" media="all" rel="stylesheet" type="text/css"/>
 @endsection
 
+@section ('page_title')
+    Home Page Carousel
+@endsection
+
 @section ('content')
     <div class="row">
         <div class="col-sm-12">
