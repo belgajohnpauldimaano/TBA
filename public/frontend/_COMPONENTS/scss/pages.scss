@@ -5,6 +5,12 @@ main{
 		padding-top: $navbarHeight;
 	}
 }
+
+#modalTrailer .modal-lg {
+	@media (min-width: 992px){
+	     width: 1170px;
+	 }
+}
 .film-categ{
 	padding-top: 20px;
 	&__list{
@@ -38,6 +44,9 @@ main{
 			left: 0;
 			width: 100%;
 			height: 100%;
+			.play-icon{
+				margin-top: 150px;
+			}
 
 			&:hover, &:active, &:focus{
 				.play-icon{
@@ -474,6 +483,7 @@ main{
 
 			&--circle{
 				height: 50%;
+				border-radius: 50%;
 			}
 		}
 	}

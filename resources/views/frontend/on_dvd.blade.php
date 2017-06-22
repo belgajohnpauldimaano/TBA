@@ -8,53 +8,33 @@
     <main class="dvd-page">
         @include('frontend.layouts.film_categ')
 
+        {{-- <pre>{{ json_encode($dvds, JSON_PRETTY_PRINT)}}</pre> --}}
+
         <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="dvd text-center">
-                        <a href="#" class="dvd__block">
-                            <img src="{{ asset('frontend/assets/img/on-dvd/1.png') }}" class="img-responsive center-block">
-                        </a>
-                        <div class="dvd__title">
-                            <h3 class="text-uppercase">K'na the dreamweaver</h3>
-                            <span class="clearfix">&nbsp;</span>
-                        </div>
-                    </div>
+            @if ($dvds->count() > 0)
+                <div class="row">
+                    @foreach ($dvds as $dvd)
+                        {{-- <pre>{{ json_encode($dvd->dvds, JSON_PRETTY_PRINT)}}</pre> --}}
+                         @foreach ($dvd->dvds as $data)
+                                <div class="col-sm-6">
+                                    <pre>{{ json_encode($data->name, JSON_PRETTY_PRINT)}}</pre>
+                                    <div class="dvd text-center">
+                                        <a href="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" 
+                                            circle="{{ asset('content/film/dvds/' . $data->dvd_disc_image) }}" 
+                                            title="{{ $data->name }}"
+                                            list="{{ $data->languages }}" class="dvd__block">
+                                            <img src="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" class="img-responsive center-block">
+                                        </a>
+                                        <div class="dvd__title">
+                                            <h3 class="text-uppercase">{{ $data->name }}</h3>
+                                            <span class="clearfix">&nbsp;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        @endforeach
+                    @endforeach
                 </div>
-                <div class="col-sm-6">
-                    <div class="dvd text-center">
-                        <a href="#" class="dvd__block">
-                            <img src="{{ asset('frontend/assets/img/on-dvd/2.png') }}" class="img-responsive center-block">
-                        </a>
-                        <div class="dvd__title">
-                            <h3 class="text-uppercase">Bonifacio, ang unang pangulo</h3>
-                            <span class="clearfix">(The First President)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="dvd text-center">
-                        <a href="#" class="dvd__block">
-                            <img src="{{ asset('frontend/assets/img/on-dvd/3.png') }}" class="img-responsive center-block">
-                        </a>
-                        <div class="dvd__title">
-                            <h3 class="text-uppercase">Heneral Luna</h3>
-                            <span class="clearfix">(General Luna)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="dvd text-center">
-                        <a href="#" class="dvd__block">
-                            <img src="{{ asset('frontend/assets/img/on-dvd/4.png') }}" class="img-responsive center-block">
-                        </a>
-                        <div class="dvd__title">
-                            <h3 class="text-uppercase">Heneral Luna Special Edition</h3>
-                            <span class="clearfix">(General Luna)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            @endif
         </div>
     </main>
 
@@ -86,7 +66,7 @@
                         <div class="col-md-5">
                             <div class="dvd_content">
                                 <h3>Heneral Luna DVD</h3>
-                                <span class="clearfix">(General Luna)</span>
+                                {{-- <span class="clearfix">(General Luna)</span> --}}
 
                                 <ul class="list-inline m-t-6">
                                     <li><strong class="text-uppercase">Languages:</strong></li>
@@ -118,8 +98,14 @@
         $(function(){
             $('.dvd').on('click', '.dvd__block', function(e){
                 $('#modalDvd').modal('show');
-                url = $(this).attr('href');
+                img = $(this).attr('href');
+                imgCircle = $(this).attr('circle');
                 title = $(this).attr('title');
+
+                $('.dvd__cd__img--normal').attr('src', img);
+                $('.dvd__cd__img--circle').attr('src', imgCircle);
+                $('#modalDvd h3').text(title);
+
                 e.preventDefault();
             });
         });
