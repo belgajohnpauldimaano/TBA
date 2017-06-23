@@ -60,7 +60,19 @@
                 success : function (data) {
                     //'.js-image_container'
                     $('.' + params.targetElement).html(data);
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         }
 
@@ -161,7 +173,19 @@
                         fetch_record(fetch_route, elem, 1, '')
                     }
                     
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         }
         
@@ -191,7 +215,19 @@
                 success     : function (data) {
                     elem.html(data);
                     $('ul.pagination a').css('cursor','pointer');
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         }
         function delete_record (delete_route, fetch_route, elem, id)
@@ -214,7 +250,19 @@
                         //show_message (data.messages, 'success');
                         fetch_record(fetch_route, elem, 1, '')
                     }
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         }
 
