@@ -403,11 +403,6 @@
                                                         No Title Yet
                                                     @endif
                                                 </h4>
-                                                
-                                                @if ($data->featured == 1)
-                                                    <strong>Featured</strong>
-                                                @endif
-                                                
                                                 <input type="radio" name="gallery_featured" {{ ($data->featured == 1 ? 'checked' : '') }} data-size="mini" data-on-color="danger" data-label-text="" data-on-text="featured" data-off-text="set featured" data-id="{{ $data->id }}" data-film-id="{{ $data->film_id }}" class="bs-switch-radio">
                                                 <hr>
                                                 <div class="row">
