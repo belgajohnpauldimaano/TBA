@@ -29,5 +29,25 @@
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/dropzone/min/dropzone.min.css') }}">
+    <link href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}" rel="stylesheet">
+    
+    <style>
+      #dropzone {
+      margin-bottom: 3rem; }
+
+    .dropzone {
+      border: 2px dashed #0087F7;
+      border-radius: 5px;
+      background: white; }
+      .dropzone .dz-message {
+        font-weight: 400; }
+        .dropzone .dz-message .note {
+          font-size: 0.8em;
+          font-weight: 200;
+          display: block;
+          margin-top: 1.4rem; }
+    </style>
 @yield('styles')
 </head>

@@ -1,9 +1,9 @@
 @extends('layouts.main')
 
-@section ('styles')
+{{-- @section ('styles')
     <link href="{{ asset('cms/plugins/alertifyjs/css/alertify.min.css') }}" rel="stylesheet">
     <link href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}" rel="stylesheet">
-@endsection
+@endsection --}}
 
 @section ('content')
     <div class="box box-primary">
@@ -223,7 +223,7 @@
 
 @section ('scripts')
 
-    <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
+    {{-- <script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script> --}}
     <script>
         $('body').on('click', '.js-mail_inquiry_export', function (e) {
             e.preventDefault();

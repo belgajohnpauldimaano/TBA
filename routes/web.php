@@ -27,6 +27,10 @@ Route::get('/sample_upload_view', 'Frontend\FilmController@sample')->name('sampl
 Route::post('/sample_upload', 'FilmController@sample_upload');
 
 Auth::routes();
+Route::post('/profile_form_modal', 'Auth\LoginController@profile_form_modal')->name('profile_form_modal');
+Route::post('/upload_photo', 'Auth\LoginController@upload_photo')->name('upload_photo');
+Route::post('/profile_save', 'Auth\LoginController@profile_save')->name('profile_save');
+Route::post('/profile_display_data', 'Auth\LoginController@profile_display_data')->name('profile_display_data');
 
 Route::get('/', 'Frontend\FilmController@home')->name('home');
 
