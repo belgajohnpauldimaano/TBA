@@ -211,6 +211,10 @@ main{
 	@media (max-width: $md - 1){
 		text-align: center;
 	}
+	h1{
+		letter-spacing: 5px;
+		font-weight: 700;
+	}
 }
 
 .film-award{
