@@ -5,8 +5,10 @@
       <b>Version</b> 1
     </div>
     <strong>Copyright &copy; 2017 <a href="#">TBA</a>.</strong> 
+                        
   </footer>
 
+  
 
 </div>
 <!-- ./wrapper -->
@@ -33,11 +35,22 @@
 <script src="{{ asset('cms/plugins/chartjs/Chart.min.js') }}"></script>
 
 <script src="{{ asset('cms/plugins/bootbox/bootbox.min.js') }}"></script>
+<script src="{{ asset('cms/plugins/dropzone/min/dropzone.min.js') }}"></script>
 
+<script src="{{ asset('cms/plugins/alertifyjs/alertify.min.js') }}"></script>
 
 @yield('scripts')
 
 <script>
+        
+
+        //Dropzone.options.profileForm = {
+        //    maxFiles : 1,
+        //    acceptedFiles : 'image/png'
+            /*params : {
+                _token : '{{ csrf_token() }}'
+            }*/
+        //};
         /* Func Name : image_list ()
          * Desc : Reload Image List function from ajax response
          * Params : nothing
@@ -60,7 +73,19 @@
                 success : function (data) {
                     //'.js-image_container'
                     $('.' + params.targetElement).html(data);
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         }
 
@@ -161,7 +186,19 @@
                         fetch_record(fetch_route, elem, 1, '')
                     }
                     
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         }
         
@@ -191,7 +228,19 @@
                 success     : function (data) {
                     elem.html(data);
                     $('ul.pagination a').css('cursor','pointer');
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         }
         function delete_record (delete_route, fetch_route, elem, id)
@@ -214,13 +263,190 @@
                         //show_message (data.messages, 'success');
                         fetch_record(fetch_route, elem, 1, '')
                     }
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         }
 
         $(function () {
             $('ul.pagination a').css('cursor','pointer');
         });
+
+        $('body').on('click', '.js-view_profile', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url : "{{ route('profile_form_modal') }}",
+                type : 'POST',
+                data : { _token : '{{ csrf_token() }}', id : '{{ encrypt(Auth::user()->id) }}' },
+                success : function (data) {
+                    $('#js-modal_holder').html(data);
+                    $('#js-profile_form_modal').modal({backdrop:'static'});
+                    $('.js-change_pw').css('display', 'none');
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                }
+            });
+            //
+        });
+
+        // toggle change password 
+        $('body').on('click', '.js-toggle_change_pw', function (e) {
+            e.preventDefault();
+            $('.js-change_pw').fadeToggle();
+            var attr = $('.js-change_pw .form-group .form-control').attr('disabled');
+            if (typeof attr !== typeof undefined && attr == 'disabled') {
+                $('.js-change_pw .form-group .form-control').removeAttr('disabled');
+            }
+            else
+            {
+                $('.js-change_pw .form-group .form-control').attr('disabled',true)
+            }
+        });
+        var dropzone;
+        $('body').on('shown.bs.modal', '#js-profile_form_modal', function (e) {
+        //$('body').on('click', '.js-update_profile', function (e) {
+           
+            dropzone = new Dropzone("div#my-awesome-dropzone", { 
+                acceptedFiles: "image/*",
+                url: "{{ route('upload_photo') }}", 
+                maxFiles: 1,
+                autoProcessQueue: false,
+                uploadMultiple: false,
+                parallelUploads: 1,
+                maxFiles: 1,
+                addRemoveLinks: true,
+                paramName : 'profile_photo',
+                // The setting up of the dropzone
+                maxfilesexceeded: function(file) {
+                    this.removeAllFiles();
+                    this.addFile(file);
+                },
+                params : {_token : '{{ csrf_token() }}', user_id : {{ Auth::user()->id }}},
+                init: function() {
+                    var myDropzone = this;
+                    /*var mockFile = { name: 'Name Image', size: 12345, type: 'image/jpeg', id : 123456789 };
+                    myDropzone.options.addedfile.call(myDropzone, mockFile);
+                    myDropzone.options.success.call(myDropzone, mockFile);
+                    myDropzone.options.thumbnail.call(myDropzone, mockFile, "{{ asset('content/film/photos/thumbnail.jpg') }}");
+                    myDropzone.options.complete.call(myDropzone, mockFile);*/
+                    
+                    myDropzone.on('removedfile', function (file) {
+                        console.log(file.id);
+                    });
+                    
+                    myDropzone.on("success", function(file, responseText) {
+                        //myDropzone.removeAllFiles();
+                        if (responseText.errCode == 1)
+                        {
+                            $('#general-error').html('<code>'+ responseText.messages +'</code>');
+                            var node, _i, _len, _ref, _results;
+                            var message = responseText.messages;
+                            file.previewElement.classList.add("dz-error");
+                            _ref = file.previewElement.querySelectorAll("[data-dz-errormessage]");
+                            _results = [];
+                            for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                            node = _ref[_i];
+                            _results.push(node.textContent = message);
+                            }
+                            alertify.error('' + message + '');
+                            return _results;
+                        }
+                        else
+                        {
+                            alertify.success('' + responseText.messages + '');
+                            return file.previewElement.classList.add("dz-success"); // from source
+                        }
+                    });
+
+                    
+                }
+            });
+        });
+        
+
+        $("body").on('submit', '#profile_form', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzone.processQueue();
+
+            var formData = new FormData($(this)[0]);
+
+            $.ajax({
+                url : "{{ route('profile_save') }}",
+                type : 'POST',
+                data : formData,
+                processData : false,
+                contentType : false,
+                success     : function (data) {
+                    console.log(data);
+                    
+                    $('#general-error').empty();
+                    if (data.errCode == 1)
+                    {
+                        for(var err in data.messages)
+                        {
+                            if($('#'+err+'-error').length) // Checks if the element is exisiting
+                            {
+                                $('#'+err+'-error').html('<code>'+ data['messages'][err] +'</code>');
+                                $('#'+err+'-error').parents('.form-group').addClass('has-error');
+                            }
+                        }
+                    }
+                    else if (data.errCode == 2)
+                    {
+                        $('#general-error').append('<code>'+ data.messages +'</code>');
+                    }
+                    else
+                    {
+                        $('#js-profile_form_modal').modal('hide');
+                        alertify.success('' + data.messages + '');
+                        //user-menu
+                        $.ajax({
+                            url : "{{ route('profile_display_data') }}",
+                            type : 'POST',
+                            data : {_token : '{{ csrf_token() }}', id: "{{ encrypt(Auth::user()->id) }}" },
+                            success: function (data) {
+                                $('.user-menu').html(data);
+                            }
+                        });
+                    }
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
+            });
+        }); 
 </script>
 </body>
 </html>

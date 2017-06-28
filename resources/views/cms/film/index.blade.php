@@ -226,7 +226,19 @@
                 success : function (data) {
                     $('#js-modal_holder').html(data);
                     $('#js-film_form_modal').modal({keyboard : false, backdrop : 'static'});
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         }
 

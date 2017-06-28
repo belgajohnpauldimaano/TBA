@@ -123,7 +123,19 @@
                 data : {_token : '{{ csrf_token() }}', order : order},
                 success : function (data) {
                     console.log(data);
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
 
             show_message ('Order successfully arranged.', 'success') 
@@ -139,7 +151,19 @@
                     $('#js-modal_holder').append(data);
                     $('#js-image_details').modal({ keyboard : false, backdrop : 'static' });
                     $('.js-image_container .overlay').addClass('hidden');
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         });
 
@@ -151,7 +175,19 @@
                 success : function (data) {
                     $('#js-modal_holder').append(data);
                     $('#js-image_uploader_modal').modal({ keyboard : false, backdrop : 'static' });
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         });
 
@@ -194,7 +230,19 @@
                         show_message (data.messages, 'success');
                         $('#js-image_details').modal('hide');
                     }
-                }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                } 
             });
         });
 
