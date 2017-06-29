@@ -1821,7 +1821,7 @@
                     $('#dvd_subtitles').tokenfield();
                     //$(".form-group .wysihtml5-toolbar").addClass('hidden');
                 }
-                /*,error : function (xhr, ajaxOptions, thrownError)
+                ,error : function (xhr, ajaxOptions, thrownError)
                 {
                     if (thrownError == 'Unauthorized')
                     {
@@ -1832,7 +1832,7 @@
                     500: function(xhr) {
                         window.location.reload();
                     }
-                }*/
+                }
             });
         }
         // FILM DVD Sorter
