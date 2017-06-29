@@ -1,5 +1,9 @@
 @extends('frontend.layouts.main')
 
+@section('page_title')
+<title>About TBA</title>
+@endsection
+
 @section('container')
     <main>
         <div class="tba-logo">

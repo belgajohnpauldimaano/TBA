@@ -1,5 +1,9 @@
 @extends('frontend.layouts.main')
 
+@section('page_title')
+<title>Contact TBA</title>
+@endsection
+
 @section('container')
     <main>
         <section>
