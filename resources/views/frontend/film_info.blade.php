@@ -365,7 +365,7 @@
       var owlTrailer = $('.film-trailers-owl');
       owlTrailer.owlCarousel({
           items: 1,
-          loop: true,
+          loop: ($(".film-trailers-owl .item").length > 1) ? true : false,
           nav: false,
           autoplay: true,
           autoplaySpeed: 1000,
