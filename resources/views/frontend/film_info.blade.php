@@ -179,14 +179,18 @@
             <section class="film-award">
                 <div class="container">
                     <div class="header-title">
-                        <h2 class="header-title__tag">Awards / Festivals</h2>
+                        <h2 class="header-title__tag header-title__tag--no-feather">
+                            <img role="button" class="film-award__prev" src="{{ asset('frontend/assets/img/left-arrow-title.png') }}">
+                              Awards / Festivals
+                            <img role="button" class="film-award__next" src="{{ asset('frontend/assets/img/right-arrow-title.png') }}">
+                        </h2>
                     </div>
                     <div class="row">
                         <div class="col-md-10 col-md-offset-1">
                             <div class="film-award-owl m-b-6 owl-carousel">
                                 @foreach ($film_info->awards as $award)
                                     <div class="item">
-                                        <img src="{{ asset('content/film/awards/' . $award->award_image) }}">
+                                        <img src="{{ asset('content/film/awards/' . $award->award_image) }}" title="{{$award->award_name}}">
                                     </div>
                                 @endforeach
                             </div>
@@ -409,6 +413,14 @@
                   items: 4
               }
           }
+      });
+
+      $('.film-award__prev').click(function(){
+        owlFilmAward.trigger('prev.owl.carousel');
+      });
+
+      $('.film-award__next').click(function(){
+        owlFilmAward.trigger('next.owl.carousel');
       });
       
       var owlGallery = $('.owl-gallery');
