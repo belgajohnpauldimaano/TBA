@@ -68,12 +68,7 @@ class FilmController extends Controller
                     $q->where('featured', 1);
                     $q->orWhere('featured', 0);
                     $q->select(['id', 'label', 'featured', 'poster_image_sorter', 'film_id']);
-                },
-                'trailers' => function ($q) {
-                    $q->where('trailer_show', 1);
-                    //$q->orWhere('featured', 0);
-                    //$q->select(['id', 'label', 'featured', 'poster_image_sorter', 'film_id']);
-                },
+                }
             ]
         )
         ->where('id', $request->id)->first();
