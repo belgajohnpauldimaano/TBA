@@ -15,7 +15,7 @@
                 <div class="row">
                      @foreach ($dvds as $data)
                             <div class="col-sm-6">
-                                <pre>{{ json_encode($data, JSON_PRETTY_PRINT)}}</pre>
+                                {{-- <pre>{{ json_encode($data, JSON_PRETTY_PRINT)}}</pre> --}}
                                 <div class="dvd text-center">
                                     <a href="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" 
                                         circle="{{ asset('content/film/dvds/' . $data->dvd_disc_image) }}" 
