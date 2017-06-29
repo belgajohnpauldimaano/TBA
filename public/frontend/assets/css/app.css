@@ -598,7 +598,7 @@ btn */
       border-left: 12px solid transparent; }
 
 .nav-owl {
-  width: 300px;
+  width: 400px;
   float: right;
   height: 70px;
   line-height: 70px;
@@ -611,6 +611,22 @@ btn */
       width: 100px; }
     .nav-owl__link--announcements {
       width: 150px; }
+    .nav-owl__link--film {
+      width: 133px;
+      background: url(../../assets/img/Films.png);
+      background-size: 60px; }
+    .nav-owl__link--about {
+      width: 133px;
+      background: url(../../assets/img/About.png);
+      background-size: 70px; }
+    .nav-owl__link--contact {
+      width: 133px;
+      background: url(../../assets/img/Contact.png);
+      background-size: 90px; }
+    .nav-owl__link--announcements {
+      width: 250px;
+      background: url(../../assets/img/Announcements.png);
+      background-size: 200px; }
     .nav-owl__link--cinema-76 {
       width: 50px;
       background: url(../../assets/img/CInema-76.png);

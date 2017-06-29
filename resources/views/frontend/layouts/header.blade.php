@@ -41,20 +41,24 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <div class="nav-owl hidden-xs">
                   <div class="nav-owl__menu owl-carousel">
-                      <a href="{{ route('films') }}" class="nav-owl__link nav-owl__link--text">Films</a>
+                      {{-- <a href="{{ route('films') }}" class="nav-owl__link nav-owl__link--text">Films</a>
                       <a href="{{ route('about') }}" class="nav-owl__link nav-owl__link--text">About</a>
                       <a href="{{ route('contact') }}" class="nav-owl__link nav-owl__link--text">Contact</a>
-                      <a href="#" class="nav-owl__link nav-owl__link--text nav-owl__link--announcements">Announcements</a>
+                      <a href="#" class="nav-owl__link nav-owl__link--text nav-owl__link--announcements">Announcements</a> --}}
+                      <a href="{{ route('films') }}" class="nav-owl__link nav-owl__link--img nav-owl__link--film"></a>
+                      <a href="{{ route('about') }}" class="nav-owl__link nav-owl__link--img nav-owl__link--about"></a>
+                      <a href="{{ route('contact') }}" class="nav-owl__link nav-owl__link--img nav-owl__link--contact"></a>
+                      <a href="#" class="nav-owl__link nav-owl__link--img nav-owl__link--announcements"></a>
                       <a href="#" class="nav-owl__link nav-owl__link--img nav-owl__link--cinema-76"></a>
                       <a href="#" class="nav-owl__link nav-owl__link--img nav-owl__link--cinema-tropa"></a>
                   </div>
                 </div>
                 <div class="visible-xs">
                     <ul class="nav navbar-nav navbar-right text-center">
-                        <li><a href="{{ route('films') }}">Films</a></li>
-                        <li><a href="{{ route('about') }}">About</a></li>
-                        <li><a href="{{ route('contact') }}">Contact</a></li>
-                        <li><a href="#">Announcements</a></li>
+                        <li><a href="{{ route('films') }}"><img src="{{ asset('frontend/assets/img/Films.png') }}" class="center-block"></a></li>
+                        <li><a href="{{ route('about') }}"><img src="{{ asset('frontend/assets/img/About.png') }}" class="center-block"></a></li>
+                        <li><a href="{{ route('contact') }}"><img src="{{ asset('frontend/assets/img/Contact.png') }}" class="center-block"></a></li>
+                        <li><a href="#"><img src="{{ asset('frontend/assets/img/Announcements.png') }}" class="center-block"></a></li>
                         <li><a href="#"><img src="{{ asset('frontend/assets/img/CInema-76.png') }}" class="center-block"></a></li>
                         <li><a href="#"><img src="{{ asset('frontend/assets/img/Cinetropa.png') }}" class="center-block"></a></li>
                     </ul>

@@ -1,5 +1,5 @@
 .nav-owl{
-	width: 300px;
+	width: 400px;
     float: right;
     height: $navbarHeight;
     line-height: $navbarHeight;
@@ -20,6 +20,30 @@
 
 		&--announcements{
 			width: 150px;
+		}
+
+		&--film{
+			width: 133px;
+			background: url(../../assets/img/Films.png);
+			background-size: 60px;
+		}
+
+		&--about{
+			width: 133px;
+			background: url(../../assets/img/About.png);
+			background-size: 70px;
+		}
+
+		&--contact{
+			width: 133px;
+			background: url(../../assets/img/Contact.png);
+			background-size: 90px;
+		}
+
+		&--announcements{
+			width: 250px;
+			background: url(../../assets/img/Announcements.png);
+			background-size: 200px;
 		}
 
 		&--cinema-76{
