@@ -113,12 +113,17 @@ main{
 			    float: right;
 			    right: -12px;
 			}
-
-			img{
-			    width: 180px;
-			    position: relative;
-			    top: -3px;
-			    margin:0 15px;
+		}
+		img{
+		    width: 180px;
+		    position: relative;
+		    top: -3px;
+		    margin:0 15px;
+			@media (max-width: $lg - 1){
+				width: 140px;
+			}
+			@media (max-width: $md - 1){
+				display: none;
 			}
 		}
 		&--no-feather{
