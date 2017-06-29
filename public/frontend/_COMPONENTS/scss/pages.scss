@@ -482,19 +482,9 @@ main{
 	    }
 	}
 	&__cd{
-		height: 300px;
-
-		&__img{
-			height: 100%;
-			float: right;
-
-			&--circle{
-				height: 50%;
-				border-radius: 50%;
-			}
-		}
+    	padding-top: 100px;
 	}
-	&_content{
+	&__content{
 		h3{
 			margin-bottom: 0;
 		    border-bottom: 2px solid #ddd;
@@ -504,28 +494,21 @@ main{
 			color: #ccc;
 			margin-bottom: 5px;
 		}
+
+		@media (min-width: $lg){
+			padding-top: 85px;
+		}
 	}
 
 	@media (max-width: $lg - 1){
-		&__cd{
-			width: 50%;
-			&__img{
-				height: auto;
-				width: 100%;
-			}
-		}
-		&__cd__container{
-		    width: 100%;
-		    max-width: 360px;
-		    margin: 0 auto;
-		}
-		&_content{
+		&__content{
 			text-align: center;
 		}
 	}
-	@media (max-width: 360px){
+
+	@media (max-width: 412px){
 		&__cd{
-			height: 230px;
+	    	padding-top: 50px;
 		}
 	}
 }

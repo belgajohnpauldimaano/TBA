@@ -98,7 +98,7 @@ class FilmController extends Controller
         $dvds = Film::with(
             [
                 'dvds' => function ($q) {
-                    // $q->orderBy('trailer_show', 'ASC');
+                    $q->orderBy('dvd_order', 'ASC');
                     // $q->orderBy('trailer_image_sorter', 'ASC');
                 }
             ]

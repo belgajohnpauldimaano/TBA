@@ -17,12 +17,16 @@
                         {{-- <pre>{{ json_encode($dvd->dvds, JSON_PRETTY_PRINT)}}</pre> --}}
                          @foreach ($dvd->dvds as $data)
                                 <div class="col-sm-6">
-                                    {{-- <pre>{{ json_encode($data->name, JSON_PRETTY_PRINT)}}</pre> --}}
+                                    {{-- <pre>{{ json_encode($data, JSON_PRETTY_PRINT)}}</pre> --}}
                                     <div class="dvd text-center">
                                         <a href="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" 
                                             circle="{{ asset('content/film/dvds/' . $data->dvd_disc_image) }}" 
                                             title="{{ $data->name }}"
-                                            list="{{ $data->languages }}" class="dvd__block">
+                                            en-title="{{ $data->english_title }}"
+                                            languages="{{ $data->languages }}"
+                                            subtitles="{{ $data->subtitles }}"
+                                            trt="{{ $data->running_time }}"
+                                            class="dvd__block">
                                             <img src="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" class="img-responsive center-block">
                                         </a>
                                         <div class="dvd__title">
@@ -49,40 +53,38 @@
                </div>
                <div class="modal-body">
                     <div class="row">
-                        <div class="col-md-7">
-                            <div class="dvd__cd__container clearfix">
-                                <div class="dvd__cd pull-right">
-                                    <div class="va-block">
-                                        <div class="va-bottom">
-                                            <img src="{{ asset('frontend/assets/img/on-dvd/pop_up_circle.png') }}" class="dvd__cd__img dvd__cd__img--circle">
-                                        </div>
-                                    </div>
+                        <div class="col-md-7 p-x-6">
+                            <div class="row">
+                                <div class="col-xs-6 p-r-1">
+                                    <img src="{{ asset('frontend/assets/img/on-dvd/pop_up.png') }}" class="dvd__cover w-100">
                                 </div>
-                                <div class="dvd__cd pull-right">
-                                    <img src="{{ asset('frontend/assets/img/on-dvd/pop_up.png') }}" class="dvd__cd__img dvd__cd__img--normal">
+                                <div class="col-xs-6 p-l-1">
+                                    <img src="{{ asset('frontend/assets/img/on-dvd/pop_up_circle.png') }}" class="dvd__cd w-100">
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-5">
-                            <div class="dvd_content">
-                                <h3>Heneral Luna DVD</h3>
-                                {{-- <span class="clearfix">(General Luna)</span> --}}
+                            <div class="dvd__content">
+                                <h3 class="dvd__cover__title"></h3>
+                                <span class="dvd__en__title clearfix"></span>
 
                                 <ul class="list-inline m-t-6">
                                     <li><strong class="text-uppercase">Languages:</strong></li>
-                                    <li class="p-r-0">Tagalog</li>
-                                    <li class="p-r-0">English</li>
-                                    <li class="p-r-0">Spanish</li>
+                                    <li>
+                                        <span class="dvd__languages"></span>
+                                    </li>
                                 </ul>
                                 <ul class="list-inline">
                                     <li class="p-r-0"><strong class="text-uppercase">Subtitles:</strong></li>
-                                    <li class="p-r-0">Tagalog</li>
-                                    <li class="p-r-0">English</li>
-                                    <li class="p-r-0">Spanish</li>
+                                    <li>
+                                        <span class="dvd__subtitles"></span>
+                                    </li>
                                 </ul>
                                 <ul class="list-inline">
                                     <li class="p-r-0"><strong class="text-uppercase">TRT:</strong></li>
-                                    <li class="p-r-0">118 minutes</li>
+                                    <li>
+                                        <div class="dvd__trt"></div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -97,14 +99,23 @@
     <script type="text/javascript">
         $(function(){
             $('.dvd').on('click', '.dvd__block', function(e){
+
                 $('#modalDvd').modal('show');
                 img = $(this).attr('href');
                 imgCircle = $(this).attr('circle');
                 title = $(this).attr('title');
+                en_title = $(this).attr('en-title');
+                languages = $(this).attr('languages');
+                subtitles = $(this).attr('subtitles');
+                trt = $(this).attr('trt');
 
-                $('.dvd__cd__img--normal').attr('src', img);
-                $('.dvd__cd__img--circle').attr('src', imgCircle);
-                $('#modalDvd h3').text(title);
+                $('.dvd__cover').attr('src', img);
+                $('.dvd__cd').attr('src', imgCircle);
+                $('.dvd__cover__title').text(title);
+                $('.dvd__en__title').text(en_title);
+                $('.dvd__languages').text(languages);
+                $('.dvd__subtitles').text(subtitles);
+                $('.dvd__trt').text(trt + ' minutes');
 
                 e.preventDefault();
             });
