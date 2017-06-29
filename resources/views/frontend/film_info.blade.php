@@ -107,7 +107,7 @@
 
                                   @if ($film_info->running_time != '' || $film_info->release_date != '')
                                       <ul class="list-inline m-t-5">
-                                          <li><strong class="text-NeutraTextTF">TOTAL RUNNIG TIME:</strong></li>
+                                          <li><strong class="text-NeutraTextTF">TOTAL RUNNING TIME:</strong></li>
                                           <li><span class="">{{$film_info->running_time}}</span> minutes</li>
                                       </ul>
                                       <ul class="list-inline">

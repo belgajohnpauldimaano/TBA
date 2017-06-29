@@ -702,6 +702,8 @@ main {
     .film-categ__item__link--active {
       color: #333;
       font-weight: bold; }
+    .film-categ__item__link:not(.film-categ__item__link--active):hover {
+      color: #d3b764 !important; }
   .film-categ__item:nth-child(3) .film-categ__item__link {
     border-right: 0; }
 

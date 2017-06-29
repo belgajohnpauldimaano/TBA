@@ -25,6 +25,9 @@
                                             </a>
                                             <h3 class="film__title text-center">
                                                 <span>{{ $film->title }}</span>
+                                                @if ($film->english_title)
+                                                    <span class="clearfix">( {{ $film->english_title }} )</span>
+                                                @endif
                                             </h3>
                                         </div>
                                     </div>
@@ -41,6 +44,9 @@
                                                         <div class="va-middle">
                                                             <div class="film__title film__title--height text-center">
                                                                 <span>{{ $film->title }}</span>
+                                                                @if ($film->english_title)
+                                                                    <span class="clearfix">( {{ $film->english_title }} )</span>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -73,6 +79,9 @@
                                             </a>
                                             <h3 class="film__title text-center">
                                                 <span>{{ $film->title }}</span>
+                                                @if ($film->english_title)
+                                                    <span class="clearfix">( {{ $film->english_title }} )</span>
+                                                @endif
                                             </h3>
                                         </div>
                                     </div>
@@ -89,6 +98,9 @@
                                                         <div class="va-middle">
                                                             <div class="film__title film__title--height text-center">
                                                                 <span>{{ $film->title }}</span>
+                                                                @if ($film->english_title)
+                                                                    <span class="clearfix">( {{ $film->english_title }} )</span>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>
@@ -120,6 +132,9 @@
                                             </a>
                                             <h3 class="film__title text-center">
                                                 <span>{{ $film->title }}</span>
+                                                @if ($film->english_title)
+                                                    <span class="clearfix">( {{ $film->english_title }} )</span>
+                                                @endif
                                             </h3>
                                         </div>
                                     </div>
@@ -136,6 +151,9 @@
                                                         <div class="va-middle">
                                                             <div class="film__title film__title--height text-center">
                                                                 <span>{{ $film->title }}</span>
+                                                                @if ($film->english_title)
+                                                                    <span class="clearfix">( {{ $film->english_title }} )</span>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </div>

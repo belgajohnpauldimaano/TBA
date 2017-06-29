@@ -26,6 +26,9 @@ main{
 				color: #333;
 				font-weight: bold;
 			}
+			&:not(&--active):hover{
+				color: #d3b764 !important;
+			}
 		}
 		&:nth-child(3) &__link{
 			border-right: 0;
