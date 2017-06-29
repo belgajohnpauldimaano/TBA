@@ -478,10 +478,6 @@
               history: false,
               focus: false,
               index: parseInt(goTo),
-              maxSpreadZoom: 1,
-              getDoubleTapZoom: function(isMouseClick, item) {
-                  return item.initialZoomLevel;
-              },
 
               showAnimationDuration: 0,
               hideAnimationDuration: 0, 
@@ -496,7 +492,12 @@
 
           gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
           gallery.init();
+
+          gallery.listen('close', function() {
+            gallery.close();
+          });
       };
+
 
 
       $('.films-gallery').on('click', '.owl-gallery__item', function(e) {
@@ -526,10 +527,6 @@
               history: false,
               focus: false,
               index: parseInt(goTo),
-              maxSpreadZoom: 1,
-              getDoubleTapZoom: function(isMouseClick, item) {
-                  return item.initialZoomLevel;
-              },
 
               showAnimationDuration: 0,
               hideAnimationDuration: 0, 
