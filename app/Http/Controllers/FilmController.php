@@ -625,7 +625,7 @@ class FilmController extends Controller
             $img->resize(250, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $img->save(public_path('content/film/posters/' . $filename . '-preview.' . $ext));
+            $img->save(public_path('content/film/posters/' . 'preview-' . $filename . '.' . $ext));
             $initialPreview = [
                 asset('content/film/posters').'/'.$full_filename
             ];
