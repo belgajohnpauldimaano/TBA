@@ -117,7 +117,7 @@
                     <strong class="margin">
                         Feature in Website
                     </strong>
-                    <input id="film_dvd_featured_switch" name="film_dvd_featured_switch" type="checkbox" value="{{ ($Dvd->dvd_status == 1 ? 'true' : 'false') }}" {{ ($Dvd->dvd_status == 1 ? 'checked' : '') }} />
+                    <input id="film_dvd_featured_switch" name="film_dvd_featured_switch" type="checkbox" value="{{ ($Dvd ? ($Dvd->dvd_status == 1 ? 'true' : 'false') : 'false') }} " {{ ($Dvd ? ($Dvd->dvd_status == 1 ? 'checked' : '') : '') }} />
                     <label for="film_dvd_featured_switch" class="label-danger film_dvd_featured_switch_ui"></label>
                 </div>
                 <div class="help-block text-center" id="film_dvd_featured_switch-error"></div>
