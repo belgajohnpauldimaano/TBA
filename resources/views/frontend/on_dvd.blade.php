@@ -13,29 +13,26 @@
         <div class="container">
             @if ($dvds->count() > 0)
                 <div class="row">
-                    @foreach ($dvds as $dvd)
-                        {{-- <pre>{{ json_encode($dvd->dvds, JSON_PRETTY_PRINT)}}</pre> --}}
-                         @foreach ($dvd->dvds as $data)
-                                <div class="col-sm-6">
-                                    {{-- <pre>{{ json_encode($data, JSON_PRETTY_PRINT)}}</pre> --}}
-                                    <div class="dvd text-center">
-                                        <a href="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" 
-                                            circle="{{ asset('content/film/dvds/' . $data->dvd_disc_image) }}" 
-                                            title="{{ $data->name }}"
-                                            en-title="{{ $data->english_title }}"
-                                            languages="{{ $data->languages }}"
-                                            subtitles="{{ $data->subtitles }}"
-                                            trt="{{ $data->running_time }}"
-                                            class="dvd__block">
-                                            <img src="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" class="img-responsive center-block">
-                                        </a>
-                                        <div class="dvd__title">
-                                            <h3 class="text-uppercase">{{ $data->name }}</h3>
-                                            <span class="clearfix">&nbsp;</span>
-                                        </div>
+                     @foreach ($dvds as $data)
+                            <div class="col-sm-6">
+                                <pre>{{ json_encode($data, JSON_PRETTY_PRINT)}}</pre>
+                                <div class="dvd text-center">
+                                    <a href="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" 
+                                        circle="{{ asset('content/film/dvds/' . $data->dvd_disc_image) }}" 
+                                        title="{{ $data->name }}"
+                                        en-title="{{ $data->film->english_title }}"
+                                        languages="{{ $data->languages }}"
+                                        subtitles="{{ $data->subtitles }}"
+                                        trt="{{ $data->running_time }}"
+                                        class="dvd__block">
+                                        <img src="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" class="img-responsive center-block">
+                                    </a>
+                                    <div class="dvd__title">
+                                        <h3 class="text-uppercase">{{ $data->name }}</h3>
+                                        <span class="clearfix">&nbsp;</span>
                                     </div>
                                 </div>
-                        @endforeach
+                            </div>
                     @endforeach
                 </div>
             @endif
@@ -101,6 +98,7 @@
             $('.dvd').on('click', '.dvd__block', function(e){
 
                 $('#modalDvd').modal('show');
+
                 img = $(this).attr('href');
                 imgCircle = $(this).attr('circle');
                 title = $(this).attr('title');

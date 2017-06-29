@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Film;
 use App\Carousel;
 use App\FilmCrew;
-
+use App\Dvd;
 class FilmController extends Controller
 {
     public function home(){
@@ -94,17 +94,14 @@ class FilmController extends Controller
         return view('frontend.trailers', ['film_trailer' => $film_trailer]);
     }
     public function on_dvd(){
-        
-        $dvds = Film::with(
-            [
-                'dvds' => function ($q) {
-                    $q->orderBy('dvd_order', 'ASC');
-                    // $q->orderBy('trailer_image_sorter', 'ASC');
-                }
-            ]
-        )
-        ->get();
 
+        $dvds = Dvd::with(['film' => function ($q) {
+            $q->select(['id', 'english_title']);
+        }])
+        ->orderBy('name', 'ASC')
+        ->orderBy('dvd_order', 'ASC')
+        ->get();
         return view('frontend.on_dvd', ['dvds' => $dvds]);
+        
     }
 }
