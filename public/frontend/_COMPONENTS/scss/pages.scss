@@ -211,8 +211,14 @@ main{
 }
 .info-desc{
 	margin-top: 35px;
+	ul>li{
+    	display: table-cell;
+	}
 	@media (max-width: $md - 1){
 		text-align: center;
+		ul>li{
+			display: block;
+		}
 	}
 	h1{
 		letter-spacing: 5px;

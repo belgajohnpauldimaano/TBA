@@ -866,9 +866,13 @@ main {
 
 .info-desc {
   margin-top: 35px; }
+  .info-desc ul > li {
+    display: table-cell; }
   @media (max-width: 767px) {
     .info-desc {
-      text-align: center; } }
+      text-align: center; }
+      .info-desc ul > li {
+        display: block; } }
   .info-desc h1 {
     letter-spacing: 5px;
     font-weight: 700; }

@@ -103,17 +103,18 @@
 
                                   @foreach (App\FilmCrew::ROLE as $key => $role)
                                       @if ($film_info->film_crews->where('role', $key)->count() > 0)
-
-                                          <ul class="list-inline {{ strtolower(str_replace(' ', '-', $role)) == 'cast' ? 'm-b-5' : '' }}">
-                                              <li>
-                                                  <strong class="text-NeutraTextTF">{{ $role }}:</strong>
-                                              </li>
-                                              <li>
-                                                  @foreach ($film_info->film_crews->where('role', $key) as $crew)
-                                                      <span class=""> {{ $crew->person->name }}, </span>
-                                                  @endforeach
-                                              </li>
-                                          </ul>
+                                          @if ($role != 'PRODUCTION')
+                                              <ul class="list-inline {{ strtolower(str_replace(' ', '-', $role)) == 'cast' ? 'm-b-5' : '' }}">
+                                                  <li>
+                                                      <strong class="text-NeutraTextTF">{{ $role }}:</strong>
+                                                  </li>
+                                                  <li>
+                                                      @foreach ($film_info->film_crews->where('role', $key) as $crew)
+                                                          <span class=""> {{ $crew->person->name }}, </span>
+                                                      @endforeach
+                                                  </li>
+                                              </ul>
+                                          @endif
                                       @endif
                                   @endforeach
 
