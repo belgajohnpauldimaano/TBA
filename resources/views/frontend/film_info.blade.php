@@ -222,7 +222,6 @@
         @endif
 
         @if ($film_info->quote)
-                                  <pre>{{ json_encode($film_info->quote, JSON_PRETTY_PRINT)}}</pre>
             <section class="film-quotes">
                <div class="container">
                    <div class="row">
