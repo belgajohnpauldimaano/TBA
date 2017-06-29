@@ -117,14 +117,16 @@
                                       @endif
                                   @endforeach
 
-                                  @if ($film_info->running_time != '' || $film_info->release_date != '')
+                                  @if ($film_info->running_time)
                                       <ul class="list-inline m-t-5">
                                           <li><strong class="text-NeutraTextTF">TOTAL RUNNING TIME:</strong></li>
                                           <li><span class="">{{$film_info->running_time}}</span> minutes</li>
                                       </ul>
+                                  @endif
+                                  @if ($film_info->release_date)
                                       <ul class="list-inline">
                                           <li><strong class="text-NeutraTextTF">RELEASE DATE:</strong></li>
-                                          <li><span class="">{{ date('F d Y', strtotime($film_info->release_date)) }}</span></li>
+                                          <li><span class="">{{ date('F d, Y', strtotime($film_info->release_date)) }}</span></li>
                                       </ul>
                                   @endif
 
@@ -164,7 +166,7 @@
                        </ul>
                        <h4 class="text-center">
                             @if ($film_info->hash_tags)
-                                {{ $film_info->hash_tags }}
+                                #{{ $film_info->hash_tags }}
                             @endif
                        </h4>
                     </div>
