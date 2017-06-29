@@ -26,6 +26,9 @@ main{
 				color: #333;
 				font-weight: bold;
 			}
+			&:not(&--active):hover{
+				color: #d3b764 !important;
+			}
 		}
 		&:nth-child(3) &__link{
 			border-right: 0;
@@ -210,6 +213,10 @@ main{
 	margin-top: 35px;
 	@media (max-width: $md - 1){
 		text-align: center;
+	}
+	h1{
+		letter-spacing: 5px;
+		font-weight: 700;
 	}
 }
 

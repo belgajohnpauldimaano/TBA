@@ -702,6 +702,8 @@ main {
     .film-categ__item__link--active {
       color: #333;
       font-weight: bold; }
+    .film-categ__item__link:not(.film-categ__item__link--active):hover {
+      color: #d3b764 !important; }
   .film-categ__item:nth-child(3) .film-categ__item__link {
     border-right: 0; }
 
@@ -840,6 +842,9 @@ main {
   @media (max-width: 767px) {
     .info-desc {
       text-align: center; } }
+  .info-desc h1 {
+    letter-spacing: 5px;
+    font-weight: 700; }
 
 @media (min-width: 768px) {
   .film-award {
