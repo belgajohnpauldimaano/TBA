@@ -50,12 +50,16 @@
                               <div class="info-img">
                                  <div class="hidden-xs">
                                     @if ($film_info->posters->where('featured', 1)->count() == 1)
-                                        @foreach ($film_info->posters->where('featured', 1) as $poster)
-                                            <img src="{{ asset('content/film/posters/' . $poster->label) }}" class="w-100">
+                                        @foreach ($film_info->posters->where('featured', 1) as $key =>  $poster)
+                                          <a href="{{ asset('content/film/posters/' . $poster->label) }}" class="poster-popup" data-no="{{ $key }}">
+                                              <img src="{{ asset('content/film/posters/' . $poster->label) }}" class="w-100">
+                                          </a>
                                         @endforeach
                                     @else
                                         @foreach ($film_info->posters->where('featured', 0) as $poster)
+                                          <a href="{{ asset('content/film/posters/' . $poster->label) }}" class="poster-popup" data-no="{{ $key }}">
                                             <img src="{{ asset('content/film/posters/' . $poster->label) }}" class="w-100">
+                                          </a>
                                         @endforeach
                                     @endif
                                     @if ($film_info->sell_sheet != NULL)
@@ -66,7 +70,15 @@
                                  </div>
                                  <div class="btn-group btn-group-justified visible-xs" role="group" aria-label="...">
                                       <div class="btn-group" role="group">
-                                          <button type="button" class="btn btn-default btn-default__black">View Poster</button>
+                                          @if ($film_info->posters->where('featured', 1)->count() == 1)
+                                              @foreach ($film_info->posters->where('featured', 1) as $key =>  $poster)
+                                                <button type="button" class="btn btn-default btn-default__black poster-popup" data-no="{{ $key }}">View Poster</button>
+                                              @endforeach
+                                          @else
+                                              @foreach ($film_info->posters->where('featured', 0) as $poster)
+                                                <button type="button" class="btn btn-default btn-default__black poster-popup" data-no="{{ $key }}">View Poster</button>
+                                              @endforeach
+                                          @endif
                                       </div>
                                       <div class="btn-group" role="group">
                                             @if ($film_info->sell_sheet != NULL)
@@ -464,6 +476,54 @@
           e.preventDefault();
       });
 
+      var posters = {};
+      var openPhotoSwipePoster = function(goTo) {
+          var pswpElement = document.querySelectorAll('.pswp')[0];
+          // build items array
+          var items = [
+                @if ($film_info->posters)
+                    @foreach ($film_info->posters as $photo)
+                        {
+                            src: '{{ asset('content/film/posters/' . $photo->label) }}',
+                            w: {{ Image::make(asset('content/film/posters/' . $photo->label))->width() }},
+                            h: {{ Image::make(asset('content/film/posters/' . $photo->label))->height() }},
+                        },
+                    @endforeach
+                @endif
+          ];
+
+          // define options (if needed)
+          var options = {
+              history: false,
+              focus: false,
+              index: parseInt(goTo),
+              maxSpreadZoom: 1,
+              getDoubleTapZoom: function(isMouseClick, item) {
+                  return item.initialZoomLevel;
+              },
+
+              showAnimationDuration: 0,
+              hideAnimationDuration: 0, 
+
+              bgOpacity: 0.9,
+              fullscreenEl: false,
+              zoomEl: false,
+              shareEl: false,
+
+              closeOnScroll: false
+          };
+
+          posters = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+          posters.init();
+      };
+
+
+      $('.films-gallery').on('click', '.owl-gallery__item', function(e) {
+          var id = $(this).attr('data-no');
+          openPhotoSwipe(id);
+          e.preventDefault();
+      });
+
 
 
       $(function(){
@@ -496,6 +556,13 @@
               $("#trailerVideo").attr('src', url);
               $("#modalTrailer h4").html(caption).fadeIn().removeClass();
           });
+      });
+
+      $('.poster-popup').click(function(e){
+          var id = $(this).attr('data-no');
+          openPhotoSwipePoster(1);
+
+          e.preventDefault();
       });
 
     </script>
