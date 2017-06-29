@@ -125,3 +125,19 @@ btn */
     -webkit-backface-visibility: hidden;
     transition: transform .4s ease;
 }
+
+.social-icon{
+    a{
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        background: #666;
+        color: #fff;
+        border-radius: 50%;
+        display: inline-block;
+
+        &:hover{
+            background-color: #777;
+        }
+    }
+}

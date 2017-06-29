@@ -500,6 +500,17 @@ btn */
   transition: transform .4s ease;
   transition: transform .4s ease, -webkit-transform .4s ease; }
 
+.social-icon a {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+  background: #666;
+  color: #fff;
+  border-radius: 50%;
+  display: inline-block; }
+  .social-icon a:hover {
+    background-color: #777; }
+
 .t-ease, .films-gallery a:after {
   -moz-transition: all 300ms ease-in-out;
   -o-transition: all 300ms ease-in-out;
