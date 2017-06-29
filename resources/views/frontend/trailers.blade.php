@@ -46,22 +46,6 @@
 					            	</div>
 				            	</div>
 	                    	@endforeach
-	                    	@foreach ($trailer->trailers->where('trailer_show', 2) as $show)
-	                    		<div class="col-sm-6">
-					            	<div class="trailer">
-						            	<a href="{{ $show->trailer_url }}" caption="{{ $trailer->title }}" class="trailer__block">
-		                                    <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}" class="w-100 t-ease">
-		                                    <div class="trailer__block__play">
-		                                          <div class="va-block">
-		                                              <div class="va-middle">
-		                                                  <div class="play-icon"></div>
-		                                              </div>
-		                                          </div>
-		                                    </div>
-						            	</a>
-					            	</div>
-				            	</div>
-	                    	@endforeach
 	                    @endforeach
 	            	</div>
 	            	
@@ -71,22 +55,6 @@
 	            	<div class="row">
 	                    @foreach ($film_trailer->where('release_status', 3) as $trailer)
 	                    	@foreach ($trailer->trailers->where('trailer_show', 1) as $show)
-	                    		<div class="col-sm-6">
-					            	<div class="trailer">
-						            	<a href="{{ $show->trailer_url }}" caption="{{ $trailer->title }}" class="trailer__block">
-		                                    <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}" class="w-100 t-ease">
-		                                    <div class="trailer__block__play">
-		                                          <div class="va-block">
-		                                              <div class="va-middle">
-		                                                  <div class="play-icon"></div>
-		                                              </div>
-		                                          </div>
-		                                    </div>
-						            	</a>
-					            	</div>
-				            	</div>
-	                    	@endforeach
-	                    	@foreach ($trailer->trailers->where('trailer_show', 2) as $show)
 	                    		<div class="col-sm-6">
 					            	<div class="trailer">
 						            	<a href="{{ $show->trailer_url }}" caption="{{ $trailer->title }}" class="trailer__block">
