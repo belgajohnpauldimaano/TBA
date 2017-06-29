@@ -222,6 +222,7 @@
         @endif
 
         @if ($film_info->quote)
+                                  <pre>{{ json_encode($film_info->quote, JSON_PRETTY_PRINT)}}</pre>
             <section class="film-quotes">
                <div class="container">
                    <div class="row">
@@ -232,8 +233,8 @@
                            <div class="text-center h3">
                                   <p><i>“{{ $film_info->quote->main_quote }}”</i></p>
                                   <p class="m-y-6"><strong>-{{ $film_info->quote->name_of_person }}</strong></p>
-                                  @if ($film_info->quote->url)
-                                      <a href="{{ $film_info->quote->url }}" class="read-more">[READ MORE]</a>
+                                  @if ($film_info->quote->url != 'http://')
+                                      <a href="{{ $film_info->quote->url }}" target="_blank" class="read-more">[READ MORE]</a>
                                   @endif
                            </div>
                        </div>
