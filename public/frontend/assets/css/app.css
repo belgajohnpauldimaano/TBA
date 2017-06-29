@@ -782,19 +782,26 @@ main {
         display: block;
         height: 30px;
         position: relative;
-        top: -1px; }
+        top: -3px; }
       .header-title__tag:before {
         background: url(../../assets/img/left-arrow-title.png) no-repeat 0px 8px;
-        background-size: 115px 16px;
-        width: 115px;
+        background-size: 180px 18px;
+        width: 180px;
         float: left;
         left: -12px; }
       .header-title__tag:after {
         background: url(../../assets/img/right-arrow-title.png) no-repeat 0px 8px;
-        background-size: 115px 16px;
-        width: 115px;
+        background-size: 180px 18px;
+        width: 180px;
         float: right;
-        right: -12px; } }
+        right: -12px; }
+      .header-title__tag img {
+        width: 180px;
+        position: relative;
+        top: -3px;
+        margin: 0 15px; } }
+    .header-title__tag--no-feather:before, .header-title__tag--no-feather:after {
+      content: none; }
   @media (min-width: 768px) {
     .header-title {
       margin: 30px 0; } }

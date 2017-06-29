@@ -201,7 +201,11 @@
         @if ($film_info->photos)
             <section class="films-gallery">
                 <div class="header-title">
-                    <h2 class="header-title__tag">Gallery</h2>
+                    <h2 class="header-title__tag header-title__tag--no-feather">
+                        <img role="button" class="films-gallery__prev" src="{{ asset('frontend/assets/img/left-arrow-title.png') }}">
+                          Gallery
+                        <img role="button" class="films-gallery__next" src="{{ asset('frontend/assets/img/right-arrow-title.png') }}">
+                    </h2>
                 </div>
                 <div class="owl-gallery owl-carousel">
                     @foreach ($film_info->photos as $key => $photo)
@@ -387,7 +391,8 @@
           autoplayTimeout: 5000
       });
 
-      $('.film-award-owl').owlCarousel({
+      var owlFilmAward = $('.film-award-owl');
+      owlFilmAward.owlCarousel({
           items: 4,
           //loop: true,
           loop: ($(".film-award-owl .item").length > 4) ? true : false,
@@ -406,7 +411,7 @@
           }
       });
       
-      var owl = $('.owl-gallery');
+      var owlGallery = $('.owl-gallery');
       options = {
           items: 4,
           //loop: true,
@@ -424,7 +429,16 @@
               }
           }
       };
-      owl.owlCarousel(options);
+      owlGallery.owlCarousel(options);
+
+
+      $('.films-gallery__prev').click(function(){
+        owlGallery.trigger('prev.owl.carousel');
+      });
+
+      $('.films-gallery__next').click(function(){
+        owlGallery.trigger('next.owl.carousel');
+      });
 
       $('#readMorePR_info').on('click', function(e) {
           e.preventDefault();

@@ -96,22 +96,34 @@ main{
 			    display: block;
 			    height: 30px;
 			    position: relative;
-			    top: -1px;
+			    top: -3px;
 			}
 
 			&:before {
 			    background: url(../../assets/img/left-arrow-title.png) no-repeat 0px 8px;
-			    background-size: 115px 16px;
-			    width: 115px;
+			    background-size: 180px 18px;
+			    width: 180px;
 			    float: left;
 			    left: -12px;
 			}
 			&:after {
 			    background: url(../../assets/img/right-arrow-title.png) no-repeat 0px 8px;
-			    background-size: 115px 16px;
-			    width: 115px;
+			    background-size: 180px 18px;
+			    width: 180px;
 			    float: right;
 			    right: -12px;
+			}
+
+			img{
+			    width: 180px;
+			    position: relative;
+			    top: -3px;
+			    margin:0 15px;
+			}
+		}
+		&--no-feather{
+			&:before, &:after {
+				content: none;
 			}
 		}
 	}
