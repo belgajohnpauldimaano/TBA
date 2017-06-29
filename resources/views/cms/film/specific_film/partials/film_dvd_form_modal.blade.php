@@ -13,7 +13,7 @@
             <div class="form-group">
                 <div>
                     <p class="text-danger">All fields with asterisk(*) are required.</p>
-                    <p class="text-danger">DVD Case Cover should be 300 x 600 pixels and PNG File only.</p>
+                    <p class="text-danger">DVD Case Cover should be 300 x 500 pixels and PNG File only.</p>
                     <p class="text-danger">DVD Disc should be 300 x 300 pixels and PNG File only.</p>
                 </div>
             </div>
@@ -112,6 +112,16 @@
                 <div class="help-block text-center" id="dvd_description-error"></div>
             </div>
 
+            <div class="form-group">
+                <div class="material-switch ">
+                    <strong class="margin">
+                        Feature in Website
+                    </strong>
+                    <input id="film_dvd_featured_switch" name="film_dvd_featured_switch" type="checkbox" value="{{ ($Dvd->dvd_status == 1 ? 'true' : 'false') }}" {{ ($Dvd->dvd_status == 1 ? 'checked' : '') }} />
+                    <label for="film_dvd_featured_switch" class="label-danger film_dvd_featured_switch_ui"></label>
+                </div>
+                <div class="help-block text-center" id="film_dvd_featured_switch-error"></div>
+            </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>

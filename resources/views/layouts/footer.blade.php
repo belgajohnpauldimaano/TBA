@@ -186,8 +186,8 @@
                         fetch_record(fetch_route, elem, 1, '')
                     }
                     
-                },
-                error : function (xhr, ajaxOptions, thrownError)
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
                 {
                     if (thrownError == 'Unauthorized')
                     {
@@ -198,7 +198,7 @@
                     500: function(xhr) {
                         window.location.reload();
                     }
-                } 
+                }
             });
         }
         
@@ -228,8 +228,8 @@
                 success     : function (data) {
                     elem.html(data);
                     $('ul.pagination a').css('cursor','pointer');
-                },
-                error : function (xhr, ajaxOptions, thrownError)
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
                 {
                     if (thrownError == 'Unauthorized')
                     {

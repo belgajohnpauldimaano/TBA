@@ -22,6 +22,8 @@ class CreateDvdsTable extends Migration
             $table->string('subtitles');
             $table->integer('running_time')->nullable();
             $table->text('description')->nullable();
+            $table->tinyInteger('dvd_order')->nullable();
+            $table->tinyInteger('dvd_status')->default(1);
             $table->integer('film_id')->unsigned();
             $table->timestamps();
         });

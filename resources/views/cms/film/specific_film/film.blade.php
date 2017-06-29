@@ -162,26 +162,33 @@
                         <table class="table table-bordered table-striped">
                             @if ($FilmCrew)
                                     @foreach($PERSON_ROLES as $key => $val)
-                                        <tr>
-                                            <th width="369px">{{ $val }}</th>
-                                            <td>
-                                                <?php 
-                                                    $c = $FilmCrew->filter(function ($crew) use($key) {
-                                                                return $crew->role == $key;
-                                                    }); 
-                                                ?>
-                                                @if ($c->count() > 0)
-                                                    @foreach ($c as $crew)
-                                                        <span class="label label-primary">{{ $crew->person->name }}</span>
-                                                    @endforeach
-                                                @else
-                                                    <p style="margin-bottom: 0">n/a</p>
-                                                @endif
-                                            </td>
-                                        </tr>
+                                        <?php 
+                                            $c = $FilmCrew->filter(function ($crew) use($key) {
+                                                        return $crew->role == $key;
+                                            }); 
+                                        ?>
+                                        @if($c->count() > 0)
+                                            <tr>
+                                                <th width="369px">{{ $val }}</th>
+                                                <td>
+                                                    {{-- @if ($c->count() > 0) --}}
+                                                        @foreach ($c as $crew)
+                                                            <span class="label label-primary">{{ $crew->person->name }}</span>
+                                                        @endforeach
+                                                    {{-- @else --}}
+                                                        {{-- <p style="margin-bottom: 0">n/a</p> --}}
+                                                    {{-- @endif --}}
+                                                </td>
+                                            </tr>
+                                        {{-- @else
+                                            <tr>
+                                                <td colspan="2"><strong>No crew yet</strong></td>
+                                            </tr> --}}
+                                        @endif
+                                        
                                     @endforeach
                                 @endif
-                            </div>
+                            {{-- </div> --}}
                         </table>
                     </div>
                 </div>
@@ -249,6 +256,9 @@
                                 <ol>
                                     <li>Tick/untick the checkbox to show/hide the trailer in the Trailers Page of the website, respectively.</li>
                                     <li>Drag the row to arrange the order of the trailers of how it will appear in the website.</li>
+                                    <li>Accepted File Types: JPG / JPEG / PNG</li>
+                                    <li>Maximum File Size: 1 MB</li>
+                                    <li>Required Dimensions: 1600 x 900 pixels (width x height)</li>
                                 </ol>
                             </div>
                         </div>
@@ -296,6 +306,11 @@
                                 <li>Double-click on a poster to use it as the Main Poster for the film.</li>
                                 <li>Drag & drop posters to re-order as to how it would appear when viewing as a gallery.Click MANAGE POSTERS to add or remove image/s.</li>
                                 <li>Click the TRASH ICON in the MANAGE POSTERS MODAL to remove the image/s.</li>
+                                <li>Accepted File Types: JPG / JPEG / PNG</li>
+                                <li>Maximum File Size: 2 MB</li>
+                                <li>Minimum required width: 600 pixels</li>
+                                <li>Maximum allowed width: 1200 pixels</li>
+                                <li>No height restriction</li>
                             </ol>
                         </div>
                     </div>
@@ -400,7 +415,7 @@
                                                     @if ($data->title)
                                                         {{ $data->title }}
                                                     @else
-                                                        No Title Yet
+                                                        {{ $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')' }}
                                                     @endif
                                                 </h4>
                                                 <input type="radio" name="gallery_featured" {{ ($data->featured == 1 ? 'checked' : '') }} data-size="mini" data-on-color="danger" data-label-text="" data-on-text="featured" data-off-text="set featured" data-id="{{ $data->id }}" data-film-id="{{ $data->film_id }}" class="bs-switch-radio">
@@ -552,7 +567,7 @@
                         <div class="js-dvd_container list-group">
                             @if($Dvd->count() > 0) 
                                  @foreach($Dvd as $data)
-                                    <div class="col-xs-6 col-md-3">
+                                    <div class="col-xs-6 col-md-3 js-individual_dvd_holder" data-id="{{ $data->id }}">
                                         <div  data-id="{{ $data->id }}" class="thumbnail js-dvd_data">
                                             <img style="cursor:pointer" data-id="{{ $data->id }}" src="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" class=" margin">
                                             <div class="caption">
@@ -640,7 +655,7 @@
                         alertify.success('' + data.messages + '');
                     }
                 },
-                /*error : function (xhr, ajaxOptions, thrownError)
+                error : function (xhr, ajaxOptions, thrownError)
                 {
                     if (thrownError == 'Unauthorized')
                     {
@@ -651,7 +666,7 @@
                     500: function(xhr) {
                         window.location.reload();
                     }
-                } */
+                }
             });
         });
         $('body').on('click' , '.js-remove_sellsheet', function (e) {
@@ -690,6 +705,18 @@
                 success : function (data) {
                     $('#js-modal_holder').html(data);
                     $('#js-film_form_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
                 }
             });
         });
@@ -771,6 +798,18 @@
                     $('#js-modal_holder').html(data);
                     $('#trailer_form_modal').modal({keyboard : false, backdrop : 'static'});
                 }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                }
             });
         }
 
@@ -830,6 +869,18 @@
                         //show_message (msg, 'success') 
                     }
                 }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                }
             });
         }
 
@@ -850,6 +901,18 @@
                 success : function (data) {
                     //var msg = 'Trailers successfully ordered.';
                     //show_message (msg, 'success') 
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
                 }
             });
         }
@@ -885,6 +948,18 @@
                  data : { _token : "{{ csrf_token() }}", id : id, film_id : {{ $Film->id }} },
                  success : function (data) {
                  }
+                 ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                }
              });
          });
 
@@ -897,6 +972,18 @@
                 success : function (data) {
                     $('#js-modal_holder').html(data);
                     $('#js-poster_image_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
                 }
             });
          });
@@ -966,6 +1053,18 @@
                 success : function (data) {
                     $('#js-modal_holder').html(data);
                     $('#js-award_form_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
                 }
             })
         }
@@ -1037,6 +1136,18 @@
                     $('#js-modal_holder').html(data);
                     $('#js-film_photo_single_form_modal').modal({keyboard : false, backdrop : 'static'});
                 }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                }
             });
         }
 
@@ -1065,8 +1176,26 @@
             show_photo_single_form_modal(id);
         });
 
+        // Film Photo Material switch
         $('body').on('click', '.film_photo_featured_switch_ui', function () {
             var checkbox_switch = $(this).parents('.material-switch').children('#film_photo_featured_switch');
+            
+            if (checkbox_switch.val() == 'true')
+            {
+                checkbox_switch.val('false');
+            }
+            else
+            {
+                checkbox_switch.val('true');
+            }
+
+            //!checkbox_switch.val()
+            //alert(checkbox_switch.val());
+        });
+
+        // Film DVD Material switch
+        $('body').on('click', '.film_dvd_featured_switch_ui', function () {
+            var checkbox_switch = $(this).parents('.material-switch').children('#film_dvd_featured_switch');
             
             if (checkbox_switch.val() == 'true')
             {
@@ -1102,6 +1231,18 @@
                 success : function (data){
                     $('#js-modal_holder').html(data);
                     $('#js-film_photo_multi_upload_form_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
                 }
             });
 
@@ -1165,6 +1306,18 @@
                     });
                     
                 }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                }
             });
         });
 
@@ -1192,6 +1345,18 @@
                         $('#js-film_photo_crop_modal').modal('hide');
                         bootbox.alert(data.messages);
                         
+                    }
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
                     }
                 }
             });
@@ -1244,6 +1409,18 @@
                                     fetch_record("{{ route('film_photo_fetch', $Film->id) }}", $('.js-film_photo_content_holder'), 1, '');
                                 }
                             }
+                            ,error : function (xhr, ajaxOptions, thrownError)
+                            {
+                                if (thrownError == 'Unauthorized')
+                                {
+                                    window.location.reload();
+                                }
+                            },
+                            statusCode: {
+                                500: function(xhr) {
+                                    window.location.reload();
+                                }
+                            }
                         });
                     }
                     setTimeout(function(){
@@ -1273,6 +1450,18 @@
                 success : function (data) {
                     $('#js-modal_holder').html(data);
                     $('#js-film_quote_form_modal').modal({keyboard : false, backdrop : 'static'});
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
                 }
             });
         });
@@ -1304,6 +1493,18 @@
 
                         $('.js-film_synopsis_content_holder').slideToggle();
                         $('.js-synopsis_editor').slideToggle();
+                    }
+                    ,error : function (xhr, ajaxOptions, thrownError)
+                    {
+                        if (thrownError == 'Unauthorized')
+                        {
+                            window.location.reload();
+                        }
+                    },
+                    statusCode: {
+                        500: function(xhr) {
+                            window.location.reload();
+                        }
                     }
                 });
             }
@@ -1360,6 +1561,18 @@
                     });
 
                 }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                }
             });
         });
         
@@ -1415,6 +1628,18 @@
                                     fetch_record("{{ route('film_press_release_fetch', $Film->id) }}", $('.js-film_press_release_content_holder'), 1, '');
                                 }
                             }
+                            ,error : function (xhr, ajaxOptions, thrownError)
+                            {
+                                if (thrownError == 'Unauthorized')
+                                {
+                                    window.location.reload();
+                                }
+                            },
+                            statusCode: {
+                                500: function(xhr) {
+                                    window.location.reload();
+                                }
+                            }
                         });
                     }
                     setTimeout(function(){
@@ -1466,6 +1691,18 @@
                     $('.js-crew_inputs').tokenfield({
                         typeahead: [null, { source: engine.ttAdapter() }]
                     });
+                }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
                 }
             });
         })
@@ -1585,8 +1822,34 @@
                     $('#dvd_subtitles').tokenfield();
                     //$(".form-group .wysihtml5-toolbar").addClass('hidden');
                 }
+                ,error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        window.location.reload();
+                    }
+                }
             });
         }
+        // FILM DVD Sorter
+        $('.js-dvd_container').sortable({ 
+            tolerance: 'pointer',
+            update : function (event, ui) {
+                var order = [];
+
+                $('.js-dvd_container .js-individual_dvd_holder').each( function () {
+                    var id = $(this).data('id');
+                    order.push(id);
+                });
+                console.log(order);
+                save_order(order, "{{ route('film_dvd_sorter') }}");
+            }
+        });
 
         $('body').on('submit', '#js-frm_dvd', function (e) {
             e.preventDefault();

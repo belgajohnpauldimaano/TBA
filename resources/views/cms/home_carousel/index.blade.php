@@ -47,14 +47,14 @@
                                                     @if($image->caption)
                                                         <h4>{{ $image->caption }}</h4>
                                                     @else
-                                                        <h4>No Caption Addedd</h4>
+                                                        <h4>No caption added</h4>
                                                     @endif
 
                                                     <p>
                                                         @if($image->url)
-                                                            <a href="{{ $image->url }}" target="_blank">View the link</a>
+                                                            <a href="{{ $image->url }}" target="_blank">Watch video</a>
                                                         @else
-                                                            <p>No Link Added</p>
+                                                            <p>No link added</p>
                                                         @endif
                                                     </p>
                                                 </span>

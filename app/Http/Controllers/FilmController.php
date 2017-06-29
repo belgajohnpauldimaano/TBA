@@ -360,7 +360,7 @@ class FilmController extends Controller
         $Quote          = Quote::where('film_id', $id)->first();
         $PressRelease   = PressRelease::where('film_id', $id)->first();
         $FilmCrew       = FilmCrew::with('person')->where('film_id', $id)->orderBy('role')->get();
-        $Dvd            = Dvd::where('film_id', $id)->get();
+        $Dvd            = Dvd::where('film_id', $id)->orderBy('dvd_order', 'ASC')->get();
 
         $Person         = Person::all(['name']);
 
@@ -612,16 +612,22 @@ class FilmController extends Controller
             
             $photo = $request->file('photo');
             $ext = $photo->getClientOriginalExtension();
-            $filename   = str_random(100) . '.' . $ext;
-            $photo->move(public_path('content/film/posters'), $filename);
+            $filename   = str_random(100);
+            $full_filename = $filename . '.' . $ext;
+            $photo->move(public_path('content/film/posters'), $full_filename);
 
-            $Poster->label = $filename;
+            $Poster->label = $full_filename;
             $Poster->featured = 0;
             $Poster->film_id = $request->film_id;
             $Poster->save();
             
+            $img = Image::make(public_path('content/film/posters/' . $full_filename));
+            $img->resize(250, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $img->save(public_path('content/film/posters/' . $filename . '-preview.' . $ext));
             $initialPreview = [
-                asset('content/film/posters').'/'.$filename
+                asset('content/film/posters').'/'.$full_filename
             ];
             $initialPreviewConfig = [
                 ['caption' => "", 'size' => 0, 'width' => "120px", 'url' => route('poster_image_delete'), 'key' => $Poster->id, 'extra' => [' _token' => csrf_token() ] ]
@@ -777,7 +783,8 @@ class FilmController extends Controller
     public function film_photo_fetch ($id, Request $request)
     {
         $Photo  = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->get();
-        return view('cms.film.specific_film.partials.film_photo_data', ['Photo' => $Photo])->render();
+        $Film   = Film::where('id', $id)->first();
+        return view('cms.film.specific_film.partials.film_photo_data', ['Photo' => $Photo, 'Film' => $Film])->render();
     }
 
     public function film_photo_single_upload_form_modal (Request $request)
@@ -939,7 +946,7 @@ class FilmController extends Controller
             //     $Photo->featured = 1;
             // }
 
-            $Photo->title = ($request->title ? $request->title : $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')');
+            $Photo->title = $request->title; // ($request->title ? $request->title : $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')');
             $Photo->save();
 
             DB::commit();
@@ -969,7 +976,7 @@ class FilmController extends Controller
         $request->image_filename->move(public_path('content/film/photos'), $filename); // upload the file
 
         $Photo = new Photo();
-        $Photo->title       = ($request->title ? $request->title : $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')');
+        $Photo->title       = $request->title; // ($request->title ? $request->title : $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')');
         $Photo->filename    = $filename;
         $Photo->film_id     = $id;
         $Photo->save();
@@ -1053,10 +1060,10 @@ class FilmController extends Controller
 
         $origFilename           = $Photo->filename;
         $origFilename_arr       = explode('.', $origFilename);
-        $ext                    =  array_pop($origFilename_arr);
+        $ext                    = array_pop($origFilename_arr);
         $origFilename           = implode('.', $origFilename_arr);
         $filename               = $origFilename . '-thumbnail';
-        $cropFilename           =  $filename . '.' . $ext;
+        $cropFilename           = $filename . '.' . $ext;
 
         $Photo->thumb_filename  = $cropFilename;
         $Photo->save();
@@ -1072,6 +1079,9 @@ class FilmController extends Controller
         $film_thumbnail->crop($request->width, $request->height, $request->left, $request->top);
         $film_thumbnail->save(public_path('content/film/photos/' . $cropFilename));
 
+        $film_thumbnail = Image::make(public_path('content/film/photos/' . $cropFilename));
+        $film_thumbnail->resize(300, 300);
+        $film_thumbnail->save(public_path('content/film/photos/' . $cropFilename));
         return response()->json(['errCode' => 0, 'messages' => 'Film photo successfully cropped.']);
     }
 
@@ -1378,6 +1388,21 @@ class FilmController extends Controller
         return view('cms.film.specific_film.partials.film_dvd_form_modal', ['Dvd' => $Dvd, 'film_id' => $request->film_id])->render();         
     }
 
+    public function film_dvd_sorter (Request $request) 
+    {
+
+        foreach($request->order as $key => $val)
+        {
+            $Dvd = Dvd::where('id', $val)->first();
+            $Dvd->dvd_order = $key + 1;
+            $Dvd->save();
+            //echo json_encode($Trailer);
+            //echo $Trailer->trailer_image_sorter . ' ' . $key . ' ' . $val . '<br >' ;
+        }
+
+        return response()->json(['errCode' => 0, 'message' => 'DVD successfully ordered.']);
+    }
+
     public function film_dvd_save (Request $request)
     {
         $rules = [
@@ -1387,7 +1412,6 @@ class FilmController extends Controller
             'dvd_languages' => 'required',
             'dvd_subtitles' => 'required',
             'dvd_running_time' => 'nullable|digits_between:1,5',
-
         ];
 
         $messages = [
@@ -1473,6 +1497,7 @@ class FilmController extends Controller
             $Dvd->subtitles         = $request->dvd_subtitles;
             $Dvd->running_time      = ($request->dvd_running_time ? $request->dvd_running_time : $Film->running_time);
             $Dvd->description       = $request->dvd_description;
+            $Dvd->dvd_status        = ($request->film_dvd_featured_switch ? 1 : 0);
 
             $Dvd->save();
 
@@ -1495,8 +1520,8 @@ class FilmController extends Controller
         $Dvd->subtitles         = $request->dvd_subtitles;
         $Dvd->running_time      = ($request->dvd_running_time ? $request->dvd_running_time : $Film->running_time);
         $Dvd->description       = $request->dvd_description;
+        $Dvd->dvd_status        = ($request->film_dvd_featured_switch ? 1 : 0);
         $Dvd->film_id           = $request->film_id;
-
         $Dvd->save();
 
         // save to dvd image storage
@@ -1509,7 +1534,7 @@ class FilmController extends Controller
 
     public function film_dvd_data_fetch ($id) 
     {
-        $Dvd = Dvd::where('film_id', $id)->get();
+        $Dvd = Dvd::where('film_id', $id)->orderBy('dvd_order', 'ASC')->get();
         return view('cms.film.specific_film.partials.film_dvd_data_fetch', ['Dvd' => $Dvd])->render();
     }
 

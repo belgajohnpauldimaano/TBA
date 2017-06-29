@@ -50,7 +50,7 @@
                     <input id="film_photo_featured_switch" name="film_photo_featured_switch" type="checkbox" value="{{ ($Photo->featured == 1 ? 'true' : '') }}" {{ ($Photo->featured == 1 ? 'checked' : '') }} />
                     <label for="film_photo_featured_switch" class="label-danger film_photo_featured_switch_ui"></label>
                 </div>
-                <div class="help-block text-center" id="title-error"></div>
+                <div class="help-block text-center" id="film_photo_featured_switch-error"></div>
             </div>
 
         </div>

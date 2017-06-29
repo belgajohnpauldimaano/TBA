@@ -87,7 +87,7 @@
                                                     <label for="" class="label label-default">Not yet set</label>
                                                 @endif
                                             </td>
-                                            <td>{{ ($data->release_date ? Date('m-d-Y', strtotime($data->release_date)) : 'Not yet set') }}</td>
+                                            <td>{{ ($data->release_date ? Date('Y-m-d', strtotime($data->release_date)) : 'Not yet set') }}</td>
                                             <td>
                                                 @if ($data->rating)
                                                     <label class="label {{ App\Film::RATING_STYLE[$data->rating] }}">

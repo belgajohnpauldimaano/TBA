@@ -16,7 +16,7 @@
                                                 @if ($data->title)
                                                     {{ $data->title }}
                                                 @else
-                                                    No Title Yet
+                                                    {{ $Film->title . '(' . date('Y', strtotime($Film->release_date)) . ')' }}
                                                 @endif
                                             </h4>
                                             <input type="radio" name="gallery_featured" {{ ($data->featured == 1 ? 'checked' : '') }} data-size="mini" data-on-color="danger" data-label-text="" data-on-text="featured" data-off-text="set featured" data-id="{{ $data->id }}" data-film-id="{{ $data->film_id }}" class="bs-switch-radio">

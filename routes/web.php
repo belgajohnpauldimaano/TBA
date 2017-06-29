@@ -146,6 +146,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
             Route::post('/film_dvd_save', 'FilmController@film_dvd_save')->name('film_dvd_save');
             Route::post('/film_dvd_data_fetch/{id}', 'FilmController@film_dvd_data_fetch')->name('film_dvd_data_fetch');
             Route::post('/film_dvd_delete', 'FilmController@film_dvd_delete')->name('film_dvd_delete');
+            Route::post('/film_dvd_sorter', 'FilmController@film_dvd_sorter')->name('film_dvd_sorter');
             
         });
         

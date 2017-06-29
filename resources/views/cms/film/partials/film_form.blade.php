@@ -76,7 +76,7 @@
                     <div class="form-group">
                         <label for="">Rating</label>
                         <select name="rating" id="rating" class="form-control">
-                            <option value="">Select a Rating</option>
+                            <option value="">Choose applicable</option>
                             @foreach($RATINGS as $key => $val)
                                 @if($Film)
                                     <option value="{{$key}}" {{ ($Film->rating == $key ? 'selected' : '') }}>{{$val}}</option>
@@ -106,7 +106,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="">HashTags</label>
+                        <label for="">Hashtags</label>
                         <span>Use a comma (,) to separate each hash tags.</span>
                         <div class="input-group">
                             <div class="input-group-addon">
