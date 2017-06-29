@@ -298,6 +298,16 @@ main{
 	}
 }
 
+#modalPressRelease{
+	.modal-content{
+	    background: rgba(0, 0, 0, 0.7);
+	    color: #fff;
+	    .content{
+	    	color: #e6e6e6;
+	    }
+	}
+}
+
 /* About Page */
 
 .tba-logo{

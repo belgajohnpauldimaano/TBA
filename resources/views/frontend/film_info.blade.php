@@ -279,9 +279,9 @@
                    <img src="{{ asset('content/film/press_release/'.$film_info->press_release->article_image) }}" alt="" class="img-responsive center-block">
                    <div class="modal-body">
                       <div class="row">
-                         <div class="col-md-10 col-md-offset-1">
-                            <h2 class="text-center">{{ $film_info->press_release->title }}</h2>
-                            <div>
+                         <div class="col-md-10 col-md-offset-1 text-center">
+                            <h2>{{ $film_info->press_release->title }}</h2>
+                            <div class="content">
                                 {!! $film_info->press_release->content !!}
                             </div>
                          </div>
