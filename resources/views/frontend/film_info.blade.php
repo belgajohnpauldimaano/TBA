@@ -52,13 +52,13 @@
                                     @if ($film_info->posters->where('featured', 1)->count() == 1)
                                         @foreach ($film_info->posters->where('featured', 1) as $key =>  $poster)
                                           <a href="{{ asset('content/film/posters/' . $poster->label) }}" class="poster-popup" data-no="{{ $key }}">
-                                              <img src="{{ asset('content/film/posters/' . $poster->label) }}" class="w-100">
+                                              <img src="{{ asset('content/film/posters/preview-' . $poster->label) }}" class="w-100">
                                           </a>
                                         @endforeach
                                     @else
                                         @foreach ($film_info->posters->where('featured', 0) as $poster)
                                           <a href="{{ asset('content/film/posters/' . $poster->label) }}" class="poster-popup" data-no="{{ $key }}">
-                                            <img src="{{ asset('content/film/posters/' . $poster->label) }}" class="w-100">
+                                            <img src="{{ asset('content/film/posters/preview-' . $poster->label) }}" class="w-100">
                                           </a>
                                         @endforeach
                                     @endif
