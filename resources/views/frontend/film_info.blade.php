@@ -149,8 +149,28 @@
                            </div>
                        </div>
                     </div>
-                    <div class="col-md-3 hidden-xs hidden-sm">
-                        <img src="http://via.placeholder.com/359x700" class="img-responsive">
+                    <div class="col-md-3 hidden-xs hidden-sm js-hashtags">
+                        <?php  
+                            $for_search = '';
+                            $for_display = '';
+                        ?>
+                        @if ($film_info->hash_tags)
+                            <?php
+                                $hashtag_arr = explode(',', $film_info->hash_tags);
+                                $ctr = 0;
+                            ?>
+                            @foreach ($hashtag_arr as $hashtag)
+                                <?php 
+                                    $for_search .= ($ctr > 0 ? ',':'') . trim($hashtag); 
+                                    $ctr++;
+                                    $for_display .= '<div>#' .trim($hashtag) . '</div>'; 
+                                ?>
+                            @endforeach
+                            
+                            <div>
+                                <iframe src="https://www.hashatit.com/hashtags/{{$for_search}}/all/embed" width="100%" height="100%"></iframe>
+                            </div>
+                        @endif
                         <ul class="list-inline social-icon text-center m-y-3">
                             @if ($film_info->links)
                             
@@ -172,14 +192,7 @@
                             @endif
                        </ul>
                        <h4 class="text-center">
-                            @if ($film_info->hash_tags)
-                                <?php
-                                    $hashtag_arr = explode(',', $film_info->hash_tags);
-                                ?>
-                                @foreach ($hashtag_arr as $hashtag)
-                                    <div>#{{trim($hashtag)}}</div>
-                                @endforeach
-                            @endif
+                            {!! $for_display !!}
                        </h4>
                     </div>
                 </div>
@@ -397,7 +410,6 @@
     <script src="{{ asset('frontend/assets/js/app.js') }}"></script>
 
     <script type="text/javascript">
-
       var owlTrailer = $('.film-trailers-owl');
       owlTrailer.owlCarousel({
           items: 1,
