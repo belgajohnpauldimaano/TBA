@@ -727,7 +727,7 @@ main {
     border-right: 1px solid #ddd;
     padding-right: 20px; }
     .film-categ__item__link--active {
-      color: #333;
+      color: #333 !important;
       font-weight: bold; }
     .film-categ__item__link:not(.film-categ__item__link--active):hover {
       color: #d3b764 !important; }
@@ -989,7 +989,7 @@ main {
     color: #949494;
     border-color: #5d5d5d; }
     .trailers-page .film-categ__item__link--active {
-      color: #fff; }
+      color: #fff !important; }
   .trailers-page .footer {
     margin-top: 50px; }
 
