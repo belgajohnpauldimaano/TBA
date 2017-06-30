@@ -1,6 +1,6 @@
 @include('layouts.nav')
 
-<body class="hold-transition skin-black sidebar-mini">
+<body class="hold-transition skin-black sidebar-mini fixed">
 <div class="wrapper">
 
   <header class="main-header">
