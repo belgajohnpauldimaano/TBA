@@ -241,7 +241,7 @@
                 </div>
                 <div class="owl-gallery owl-carousel">
                     @foreach ($film_info->photos as $key => $photo)
-                        <a href="{{ asset('content/film/photos/'.$photo->filename) }}" class="owl-gallery__item" title="@if ($photo->title != '') {{ $photo->title }} @else {{ $film_info->title . ', ' . date('F d, Y', strtotime($film_info->release_date)) }} @endif" data-no="{{ $key }}">
+                        <a href="{{ asset('content/film/photos/'.$photo->filename) }}" class="owl-gallery__item" title="@if ($photo->title != '') {{ $photo->title }} @else {{ $film_info->title . '(' . date('Y', strtotime($film_info->release_date)) . ')' }} @endif" data-no="{{ $key }}">
                             <img src="{{ asset('content/film/photos/'.$photo->thumb_filename) }}" title="{{$photo->title}}">
                         </a>
                     @endforeach
