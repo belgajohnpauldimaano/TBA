@@ -4,6 +4,19 @@
 <title>Contact TBA</title>
 @endsection
 
+@section('styles')
+    <style>
+        .btn-submit{
+            width: 140px;
+            background-color: #000 !important;
+            color: #fff !important;
+        }
+        .btn-submit:hover{
+            opacity: .8;
+        }
+    </style>
+@endsection
+
 @section('container')
     <main>
         <section>
@@ -73,7 +86,7 @@
                                 </div>
                                 {{ csrf_field() }}
                                 <div class="text-center">
-                                  <button type="submit" class="btn btn-default btn-block">Submit</button>
+                                  <button type="submit" class="btn btn-default center-block btn-submit">Submit</button>
                                 </div>
                             </form>
                         </div>
