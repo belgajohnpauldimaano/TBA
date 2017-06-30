@@ -566,12 +566,16 @@
 
           posters = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
           posters.init();
+
+          posters.listen('close', function() {
+            posters.close();
+          });
       };
 
 
-      $('.films-gallery').on('click', '.owl-gallery__item', function(e) {
+      $('.info-img').on('click', '.poster-popup', function(e) {
           var id = $(this).attr('data-no');
-          openPhotoSwipe(id);
+          openPhotoSwipePoster(id);
           e.preventDefault();
       });
 
@@ -607,13 +611,6 @@
               $("#trailerVideo").attr('src', url);
               $("#modalTrailer h4").html(caption).fadeIn().removeClass();
           });
-      });
-
-      $('.poster-popup').click(function(e){
-          var id = $(this).attr('data-no');
-          openPhotoSwipePoster(1);
-
-          e.preventDefault();
       });
 
     </script>
