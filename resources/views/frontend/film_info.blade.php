@@ -127,7 +127,7 @@
                                   @if ($film_info->running_time)
                                       <ul class="list-inline m-t-5">
                                           <li><strong class="text-NeutraTextTF">TOTAL RUNNING TIME:</strong></li>
-                                          <li><span class="">{{$film_info->running_time}}</span> minutes</li>
+                                          <li><span>{{ date('G \h\o\u\r i \m\i\n\u\t\e\s', mktime(0, $film_info->running_time)) }}</span></li>
                                       </ul>
                                   @endif
                                   @if ($film_info->release_date)
