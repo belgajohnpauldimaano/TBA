@@ -29,7 +29,9 @@
                                     </a>
                                     <div class="dvd__title">
                                         <h3 class="text-uppercase">{{ $data->name }}</h3>
-                                        <span class="clearfix">&nbsp;</span>
+                                        @if ($data->film->english_title)
+                                            <span class="clearfix">( {{ $data->film->english_title }} )</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
