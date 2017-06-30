@@ -175,7 +175,7 @@
             </div>
         </section>
 
-        @if ($film_info->awards)
+        @if ($film_info->awards->count() > 0)
             <section class="film-award">
                 <div class="container">
                     <div class="header-title">
