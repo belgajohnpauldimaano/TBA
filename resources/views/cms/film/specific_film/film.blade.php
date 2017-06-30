@@ -1963,7 +1963,7 @@
                 'slow');
         }
 
-        $('.film.treeview').on('click', 'a', function(e) {
+        $('.scroll-section').on('click', 'a', function(e) {
             var id = $(this).attr('href');
             // $('.film.treeview li').removeClass('active');
             // $(this).parent().addClass('active');
