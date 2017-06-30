@@ -127,7 +127,11 @@
                                   @if ($film_info->running_time)
                                       <ul class="list-inline m-t-5">
                                           <li><strong class="text-NeutraTextTF">TOTAL RUNNING TIME:</strong></li>
-                                          <li><span>{{ date('G \h\o\u\r i \m\i\n\u\t\e\s', mktime(0, $film_info->running_time)) }}</span></li>
+                                          @if ($film_info->running_time >= 160)
+                                            <li><span>{{ date('G \h\o\u\r\s i \m\i\n\u\t\e\s', mktime(0, $film_info->running_time)) }}</span></li>
+                                          @else
+                                            <li><span>{{ date('G \h\o\u\r i \m\i\n\u\t\e\s', mktime(0, $film_info->running_time)) }}</span></li>
+                                          @endif
                                       </ul>
                                   @endif
                                   @if ($film_info->release_date)
