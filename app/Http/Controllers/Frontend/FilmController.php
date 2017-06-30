@@ -58,7 +58,7 @@ class FilmController extends Controller
                     $q->orderBy('photo_sorter', 'ASC');
                     $q->select(['title', 'filename', 'thumb_filename', 'film_id', 'photo_sorter']);
                 },
-                'quote' => function ($q) {
+                'quotes' => function ($q) {
                     $q->select(['main_quote', 'name_of_person', 'url', 'film_id']);
                 },
                 'press_release'  => function ($q) {

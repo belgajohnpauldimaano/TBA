@@ -109,8 +109,14 @@
                                                       <strong class="text-NeutraTextTF">{{ $role }}:</strong>
                                                   </li>
                                                   <li>
-                                                      @foreach ($film_info->film_crews->where('role', $key) as $crew)
-                                                          <span class=""> {{ $crew->person->name }}, </span>
+                                                    <?php
+                                                        $crews = $film_info->film_crews->where('role', $key);
+                                                        $ctr = 0;
+                                                    ?>
+                                                    
+                                                      @foreach ($crews as $crew)
+                                                          <span class=""> {{ ($ctr > 0 ? ',' : '') }} {{ $crew->person->name }} </span>
+                                                          <?php $ctr++; ?>
                                                       @endforeach
                                                   </li>
                                               </ul>
@@ -167,7 +173,12 @@
                        </ul>
                        <h4 class="text-center">
                             @if ($film_info->hash_tags)
-                                #{{ $film_info->hash_tags }}
+                                <?php
+                                    $hashtag_arr = explode(',', $film_info->hash_tags);
+                                ?>
+                                @foreach ($hashtag_arr as $hashtag)
+                                    <div>#{{trim($hashtag)}}</div>
+                                @endforeach
                             @endif
                        </h4>
                     </div>
@@ -221,7 +232,7 @@
             </section>
         @endif
 
-        @if ($film_info->quote)
+        @if ($film_info->quotes->count() > 0)
             <section class="film-quotes">
                <div class="container">
                    <div class="row">
@@ -230,11 +241,13 @@
                                 <h2 class="header-title__tag">Quotes</h2>
                             </div>
                            <div class="text-center h3">
-                                  <p><i>“{{ $film_info->quote->main_quote }}”</i></p>
-                                  <p class="m-y-6"><strong>-{{ $film_info->quote->name_of_person }}</strong></p>
-                                  @if ($film_info->quote->url != 'http://')
-                                      <a href="{{ $film_info->quote->url }}" target="_blank" class="read-more">[READ MORE]</a>
-                                  @endif
+                                @foreach($film_info->quotes as $data)
+                                    <p><i>“{{ $data->main_quote }}”</i></p>
+                                    <p class="m-y-6"><strong>-{{ $data->name_of_person }}</strong></p>
+                                    @if ($data->url)
+                                        <a href="{{ $data->url }}" target="_blank" class="read-more">[READ MORE]</a>
+                                    @endif
+                                @endforeach
                            </div>
                        </div>
                    </div>
@@ -276,7 +289,7 @@
         <div class="modal fade" tabindex="-1" role="dialog" id="modalPressRelease">
            <div class="modal-dialog modal-lg m-t-0" role="document">
                <div class="modal-content">
-                   <img src="{{ asset('content/film/press_release/'.$film_info->press_release->article_image) }}" alt="" class="img-responsive center-block">
+                   <img src="{{ asset('content/film/press_release/'.$film_info->press_release->article_image) }}" alt="" class="w-100">
                    <div class="modal-body">
                       <div class="row">
                          <div class="col-md-10 col-md-offset-1 text-center">
