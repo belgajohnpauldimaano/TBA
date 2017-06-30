@@ -168,7 +168,7 @@
                             @endforeach
                             
                             <div>
-                                <iframe src="https://www.hashatit.com/hashtags/{{$for_search}}/all/embed" width="100%" height="100%"></iframe>
+                                <iframe src="https://www.hashatit.com/hashtags/{{$for_search}}/all/embed" width="100%" height="400"></iframe>
                             </div>
                         @endif
                         <ul class="list-inline social-icon text-center m-y-3">
@@ -237,7 +237,7 @@
                 </div>
                 <div class="owl-gallery owl-carousel">
                     @foreach ($film_info->photos as $key => $photo)
-                        <a href="{{ asset('content/film/photos/'.$photo->filename) }}" class="owl-gallery__item" title="{{$photo->title}}" data-no="{{ $key }}">
+                        <a href="{{ asset('content/film/photos/'.$photo->filename) }}" class="owl-gallery__item" title="@if ($photo->title != '') {{ $photo->title }} @else {{ $film_info->title . ', ' . date('F d, Y', strtotime($film_info->release_date)) }} @endif" data-no="{{ $key }}">
                             <img src="{{ asset('content/film/photos/'.$photo->thumb_filename) }}" title="{{$photo->title}}">
                         </a>
                     @endforeach
