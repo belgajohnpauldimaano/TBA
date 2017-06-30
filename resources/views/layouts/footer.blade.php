@@ -96,16 +96,29 @@
          */
         function show_message (msg, type, target) 
         {
-            var targetElem = 'js-messages_holder';
+            /*var targetElem = 'js-messages_holder';
             if (target != undefined)
             {
                 if (target != '')
                 {
                     targetElem = target;
                 }
+            }*/
+            
+            if (type == 'danger')
+            {
+                alertify.error('' + msg + '');
             }
             
-            $("html, body").animate({ scrollTop: 0 }, "slow"); 
+            if (type == 'success')
+            {
+                alertify.success('' + msg + '');
+            }
+            /**
+             * CODE BELOW WILL SCROLL TO TOP AND SHOW MESSAGE
+             */
+
+            /*$("html, body").animate({ scrollTop: 0 }, "slow"); 
             var elem = '<div class="callout callout-'+ type +' ">'+
                         '      <p>'+
                                     msg
@@ -115,7 +128,7 @@
                 setTimeout(function () {
                     $('.js-messages_holder').slideUp('slow');
                 }, 3000);
-            });
+            });*/
         }
 
         $('body').on('change', '.form-group input', function () {
@@ -180,8 +193,7 @@
                     }
                     else
                     {
-                        console.log(extraData);
-                        //show_message (data.messages, 'success', extraData.targetMessageElem);
+                        show_message (data.messages, 'success');
                         form.parents('.modal').modal('hide');
                         fetch_record(fetch_route, elem, 1, '')
                     }

@@ -457,7 +457,7 @@
             </div>
             {{-- PHOTOS --}}
 
-            {{-- QUOTE --}}
+            {{-- QUOTES --}}
             <div class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
@@ -473,11 +473,13 @@
                             <i class="fa fa-refresh fa-spin"></i>
                         </div>
                         <div class="box-body">
-                            @if ($Quote)
-                                <blockquote>
-                                    <p>{{ ($Quote ? $Quote->main_quote : 'Not yet set') }}</p>
-                                    <small>{{ $Quote->name_of_person }} <cite title="{{ $Quote->url }}"><a href="{{ $Quote->url }}" target="_blank">source</a></cite></small>
-                                </blockquote>
+                            @if ($Quotes)
+                                @foreach($Quotes as $data)
+                                    <blockquote>
+                                        <p>{{ $data->main_quote}}</p>
+                                        <small>{{ $data->name_of_person }} <cite title="{{ $data->url }}"><a href="{{ $data->url }}" target="_blank">source</a></cite> | <button class="btn btn-xs btn-flat bg-olive js-edit_quote" data-id="{{ $data->id }}">Edit</button> <button class="btn btn-xs btn-flat bg-maroon js-delete_quote" data-id="{{ $data->id }}">Delete</button></small>
+                                    </blockquote>
+                                @endforeach
                             @else
                                 <h5>Not yet set</h5>
                             @endif
@@ -490,7 +492,7 @@
                     </div> --}}
                 </div>
             </div>
-            {{-- QUOTE --}}
+            {{-- QUOTES --}}
 
             {{-- PRESS RELEASE --}}
             <div class="box box-danger">
@@ -1443,15 +1445,94 @@
         $('body').on('click', '.js-managa_quote', function (e) {
             e.preventDefault();
             
+            show_quote_form('');
+        });
+        
+        $('body').on('click', '.js-delete_quote', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            bootbox.confirm({
+                message: "Are you sure you want to delete quote?",
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-danger btn-flat'
+                    },
+                    cancel: {
+                        label: 'No',
+                        className: 'btn-default btn-flat'
+                    }
+                },
+                callback: function (result) {
+                    if(result)
+                    {
+                        $.ajax({
+                            url : "{{ route('film_quote_delete') }}",
+                            type : 'POST',
+                            data : {_token : '{{ csrf_token() }}', id : id, film_id : "{{ $Film->id }}"},
+                            success     : function (data) {
+                                if (data.errCode == 1)
+                                {
+                                    show_message (data.messages, 'danger');
+                                }
+                                else if (data.errCode == 2)
+                                {
+                                    $('#general-error').append('<code>'+ data['messages'] +'</code>');
+                                }
+                                else
+                                {
+                                    show_message (data.messages, 'danger');
+                                    fetch_record("{{ route('film_quote_fetch', $Film->id) }}", $('.js-film_quote_content_holder'), 1, '');
+                                }
+                            }
+                            ,error : function (xhr, ajaxOptions, thrownError)
+                            {
+                                if (thrownError == 'Unauthorized')
+                                {
+                                    window.location.reload();
+                                }
+                            },
+                            statusCode: {
+                                500: function(xhr) {
+                                    window.location.reload();
+                                }
+                            }
+                        });
+                    }
+                    setTimeout(function(){
+                        var modal_count = $('.modal-dialog').length;
+                        if(modal_count > 0)
+                        {
+                            $('body').addClass('modal-open');
+                        }
+                    }, 500);  
+                }
+            });
+        });
+
+        $('body').on('click', '.js-edit_quote', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            show_quote_form(id);
+
+        });
+
+        function show_quote_form (id) 
+        {
+            var reqData = { _token:'{{ csrf_token() }}', film_id : {{ $Film->id }} };
+            if (id) 
+            {
+                reqData = { _token:'{{ csrf_token() }}', film_id : {{ $Film->id }}, id : id };
+            }
             $.ajax({
                 url : "{{ route('film_quote_form_modal') }}",
                 type : 'POST',
-                data : { _token:'{{ csrf_token() }}', film_id : {{ $Film->id }} },
+                data : reqData,
                 success : function (data) {
                     $('#js-modal_holder').html(data);
                     $('#js-film_quote_form_modal').modal({keyboard : false, backdrop : 'static'});
                 }
-                ,error : function (xhr, ajaxOptions, thrownError)
+                /*,error : function (xhr, ajaxOptions, thrownError)
                 {
                     if (thrownError == 'Unauthorized')
                     {
@@ -1462,10 +1543,10 @@
                     500: function(xhr) {
                         window.location.reload();
                     }
-                }
+                }*/
             });
-        });
-        
+        }
+
         $('body').on('submit', '#js-frm_quote', function (e) {
             e.preventDefault();
             save_data($(this), "{{ route('film_quote_save') }}", "{{ route('film_quote_fetch', $Film->id) }}", $('.js-film_quote_content_holder'));

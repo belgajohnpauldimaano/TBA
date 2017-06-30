@@ -126,6 +126,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
             Route::post('/film_quote_form_modal', 'FilmController@film_quote_form_modal')->name('film_quote_form_modal');
             Route::post('/film_quote_save', 'FilmController@film_quote_save')->name('film_quote_save');
             Route::post('/film_quote_fetch/{id}', 'FilmController@film_quote_fetch')->name('film_quote_fetch');
+            Route::post('/film_quote_delete', 'FilmController@film_quote_delete')->name('film_quote_delete');
             
         });
         Route::group(['prefix' => '/press_release'], function () {
