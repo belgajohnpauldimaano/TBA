@@ -150,7 +150,24 @@
           </a>
         </li> -->
         <li class="home_page_carousel"><a href="{{ route('home_page_carousel') }}"><i class="fa fa-circle-o text-red"></i> <span>TBA Reel</span></a></li>
-        <li class="film"><a href="{{ route('film') }}"><i class="fa fa-circle-o text-yellow"></i> <span>Films</span></a></li>
+
+        <li class="film active treeview menu-open">
+          <a href="{{ route('film') }}"><i class="fa fa-circle-o text-yellow"></i> <span>Films</span></a>
+          @if (request()->segment(count(request()->segments())) == 'view')
+            <ul class="treeview-menu">
+              <li><a href="#tbaFilm_basic_info"><i class="fa fa-circle-o"></i> Basic Info</a></li>
+              <li><a href="#tbaFilm_crew"><i class="fa fa-circle-o"></i> Crew</a></li>
+              <li><a href="#tbaFilm_trailer"><i class="fa fa-circle-o"></i> Trailers</a></li>
+              <li><a href="#tbaFilm_poster"><i class="fa fa-circle-o"></i> Poster</a></li>
+              <li><a href="#tbaFilm_award"><i class="fa fa-circle-o"></i> Awards & Festivals</a></li>
+              <li><a href="#tbaFilm_photos"><i class="fa fa-circle-o"></i> Gallery</a></li>
+              <li><a href="#tbaFilm_quotes"><i class="fa fa-circle-o"></i> Quotes</a></li>
+              <li><a href="#tbaFilm_press_release"><i class="fa fa-circle-o"></i> Press Release</a></li>
+              <li><a href="#tbaFilm_dvd"><i class="fa fa-circle-o"></i> On DVD</a></li>
+            </ul>
+          @endif
+        </li>
+
         <li class="mailing"><a href="{{ route('mailing') }}"><i class="fa fa-circle-o text-aqua"></i> <span>Mailing</span></a></li>
         
       </ul>

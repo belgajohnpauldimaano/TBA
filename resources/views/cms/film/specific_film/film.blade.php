@@ -34,7 +34,7 @@
         <div class="col-sm-12">
 
             {{-- FILM BASIC INFO --}}
-            <div class="box box-primary">
+            <div id="tbaFilm_basic_info" class="box box-primary">
 
                 <div class="box-header with-border"  style="padding-left:15px">
                     <h3 class="box-title">Film Basic Information</h3>
@@ -150,7 +150,7 @@
             {{-- FILM BASIC INFO --}}
             
             {{-- FILM CREWS --}}
-            <div class="box box-warning js-film_crew_holder">
+            <div id="tbaFilm_crew" class="box box-warning js-film_crew_holder">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Film Crew</h3>
@@ -196,7 +196,7 @@
             {{-- FILM CREWS --}}
 
             {{-- TRAILER --}}
-            <div class="box box-success">
+            <div id="tbaFilm_trailer" class="box box-success">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Trailers</h3>
@@ -269,7 +269,7 @@
 
 
             {{-- POSTER PREVIEW --}}
-            <div class="box box-danger">
+            <div id="tbaFilm_poster" class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Poster</h3>
@@ -319,7 +319,7 @@
             {{-- POSTER PREVIEW --}}
 
             {{-- AWARDS --}}
-            <div class="box box-danger">
+            <div id="tbaFilm_award" class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Awards & Festivals</h3>
@@ -385,7 +385,7 @@
             {{-- AWARDS --}}
 
             {{-- PHOTOS --}}
-            <div class="box box-danger">
+            <div id="tbaFilm_photos" class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Gallery</h3>
@@ -458,7 +458,7 @@
             {{-- PHOTOS --}}
 
             {{-- QUOTES --}}
-            <div class="box box-danger">
+            <div id="tbaFilm_quotes" class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Quotes</h3>
@@ -495,7 +495,7 @@
             {{-- QUOTES --}}
 
             {{-- PRESS RELEASE --}}
-            <div class="box box-danger">
+            <div id="tbaFilm_press_release" class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Press Release</h3>
@@ -552,7 +552,7 @@
             {{-- PRESS RELEASE --}}
             
             {{-- DVD --}}
-            <div class="box box-danger">
+            <div id="tbaFilm_dvd" class="box box-danger">
                 <div class="box-header with-border">
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">On DVD</h3>
@@ -1950,6 +1950,24 @@
             $('#js-text_dvd_case_cover').html('- <i>' + $(this).val().replace(/.*(\/|\\)/, '') + '</i>');
         });
         $('body').on('dblclick', '.js-dvd_data', function (e) {
+            e.preventDefault();
+        });
+
+          // This is a functions that scrolls to #{blah}link
+        function goToByScroll(id){
+              // Remove "link" from the ID
+            id = id.replace("link", "");
+              // Scroll
+            $('html,body').animate({
+                scrollTop: $(id).offset().top - 70},
+                'slow');
+        }
+
+        $('.film.treeview').on('click', 'a', function(e) {
+            var id = $(this).attr('href');
+            // $('.film.treeview li').removeClass('active');
+            // $(this).parent().addClass('active');
+            goToByScroll(id);
             e.preventDefault();
         });
     </script>
