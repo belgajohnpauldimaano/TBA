@@ -48,8 +48,7 @@ class FilmController extends Controller
             $query->where('release_status', '=', NULL);
             $query->orWhere('release_status', '>', 0);
         })
-        ->orderBy('title', 'asc')
-        ->orderBy('release_date', 'DESC')
+        ->orderBy('title', 'ASC')
         ->paginate(10);
 
         $RATINGS = Film::RATINGS;
@@ -90,11 +89,10 @@ class FilmController extends Controller
         $Film = Film::where(function ($query) use($request) {
             $query->where('title', 'LIKE', '%'. $request->search .'%');
             $query->orWhere('genre', 'LIKE', '%'. $request->search .'%');
-            $query->where(function ($q) {
-                //$q->where('release_status', '!=', 0);
+        })
+        ->where(function ($q) {
                 $q->where('release_status', '=', NULL);
                 $q->orWhere('release_status', '>', 0);
-            });
         })
         // ->orWhereHas('genre', function ($query) use($request) {
         //     $query->where('genre', 'LIKE', '%'. $request->search .'%');
@@ -357,7 +355,7 @@ class FilmController extends Controller
         $Poster         = Poster::where('film_id', $id)->orderBy('poster_image_sorter', 'ASC')->get();
         $Award          = Award::where('film_id', $id)->orderBy('award_image_sorter', 'ASC')->get();
         $Photo          = Photo::where('film_id', $id)->orderBy('photo_sorter', 'ASC')->orderBy('updated_at', 'DESC')->get();
-        $Quote          = Quote::where('film_id', $id)->first();
+        $Quotes          = Quote::where('film_id', $id)->get();
         $PressRelease   = PressRelease::where('film_id', $id)->first();
         $FilmCrew       = FilmCrew::with('person')->where('film_id', $id)->orderBy('role')->get();
         $Dvd            = Dvd::where('film_id', $id)->orderBy('dvd_order', 'ASC')->get();
@@ -368,7 +366,7 @@ class FilmController extends Controller
         $RELEASE_STATUS = Film::RELEASE_STATUS;
         $PERSON_ROLES   = FilmCrew::ROLE;
         //return json_encode($Film);
-        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quote' => $Quote, 'PressRelease' => $PressRelease, 'FilmCrew' => $FilmCrew, 'Dvd' => $Dvd, 'Person' => $Person, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS, 'PERSON_ROLES' => $PERSON_ROLES]);
+        return view('cms.film.specific_film.film', ['Film' => $Film, 'Poster' => $Poster, 'Award' => $Award, 'Photo' => $Photo, 'Quotes' => $Quotes, 'PressRelease' => $PressRelease, 'FilmCrew' => $FilmCrew, 'Dvd' => $Dvd, 'Person' => $Person, 'RATINGS' => $RATINGS, 'RELEASE_STATUS' => $RELEASE_STATUS, 'PERSON_ROLES' => $PERSON_ROLES]);
      }
 
      public function film_basic_info_fetch ($id)
@@ -1095,7 +1093,12 @@ class FilmController extends Controller
             return response()->json(['errCode' => 1, 'messages' => 'Invalid selection of quote.']);
         }
 
-        $Quote = Quote::where('film_id', $request->film_id)->first(); 
+        $Quote = ''; 
+        if ($request->id) 
+        {
+            $Quote = Quote::where(['film_id' => $request->film_id, 'id' => $request->id])->first(); 
+        }
+
 
         return view('cms.film.specific_film.partials.film_quote_form_modal', ['Quote' => $Quote, 'film_id' => $request->film_id])->render();
     }
@@ -1141,10 +1144,28 @@ class FilmController extends Controller
 
     public function film_quote_fetch ($id, Request $request) 
     {
-        $Quote = Quote::where('film_id', $id)->first();
-        return view('cms.film.specific_film.partials.film_quote_data_fetch', ['Quote' => $Quote])->render();
+        $Quotes = Quote::where('film_id', $id)->get();
+        return view('cms.film.specific_film.partials.film_quote_data_fetch', ['Quotes' => $Quotes])->render();
     }
 
+    public function film_quote_delete (Request $request)
+    {
+        if(!$request->id || !$request->film_id)
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of quote.']);
+        }
+
+        $Quote = Quote::where('id', $request->id)->first();
+
+        if(!$Quote)
+        {
+            return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of quote.']);
+        }
+
+        $Quote->delete();
+
+        return response()->json(['errCode' => 0, 'messages' => 'Quote successfully deleted.']);
+    }
     /*
      * PRESS RELEASE
      */

@@ -85,9 +85,9 @@ class Film extends Model
         return $this->hasMany(Award::class, 'film_id', 'id');
     }
     
-    public function quote ()
+    public function quotes ()
     {
-        return $this->hasOne(Quote::class, 'film_id', 'id');
+        return $this->hasMany(Quote::class, 'film_id', 'id');
     }
     
     public function press_release ()

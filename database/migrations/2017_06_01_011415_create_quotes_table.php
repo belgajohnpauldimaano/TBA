@@ -17,7 +17,7 @@ class CreateQuotesTable extends Migration
             $table->increments('id');
             $table->text('main_quote');
             $table->string('name_of_person', 100);
-            $table->string('url');
+            $table->string('url')->nullable();
             $table->integer('film_id')->unsigned();
             $table->timestamps();
         });

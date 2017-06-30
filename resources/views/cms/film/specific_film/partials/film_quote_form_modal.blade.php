@@ -36,7 +36,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-link"></i>
                     </div>
-                    <input type="text" name="url" id="url" class="form-control" value="{{ ($Quote ? $Quote->url : 'http://') }}">
+                    <input type="text" name="url" id="url" class="form-control" placeholder="http://entertainment.inquirer.net/" value="{{ ($Quote ? $Quote->url : '') }}">
                     </div>
                 <div class="help-block text-center" id="url-error"></div>
             </div>
