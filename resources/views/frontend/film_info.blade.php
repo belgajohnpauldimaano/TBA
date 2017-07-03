@@ -172,7 +172,7 @@
                             @endforeach
                             
                             <div>
-                                <iframe src="https://www.hashatit.com/hashtags/{{$for_search}}/all/embed" width="100%" height="400"></iframe>
+                                <iframe src="https://www.hashatit.com/hashtags/{{$for_search}}/all/embed"  width="100%" height="400" style="overflow-y:hidden;"></iframe>
                             </div>
                         @endif
                         <ul class="list-inline social-icon text-center m-y-3">
