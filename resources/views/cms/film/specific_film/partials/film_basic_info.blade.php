@@ -47,7 +47,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th width="369px">Hash Tags</th>
+                                <th width="369px">Hashtags</th>
                                 <td>
                                     @if($Film->hash_tags != NULL)
                                        <?php
