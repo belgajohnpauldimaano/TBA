@@ -88,17 +88,36 @@
 
                         <div class="help-block text-center" id="rating-error"></div>
                     </div>
-
                     <div class="form-group">
                         <label for="">Sell Sheet </label> <span class="text-red">(pdf file only)</span>
                         <div class="form-group">
                             <div class="input-group">
-                                <div class="input-group-btn ">
+                                <div class="input-group-btn">
                                     <input name="sellsheet" id="sellsheet"  type="file" class="file-input hidden">
-                                    <button type="button" id="js-sellsheet" class="btn btn-default btn-flat btn-sm btn-block">
-                                        <i class="fa fa-file"></i>
-                                        Click to upload sell sheet <span id="js-uploaded_file"> - <i>{{ ($Film ? ($Film->sell_sheet ? 'Has uploaded pdf file' : 'Not yet set') : 'Not yet set') }}</i></span>
-                                    </button>
+                                    
+                                    @if($Film)
+                                        @if($Film->sell_sheet)
+                                        <div class="js-button_sellsheet_container col-sm-10">
+                                            <button type="button" id="js-sellsheet" class="btn btn-default btn-flat btn-sm btn-block">
+                                                <i class="fa fa-file"></i>
+                                                Click to upload sell sheet <span id="js-uploaded_file"> - <i>{{ ($Film ? ($Film->sell_sheet ? 'Has uploaded pdf file' : 'Not yet set') : 'Not yet set') }}</i></span>
+                                            </button>
+                                        </div>
+                                        @else
+                                            <button type="button" id="js-sellsheet" class="btn btn-default btn-flat btn-sm btn-block">
+                                                <i class="fa fa-file"></i>
+                                                Click to upload sell sheet <span id="js-uploaded_file"> - <i>{{ ($Film ? ($Film->sell_sheet ? 'Has uploaded pdf file' : 'Not yet set') : 'Not yet set') }}</i></span>
+                                            </button>
+                                        @endif
+                                    @endif
+
+                                    @if($Film)
+                                        @if($Film->sell_sheet)
+                                            <div class="col-sm-2">
+                                                <a href="#"  data-delete-link="{{ route('delete_sellsheet', $Film->id) }}" data-id="{{ $Film->id }}" class="btn btn-flat btn-danger btn-sm js-remove_sellsheet"><i class="fa fa-trash"></i> remove</a>
+                                            </div>
+                                        @endif
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -107,7 +126,7 @@
                     
                     <div class="form-group">
                         <label for="">Hashtags</label>
-                        <span>Use a comma (,) to separate each hash tags.</span>
+                        <span>Use a comma (,) to separate each hashtag.</span>
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-hashtag"></i>
@@ -212,4 +231,5 @@
     ];*/
 
     //$('.typeahead').typeahead({ source:dd });
+    
 </script>

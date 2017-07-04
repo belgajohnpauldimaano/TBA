@@ -241,7 +241,26 @@
                 } 
             });
         }
+        $('body').on('click' , '.js-remove_sellsheet', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var delete_route = $(this).data('delete-link');
 
+            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+            alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+            alertify.confirm("Confirmation",
+                'Are you sure you want to delete?',
+                function(){
+                    delete_record(delete_route, "{{ route('film_basic_info_fetch', 1) }}", $('.js-film_info_content_holder'), id);
+                    $('.js-remove_sellsheet').parents('.input-group-btn').children('.col-sm-2, .js-remove_sellsheet').remove();
+                    $('.js-button_sellsheet_container').removeClass('col-sm-10');
+                    $('#js-uploaded_file').html('- <i>Not yet set</i>');
+                    $('#sellsheet').val('');
+                },
+                function(){
+                    // for cancel
+            });
+        });
         $('.film').addClass('active');
         /*
          * QUOTE JS SCRIPT

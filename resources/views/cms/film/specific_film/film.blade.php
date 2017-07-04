@@ -94,7 +94,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th width="369px">Hash Tags</th>
+                                    <th width="369px">Hashtags</th>
                                     <td>
                                         @if($Film->hash_tags != NULL)
                                         <?php
@@ -673,24 +673,20 @@
         });
         $('body').on('click' , '.js-remove_sellsheet', function (e) {
             e.preventDefault();
-            var id = $(this).data('id');
-            bootbox.confirm({
-                title: "Confirm",
-                message: "Are you sure you want to delete?",
-                buttons: {
-                    cancel: {
-                        label: '<i class="fa fa-times"></i> Cancel'
-                    },
-                    confirm: {
-                        label: '<i class="fa fa-check"></i> Confirm'
-                    }
+            var id = 1;
+            alertify.defaults.theme.ok = "btn btn-primary btn-flat";
+            alertify.defaults.theme.cancel = "btn btn-danger btn-flat";
+            alertify.confirm("Confirmation",
+                'Are you sure you want to delete?',
+                function(){
+                    delete_record("{{ route('delete_sellsheet', $Film->id) }}", "{{ route('film_basic_info_fetch', $Film->id) }}", $('.js-film_info_content_holder'), id);
+                    $('.js-remove_sellsheet').parents('.input-group-btn').children('.col-sm-2, .js-remove_sellsheet').remove();
+                    $('.js-button_sellsheet_container').removeClass('col-sm-10');
+                    $('#js-uploaded_file').html('- <i>Not yet set</i>');
+                    $('#sellsheet').val('');
                 },
-                callback: function (result) {
-                    if (result)
-                    {
-                        delete_record("{{ route('delete_sellsheet', $Film->id) }}", "{{ route('film_basic_info_fetch', $Film->id) }}", $('.js-film_info_content_holder'), id);
-                    }
-                }
+                function(){
+                    // for cancel
             });
         });
 

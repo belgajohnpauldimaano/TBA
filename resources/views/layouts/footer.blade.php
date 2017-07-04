@@ -272,7 +272,7 @@
                     }
                     else
                     {
-                        //show_message (data.messages, 'success');
+                        show_message (data.messages, 'success');
                         fetch_record(fetch_route, elem, 1, '')
                     }
                 },
