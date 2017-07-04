@@ -16,7 +16,8 @@
         data-ratio="16/9"
         data-max-width="100%"
         data-max-height="100%" 
-        data-nav="false">
+        data-arrows="always"
+        data-nav="dots">
         @if($Carousel)
             @foreach ($Carousel as $Carousel)
                 @if($Carousel)

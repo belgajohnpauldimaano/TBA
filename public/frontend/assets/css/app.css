@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @font-face {
   font-family: 'Calibri-BoldItalic';
   src: url("../fonts/calibri/Calibri-BoldItalic.eot");
@@ -826,19 +827,44 @@ main {
       margin: 30px 0; } }
 
 /* Homepage */
-@media (max-width: 767px) {
-  .fotorama--homepage {
-    padding-top: 50px; } }
-
-.fotorama--homepage .fotorama__wrap--video .fotorama__video-close {
-  background: url(http://avidaland.com/assets/img/fotorama-close.png) no-repeat;
-  top: 85px;
-  right: 30px;
-  width: 70px;
-  height: 70px;
-  -webkit-transform: scale(0.6, 0.6);
-  -ms-transform: scale(0.6, 0.6);
-  transform: scale(0.6, 0.6); }
+.fotorama--homepage {
+  background: #1c1c1c; }
+  @media (max-width: 767px) {
+    .fotorama--homepage {
+      padding-top: 50px; } }
+  .fotorama--homepage .fotorama__wrap--video .fotorama__video-close {
+    background: url(http://avidaland.com/assets/img/fotorama-close.png) no-repeat;
+    top: 85px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    -webkit-transform: scale(0.6, 0.6);
+    -ms-transform: scale(0.6, 0.6);
+    transform: scale(0.6, 0.6); }
+    @media (max-width: 412px) {
+      .fotorama--homepage .fotorama__wrap--video .fotorama__video-close {
+        -webkit-transform: scale(0.4, 0.4);
+        -ms-transform: scale(0.4, 0.4);
+        transform: scale(0.4, 0.4); } }
+  .fotorama--homepage .fotorama__dot {
+    width: 14px !important;
+    height: 14px !important;
+    border-radius: 100% !important;
+    border-color: #fff;
+    border-width: 2px; }
+  .fotorama--homepage .fotorama__nav__frame.fotorama__active .fotorama__dot {
+    background: #fff; }
+  .fotorama--homepage .fotorama__nav--dots .fotorama__nav__frame {
+    width: 27px; }
+  .fotorama--homepage .fotorama__nav {
+    /* Lie that the height is equal to zero */
+    height: 0;
+    /* And restore it using a “back door” */
+    padding-top: 60px;
+    /* Overlay the stage */
+    margin-top: -60px; }
+  .fotorama--homepage .fotorama__nav__shaft {
+    top: -60px; }
 
 .hero {
   position: relative;
