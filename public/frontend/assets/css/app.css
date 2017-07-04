@@ -608,7 +608,7 @@ btn */
   height: 70px;
   line-height: 70px;
   margin: 0 30px; }
-  @media (max-width: 1140px) {
+  @media (max-width: 1150px) {
     .nav-owl {
       width: 400px; } }
   .nav-owl__link {
