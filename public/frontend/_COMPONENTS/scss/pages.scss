@@ -239,10 +239,36 @@ main{
 
 .film{
 	margin-bottom: 15px;
-	
-	&__link{
+
+	&__item{
 		display: block;
 		position: relative;
+	
+		&__link{
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    height: 100%;
+		    width: 100%;
+		    padding: 15px;
+		    background: rgba(0, 0, 0, 0.5);
+		    color: #fff !important;
+		    visibility: hidden;
+		    opacity: 0;
+
+		    &__title{
+		    	margin-top: -15px;
+		    }
+		    
+			&--active{
+			    visibility: visible;
+			    opacity: 1;
+
+			    .film__item__link__title{
+		    		margin-top: 0;
+			    }
+			}
+		}
 	}
 	&__title{
 	    padding: 10px;

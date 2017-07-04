@@ -141,3 +141,9 @@ btn */
         }
     }
 }
+
+.col-xss-12{
+    @media (max-width: 470px){
+        width: 100%;
+    }
+}

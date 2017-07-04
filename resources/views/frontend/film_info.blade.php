@@ -80,14 +80,11 @@
                                               @endforeach
                                           @endif
                                       </div>
-                                      <div class="btn-group" role="group">
-                                            @if ($film_info->sell_sheet != NULL)
-                                                <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-default">Sell Sheet</a>
-                                            @else
-                                                {{-- None uploaded --}}
-                                              <a class="btn btn-default disabled">None uploaded</a>
-                                            @endif
-                                      </div>
+                                      @if ($film_info->sell_sheet != NULL)
+                                          <div class="btn-group" role="group">
+                                            <a href="{{ asset('content/sell_sheets/' . $film_info->sell_sheet) }}" target="_blank" class="btn btn-default">Sell Sheet</a>
+                                          </div>
+                                      @endif
                                  </div>
                               </div>
                            </div>

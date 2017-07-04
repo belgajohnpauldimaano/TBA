@@ -512,6 +512,10 @@ btn */
   .social-icon a:hover {
     background-color: #777; }
 
+@media (max-width: 470px) {
+  .col-xss-12 {
+    width: 100%; } }
+
 .t-ease, .films-gallery a:after {
   -moz-transition: all 300ms ease-in-out;
   -o-transition: all 300ms ease-in-out;
@@ -895,9 +899,27 @@ main {
 /* Film Page */
 .film {
   margin-bottom: 15px; }
-  .film__link {
+  .film__item {
     display: block;
     position: relative; }
+    .film__item__link {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff !important;
+      visibility: hidden;
+      opacity: 0; }
+      .film__item__link__title {
+        margin-top: -15px; }
+      .film__item__link--active {
+        visibility: visible;
+        opacity: 1; }
+        .film__item__link--active .film__item__link__title {
+          margin-top: 0; }
   .film__title {
     padding: 10px;
     min-height: 55px;
