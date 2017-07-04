@@ -11,10 +11,17 @@
         </div>
 
         <section>
-            <div class="header-title">
-                <h2 class="header-title__tag">Company Background</h2>
-            </div>
             <div class="container">
+                <div class="header-title">
+                    <h2 class="header-title__tag">Mission and Vision</h2>
+                </div>
+
+                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum consectetur magni neque? Ullam natus consequuntur facere tenetur provident, reprehenderit inventore, unde dolorem incidunt libero, id error. Dolores aperiam id eius. Vestibulum in nunc eros. Nam tempor, mi quis efficitur condimentum, ex sem aliquam sem, id congue augue nulla eu mauris. Nullam dapibus vulputate turpis a imperdiet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In eros velit, fermentum ut erat id, cursus volutpat mauris. Nam viverra eleifend tempus. Duis in lacus a lorem tincidunt tincidunt. Cras pretium magna at mi eleifend, a eleifend diam finibus. Curabitur quis tellus non quam euismod commodo et at nunc. Curabitur euismod porta lobortis. Nulla facilisi. Aliquam fermentum tellus eget augue viverra, eu eleifend justo eleifend. Nulla non diam leo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut efficitur bibendum libero, quis mattis elit tempus at. Vestibulum purus sapien, dapibus at tortor quis, blandit porttitor dui.</p>
+                <p class="text-justify">Nam a dolor pellentesque, volutpat eros maximus, elementum nunc. Cras tincidunt, mi non aliquet lacinia, neque libero bibendum augue, ut semper erat est eu sapien. Nulla sit amet convallis sem, quis venenatis purus. Vivamus facilisis hendrerit pulvinar. In lacus libero, viverra eget ex quis, tempor mattis orci. Morbi sem quam, auctor in viverra at, interdum sagittis tortor. Aliquam consequat eleifend auctor. Pellentesque diam purus, pretium id leo in, placerat consectetur metus. Maecenas ex dolor, commodo in imperdiet mollis, tincidunt eu sapien. Phasellus nibh elit, ornare cursus efficitur vitae, blandit vitae dui. Aliquam ac orci consequat, tincidunt tortor a, varius tellus. Etiam consequat ipsum metus. Duis sit amet luctus ex.</p>
+
+                <div class="header-title">
+                    <h2 class="header-title__tag">Company Background</h2>
+                </div>
                 <p class="text-justify">TBA Studios (Tuko Film Productions, Buchi Boy Entertainment, and Artikulo Uno Productions) is an independent film production company dedicated to making high quality films and promoting Filipino filmmakers worldwide. The company is spearheaded by Fernando Ortigas and Eduardo Rocha as Executive Producers and Vincent Nebrida as President. TBA has made a mark in the local industry for producing the award winning, critically–acclaimed, and box office hit, “Heneral Luna”. The historical epic directed by Jerrold Tarog is currently the highest grossing independent and historical film in the Philippines.</p>
                 <div class="media-block">
                     <div class="media">
