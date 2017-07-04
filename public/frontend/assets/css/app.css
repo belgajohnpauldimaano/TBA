@@ -599,11 +599,14 @@ btn */
       border-left: 12px solid transparent; }
 
 .nav-owl {
-  width: 400px;
+  width: 800px;
   float: right;
   height: 70px;
   line-height: 70px;
   margin: 0 30px; }
+  @media (max-width: 1140px) {
+    .nav-owl {
+      width: 400px; } }
   .nav-owl__link {
     color: #fff !important;
     display: block;
@@ -843,9 +846,10 @@ main {
     transform: scale(0.6, 0.6); }
     @media (max-width: 412px) {
       .fotorama--homepage .fotorama__wrap--video .fotorama__video-close {
-        -webkit-transform: scale(0.4, 0.4);
-        -ms-transform: scale(0.4, 0.4);
-        transform: scale(0.4, 0.4); } }
+        top: 50px;
+        -webkit-transform: scale(0.3, 0.3);
+        -ms-transform: scale(0.3, 0.3);
+        transform: scale(0.3, 0.3); } }
   .fotorama--homepage .fotorama__dot {
     width: 14px !important;
     height: 14px !important;

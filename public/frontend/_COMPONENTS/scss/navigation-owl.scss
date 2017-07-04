@@ -1,5 +1,10 @@
 .nav-owl{
-	width: 400px;
+	width: 800px;
+
+	@media (max-width: 1140px){
+		width: 400px;
+	}
+
     float: right;
     height: $navbarHeight;
     line-height: $navbarHeight;
