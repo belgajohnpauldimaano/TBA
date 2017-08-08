@@ -172,6 +172,7 @@
         @endif
 
         <li class="mailing"><a href="{{ route('mailing') }}"><i class="fa fa-circle-o text-aqua"></i> <span>Mailing</span></a></li>
+        <li class="blog"><a href="{{ route('blog') }}"><i class="fa fa-circle-o text-aqua"></i> <span>Blog</span></a></li>
         
       </ul>
     </section>

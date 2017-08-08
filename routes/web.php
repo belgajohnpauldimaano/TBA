@@ -162,5 +162,9 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
         Route::post('/mail_inquiry_export', 'MailingListController@mail_inquiry_export')->name('mail_inquiry_export');
         
     });
-});
 
+    Route::group(['prefix' => '/blog'], function () {
+        Route::get('', 'BlogController@blog')->name('blog');
+        Route::post('/show_modal_form_data', 'BlogController@show_modal_form_data')->name('show_modal_form_data');
+    });
+});
