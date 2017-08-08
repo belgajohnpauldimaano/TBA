@@ -50,13 +50,13 @@
                               <div class="info-img">
                                  <div class="hidden-xs">
                                     @if ($film_info->posters->where('featured', 1)->count() == 1)
-                                        @foreach ($film_info->posters->where('featured', 1) as $key =>  $poster)
+                                        @foreach ($film_info->posters->where('featured', 1) as $key => $poster)
                                           <a href="{{ asset('content/film/posters/' . $poster->label) }}" class="poster-popup" data-no="{{ $key }}">
                                               <img src="{{ asset('content/film/posters/preview-' . $poster->label) }}" class="w-100">
                                           </a>
                                         @endforeach
                                     @else
-                                        @foreach ($film_info->posters->where('featured', 0) as $poster)
+                                        @foreach ($film_info->posters->where('featured', 0) as $key => $poster)
                                           <a href="{{ asset('content/film/posters/' . $poster->label) }}" class="poster-popup" data-no="{{ $key }}">
                                             <img src="{{ asset('content/film/posters/preview-' . $poster->label) }}" class="w-100">
                                           </a>
@@ -71,11 +71,11 @@
                                  <div class="btn-group btn-group-justified visible-xs" role="group" aria-label="...">
                                       <div class="btn-group" role="group">
                                           @if ($film_info->posters->where('featured', 1)->count() == 1)
-                                              @foreach ($film_info->posters->where('featured', 1) as $key =>  $poster)
+                                              @foreach ($film_info->posters->where('featured', 1) as $key => $poster)
                                                 <button type="button" class="btn btn-default btn-default__black poster-popup" data-no="{{ $key }}">View Poster</button>
                                               @endforeach
                                           @else
-                                              @foreach ($film_info->posters->where('featured', 0) as $poster)
+                                              @foreach ($film_info->posters->where('featured', 0) as $key => $poster)
                                                 <button type="button" class="btn btn-default btn-default__black poster-popup" data-no="{{ $key }}">View Poster</button>
                                               @endforeach
                                           @endif
