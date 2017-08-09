@@ -166,7 +166,7 @@ class BlogController extends Controller
         $Blog = PressRelease::where(function ($query) {
             $query->where('film_id', '=', 0);
         })
-        ->orderBy('created_at', 'ASC')
+        ->orderBy('created_at', 'DESC')
         ->get();
 
         $latest = $Blog->slice(0, 2);
@@ -176,7 +176,7 @@ class BlogController extends Controller
         foreach ($latest as $data) {
             $latest_id[] = $data->id;
         }
-        
+
         return view('frontend.blog', ['Blog' => $Blog, 'latest_id' => $latest_id]);
     }
 
@@ -187,7 +187,7 @@ class BlogController extends Controller
         $Blog = PressRelease::where(function ($query) {
             $query->where('film_id', '=', 0);
         })
-        ->orderBy('created_at', 'DESC')
+        //->orderBy('created_at', 'DESC')
         ->inRandomOrder()
         ->take(5)
         ->get();

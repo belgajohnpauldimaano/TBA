@@ -12,15 +12,16 @@
                     @foreach ($Blog->slice(0, 2) as $data)
                         <div class="col-sm-6 p-x-0">
                             <div class="blog-cover blog-cover--blog m-b-0" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
-                                <a href="blog/{{$data->id}}" class="card__blog__link card__blog__link--black"></a>
-                                <div class="va-block p-a-3">
-                                    <div class="va-middle text-center">
-                                        <div class="blog-cover__content">
-                                            <h3 class="m-y-0"><a href="blog/{{$data->id}}" class="p-y-2">{{ str_limit($data->title, $limit = 60, $end = '...') }}</a></h3>
-                                            <span class="h4"><a href="blog/{{$data->id}}">{{ date('F d, Y', strtotime($data->created_at)) }}</a></span>
+                                <a href="blog/{{$data->id}}" class="card__blog__link card__blog__link--black">
+                                    <div class="va-block">
+                                        <div class="va-middle">
+                                            <div class="blog-cover__content p-a-3 text-center">
+                                                <h3>{{ str_limit($data->title, $limit = 60, $end = '...') }}</h3>
+                                                <span>{{ date('F d, Y', strtotime($data->created_at)) }}</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     @endforeach
@@ -38,15 +39,16 @@
                         @if (!in_array($data->id, $latest_id))
                             <div class="col-md-4">
                                 <div class="blog-cover blog-cover--blog" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
-                                    <a href="blog/{{$data->id}}" class="card__blog__link"></a>
-                                    <div class="va-block p-a-3">
-                                        <div class="va-bottom">
-                                            <div class="blog-cover__content">
-                                                <h4 class="m-y-0"><a href="blog/{{$data->id}}" class="p-y-2">{{ str_limit($data->title, $limit = 60, $end = '...') }}</a></h4>
-                                                <span><a href="blog/{{$data->id}}">{{ date('F d, Y', strtotime($data->created_at)) }}</a></span>
+                                    <a href="blog/{{$data->id}}" class="card__blog__link">
+                                        <div class="va-block">
+                                            <div class="va-bottom">
+                                                <div class="blog-cover__content p-a-3">
+                                                    <h4>{{ str_limit($data->title, $limit = 60, $end = '...') }}</h4>
+                                                    <span>{{ date('F d, Y', strtotime($data->created_at)) }}</span>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 </div>
                             </div>
                         @endif
