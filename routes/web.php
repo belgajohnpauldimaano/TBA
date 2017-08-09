@@ -166,5 +166,8 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
     Route::group(['prefix' => '/blog'], function () {
         Route::get('', 'BlogController@blog')->name('blog');
         Route::post('/show_modal_form_data', 'BlogController@show_modal_form_data')->name('show_modal_form_data');
+        Route::post('/save_blog', 'BlogController@save_blog')->name('save_blog');
+        Route::post('/fetch', 'BlogController@fetch')->name('fetch');
+        Route::post('/delete_blog', 'BlogController@delete_blog')->name('delete_blog');
     });
 });

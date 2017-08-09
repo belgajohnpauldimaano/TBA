@@ -1,29 +1,4 @@
-{{-- <div class="modal fade" tabindex="-1" role="dialog" id="modal_add_data">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Add New Post</h4>
-            </div>
-            <form id="form_data">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="">Title</label>
-                        <input type="text" class="form-control" name="title">
-                    </div>
-                    <div class="form-group">
-                        <label for="">Title</label>
-                        <input type="text" class="form-control" name="title">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> --}}
+
 <div class="modal fade" id="modal_add_data" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content box box-solid">
@@ -32,13 +7,13 @@
         </div>
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Press Release</h4>
+        <h4 class="modal-title">Blog</h4>
       </div>
-      <form id="js-frm_press_release">
+      <form id="js_frm_blog">
         <div class="modal-body">
-            {{-- csrf_field() --}}
-            <input type="hidden" name="press_release_id" value="{{-- ($PressRelease ? $PressRelease->id : '') --}}">
-            <input type="hidden" name="film_id" value="{{-- ($PressRelease ? $PressRelease->film_id : $film_id) --}}">
+            {{ csrf_field() }}
+            <input type="hidden" name="press_release_id" value="{{ ($Blog ? $Blog->id : '') }}">
+            <input type="hidden" name="film_id" value="{{ ($Blog ? $Blog->film_id : 0) }}">
             <div class="help-block text-center" id="general-error"></div>
             
             <div class="form-group">
@@ -47,7 +22,7 @@
                     <div class="input-group-addon">
                         <i class="fa fa-newspaper-o"></i>
                     </div>
-                    <input type="text" name="press_release_title" id="press_release_title" class="form-control" value="{{-- ($PressRelease ? $PressRelease->title : '') --}}">
+                    <input type="text" name="press_release_title" id="press_release_title" class="form-control" value="{{ ($Blog ? $Blog->title : '') }}">
                     </div>
                 <div class="help-block text-center" id="press_release_title-error"></div>
             </div>
@@ -61,10 +36,10 @@
                             <button type="button" id="js-press_release_article_image" class="btn btn-default btn-flat btn-block">
                                 <i class="fa fa-image"></i>
                                 Click to upload image
-                                <span id="js-text_press_release_article_image"> - <i>{{-- ($PressRelease ? 'Has uploaded file' : 'Not yet set') --}}</i></span>
+                                <span id="js-text_press_release_article_image"> - <i>{{ ($Blog ? 'Has uploaded file' : 'Not yet set') }}</i></span>
                             </button>
                         </div>
-                        {{-- <input type="text" class="form-control" id="js-text_press_release_article_image" disabled="true"  value="{{ ($PressRelease ? $PressRelease->article_image : '') }}"> --}}
+                        {{-- <input type="text" class="form-control" id="js-text_press_release_article_image" disabled="true"  value="{{ ($Blog ? $Blog->article_image : '') }}"> --}}
                     </div>
                 </div>
                 <div class="help-block text-center" id="press_release_article_image-error"></div>
@@ -72,13 +47,13 @@
 
             <div class="form-group">
                 <label for="">Blurb <span class="text-danger">*</span></label>
-                <textarea class="form-control" name="press_release_blurb" id="press_release_blurb" cols="30" rows="10">{{-- ($PressRelease ? $PressRelease->blurb : '') --}}</textarea>
+                <textarea class="form-control" name="press_release_blurb" id="press_release_blurb" cols="30" rows="10">{{ ($Blog ? $Blog->blurb : '') }}</textarea>
                 <div class="help-block text-center" id="press_release_blurb-error"></div>
             </div>
             
             <div class="form-group">
                 <label for="">Full Content <span class="text-danger">*</span></label>
-                <textarea class="form-control" name="press_release_content" id="press_release_content" cols="30" rows="15">{{-- ($PressRelease ? $PressRelease->content : '') --}}</textarea>
+                <textarea class="form-control" name="press_release_content" id="press_release_content" cols="30" rows="15">{{ ($Blog ? $Blog->content : '') }}</textarea>
                 <div class="help-block text-center" id="press_release_content-error"></div>
             </div>
 
@@ -89,9 +64,9 @@
             </div>
             <button type="button" class="btn btn-default btn-flat" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary btn-flat">Save</button>
-            {{-- @if($PressRelease) --}}
-                <button type="submit" class="btn btn-danger btn-flat js-delete_press_release" data-id="{{-- $PressRelease->id --}}">Delete</button>
-            {{-- @endif --}}
+            @if($Blog)
+                <button type="submit" class="btn btn-danger btn-flat js-delete_press_release" data-id="{{ $Blog->id }}">Delete</button>
+            @endif
         </div>
       </form>
     </div><!-- /.modal-content -->
