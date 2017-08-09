@@ -52,6 +52,11 @@ Route::group(['prefix' => '/contact'], function () {
     
 });
 
+Route::group(['prefix' => '/blog'], function () {
+    Route::get('', 'BlogController@blog_frontend')->name('blog_frontend');
+    Route::get('/{id}', 'BlogController@blog_info_frontend')->name('blog_info_frontend');
+});
+
 //Route::get('/home', 'HomeController@index')->name('home');
 
 

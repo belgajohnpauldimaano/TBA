@@ -210,7 +210,7 @@
                         $.ajax({
                             url : "{{ route('delete_blog') }}",
                             type : 'POST',
-                            data : {_token : '{{ csrf_token() }}', id : id, blog_id : 0},
+                            data : {_token : '{{ csrf_token() }}', id : id},
                             success     : function (data) {
                                 if (data.errCode == 1)
                                 {

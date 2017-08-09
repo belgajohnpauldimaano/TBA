@@ -136,7 +136,7 @@ class BlogController extends Controller
 
     public function delete_blog (Request $request)
     {
-        if(!$request->id || !$request->film_id)
+        if(!$request->id)
         {
             return response()->json(['errCode' => 2, 'messages' => 'Invalid selection of press release.']);
         }
@@ -152,5 +152,46 @@ class BlogController extends Controller
         $PressRelease->delete();
 
         return response()->json(['errCode' => 0, 'messages' => 'Press release details successfully deleted.']);
+    }
+
+
+    /*
+    *
+    *
+        Frontend function
+    */
+
+    public function blog_frontend (Request $request)
+     {
+        $Blog = PressRelease::where(function ($query) {
+            $query->where('film_id', '=', 0);
+        })
+        ->orderBy('created_at', 'ASC')
+        ->get();
+
+        $latest = $Blog->slice(0, 2);
+
+        $latest_id = [];
+
+        foreach ($latest as $data) {
+            $latest_id[] = $data->id;
+        }
+        
+        return view('frontend.blog', ['Blog' => $Blog, 'latest_id' => $latest_id]);
+    }
+
+    public function blog_info_frontend (Request $request)
+     {
+        $Blog_info = PressRelease::where('id', '=', $request->id)->first();
+
+        $Blog = PressRelease::where(function ($query) {
+            $query->where('film_id', '=', 0);
+        })
+        ->orderBy('created_at', 'DESC')
+        ->inRandomOrder()
+        ->take(5)
+        ->get();
+
+        return view('frontend.blog_info', ['Blog_info' => $Blog_info, 'Blog' => $Blog]);
     }
 }

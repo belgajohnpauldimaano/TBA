@@ -561,6 +561,65 @@ btn */
   100% {
     opacity: 0; } }
 
+.blog-cover {
+  background-color: #666;
+  background-position: center center;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  position: relative; }
+  .blog-cover--blog {
+    height: 345px;
+    margin-bottom: 30px; }
+
+.card__blog__link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 11; }
+  .card__blog__link:before {
+    bottom: 0;
+    content: "";
+    display: block;
+    height: 70%;
+    width: 100%;
+    position: absolute;
+    z-index: 1;
+    background: -moz-linear-gradient(top, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(40%, transparent), color-stop(100%, rgba(0, 0, 0, 0.7)));
+    background: -webkit-linear-gradient(top, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+    background: -o-linear-gradient(top, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+    background: -ms-linear-gradient(top, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(40%, transparent), to(rgba(0, 0, 0, 0.7)));
+    background: linear-gradient(to bottom, transparent 40%, rgba(0, 0, 0, 0.7) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#b3000000', GradientType=0);
+    -moz-transition: all 300ms ease-in-out;
+    -o-transition: all 300ms ease-in-out;
+    -webkit-transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out; }
+  .card__blog__link--black:before {
+    height: 100%;
+    background: rgba(0, 0, 0, 0.24) !important; }
+
+.blog-cover__content, .blog-cover__content a {
+  display: block;
+  color: #fff !important;
+  position: relative;
+  z-index: 11; }
+
+.main__blog p {
+  font-family: 'Calibri';
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 20px; }
+
+.main__blog__foter .blog-cover {
+  height: 250px; }
+
 .navbar {
   border-radius: 0;
   margin-bottom: 0;
