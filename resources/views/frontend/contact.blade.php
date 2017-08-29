@@ -26,11 +26,11 @@
             <div class="container">
                 <div class="contact-info">
                     <div class="row">
-                        <div class="col-md-10 col-md-offset-1">
+                        <div class="col-md-8 col-md-offset-2">
                             <div class="row">
-                                <div class="col-md-7">
+                                <div class="col-md-5">
                                     <div class="contact-info-details">
-                                        <div class="row">
+                                        {{-- <div class="row">
                                             <div class="col-md-4 col-sm-4 col-xs-6">
                                                 <h4><strong>Tba Studios</strong></h4>
                                                 <p>
@@ -61,13 +61,24 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> --}}
+                                        <h4><strong>Tba Studios</strong></h4>
+                                        <p>
+                                            160 Luna Mencias St., <br>
+                                            Brgy. Addition Hills, <br>
+                                            San Juan City 1500, <br>
+                                            Metro Manila, Philippines <br>
+                                        </p>
+                                        <p>
+                                          <strong class="clearfix">Phone</strong>
+                                          <span class="text-calibri">+632 398 1939</span>
+                                        </p>
                                     </div>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-7">
                                     <form id="form_inquiry">
                                         <div class="form-group">
-                                            <div class="help-block text-center" id="inquiry_type-error"></div>
+                                            <div class="help-block" id="inquiry_type-error"></div>
                                             <select name="inquiry_type" id="inquiry_type" class="form-control">
                                                 @foreach (App\MailInquiry::EMAIL_INQUIRY_TYPES as $key => $inquiry)
                                                     <option value="{{ $key }}">{{ $inquiry['type'] }}</option>
@@ -75,20 +86,25 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <div class="help-block text-center" id="inquiry_name-error"></div>
+                                            <div class="help-block" id="inquiry_name-error"></div>
                                             <input type="text" class="form-control" name="inquiry_name" id="inquiry_name" placeholder="NAME">
                                         </div>
                                         <div class="form-group">
-                                            <div class="help-block text-center" id="inquiry_email-error"></div>
+                                            <div class="help-block" id="inquiry_email-error"></div>
                                             <input type="text" class="form-control" name="inquiry_email" id="inquiry_email" placeholder="EMAIL ADDRESS">
                                         </div>
-                                        <div class="form-group">
-                                            <div class="help-block text-center" id="inquiry_message-error"></div>
+                                        <div class="form-group m-b-0">
+                                            <div class="help-block" id="inquiry_message-error"></div>
                                             <textarea class="form-control" name="inquiry_message" id="inquiry_message" rows="9" placeholder="MESSAGE"></textarea>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="help-block m-t-0" id="g-recaptcha-response-error"></div>
+                                            <input type="text" name="inquiry_captcha" id="inquiry_captcha" pattern="1" style="visibility: hidden; height: 1px; border-width: 0;">
+                                            <div name="recaptcha1" id="recaptcha1"></div>
+                                        </div>
                                         {{ csrf_field() }}
-                                        <div class="text-center">
-                                          <button type="submit" class="btn btn-default center-block btn-submit">Submit</button>
+                                        <div class="clearfix">
+                                          <button type="submit" class="btn btn-default btn-submit">Submit</button>
                                         </div>
                                     </form>
                                 </div>
@@ -103,7 +119,28 @@
 @endsection
 
 @section ('scripts')
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
+        async defer>
+    </script>
     <script>
+
+        // var verifyCallbackCaptcha1 = function(response) {
+        //     $('#f_captcha').val(1);
+        //     $('#footerFormMessage').validator('validate');
+        // };
+
+        var widget1;
+        var onloadCallback = function() {
+                var sitekey = '6Ld6kC4UAAAAAKTXcEyXbVrr_e4UfS7dTvJqP8oh';
+                
+                if ( $('#recaptcha1').length ) {
+                    widget1 = grecaptcha.render('recaptcha1', {
+                        'sitekey': sitekey,
+                        //'callback': verifyCallbackCaptcha1
+                    });
+                }
+        };
+
         $('body').on('submit', '#form_inquiry', function (e) {
             e.preventDefault();
             var formData = new FormData($(this)[0]);

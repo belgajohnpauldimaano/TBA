@@ -152,6 +152,7 @@ class MailingListController extends Controller
             'inquiry_name'      => 'required',
             'inquiry_email'     => 'required|email',
             'inquiry_message'   => 'required|min:15',
+            'g-recaptcha-response'   => 'required'
         ];
 
         $messages = [
@@ -161,6 +162,7 @@ class MailingListController extends Controller
             'inquiry_email.required'        => 'Email address is required.',
             'inquiry_email.email'           => 'Email address is invalid.',
             'inquiry_message.required'      => 'Inquiry message is required.',
+            'g-recaptcha-response.required'      => 'Please verify that you are not a robot.',
             'inquiry_message.min'           => 'Inquiry message should be minimum of 15 characters.'
         ];
 
@@ -171,7 +173,7 @@ class MailingListController extends Controller
             return response()->json([ 'errCode' => 1, 'messages' => $validator->getMessageBag() ]);
         }
 
-        $MailInquiry = new MailInquiry();
+        $MailInquiry = new MailInquiry();   
         $MailInquiry->name = $request->inquiry_name;
         $MailInquiry->email = $request->inquiry_email;
         $MailInquiry->message = $request->inquiry_message;
@@ -181,6 +183,10 @@ class MailingListController extends Controller
         $other = MailInquiry::EMAIL_INQUIRY_TYPES[$request->inquiry_type];
 
         Mail::to($other['email'])
+            ->queue(new MailInquiryMailer(['MailInquiry' => $MailInquiry, 'subject' => $other['type']]));
+
+
+        Mail::to('dev@build.com.ph')
             ->queue(new MailInquiryMailer(['MailInquiry' => $MailInquiry, 'subject' => $other['type']]));
 
         return response()->json([ 'errCode' => 0, 'messages' => 'Successfully inquired' ]);

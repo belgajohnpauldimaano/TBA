@@ -17,11 +17,11 @@ class MailInquiry extends Model
 
     const EMAIL_INQUIRY_TYPES       = [
         '0' => ['type' => 'Select Email Inqury Type',   'email' => ''],
-        '1' => ['type' => 'General Inquiries',          'email' => 'dev@build.com.ph'],
-        '2' => ['type' => 'Marketing Inquiries',        'email' => 'dev@build.com.ph'],
-        '3' => ['type' => 'Casting Inquiries',          'email' => 'dev@build.com.ph'],
+        '1' => ['type' => 'General Inquiries',          'email' => 'info@tba.ph'],
+        '2' => ['type' => 'Marketing Inquiries',        'email' => 'marketing@tba.ph'],
+        '3' => ['type' => 'Casting Inquiries',          'email' => 'thirdeye@tba.ph'],
         '4' => ['type' => 'Film Screenings',            'email' => 'dev@build.com.ph'],
-        '5' => ['type' => 'Cinema 76 Inquiries' ,       'email' => 'dev@build.com.ph']
+        '5' => ['type' => 'Cinema 76 Inquiries' ,       'email' => 'cinema76fs@tba.ph']
     ];
 
     const EMAIL_INQUIRY_TYPES_STYLE       = [
