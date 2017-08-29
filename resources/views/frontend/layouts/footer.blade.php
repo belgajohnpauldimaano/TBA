@@ -10,8 +10,8 @@
                         <div class="footer__mid center-block">
                             <ul class="list-inline footer__social clearfix">
                                 <li class="footer__social__item"><a class="footer__social__item__link" target="_blank" href="https://www.facebook.com/tukobuchiboyartikulo/"><i class="fa fa-facebook"></i></a></li>
-                                <li class="footer__social__item"><a class="footer__social__item__link" target="_blank" href=""><i class="fa fa-twitter"></i></a></li>
-                                <li class="footer__social__item"><a class="footer__social__item__link" target="_blank" href=""><i class="fa fa-instagram"></i></a></li>
+                                <li class="footer__social__item"><a class="footer__social__item__link" target="_blank" href="https://twitter.com/TBAStudiosPH"><i class="fa fa-twitter"></i></a></li>
+                                <li class="footer__social__item"><a class="footer__social__item__link" target="_blank" href="https://www.instagram.com/tbastudiosph"><i class="fa fa-instagram"></i></a></li>
                                 <li class="footer__social__item"><a class="footer__social__item__link" target="_blank" href="https://www.youtube.com/channel/UChh0rmwGvToBd3owvN2vRMg"><i class="fa fa-youtube"></i></a></li>
                             </ul>
                             <form method="POST" id="form_subsciption" action="{{ route('add_mailing_list') }}">

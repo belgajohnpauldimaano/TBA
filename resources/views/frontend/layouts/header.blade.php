@@ -49,7 +49,7 @@
                       <a href="{{ route('contact') }}" class="nav-owl__link nav-owl__link--img nav-owl__link--contact"></a>
                       <a href="{{ route('blog_frontend') }}" class="nav-owl__link nav-owl__link--img nav-owl__link--announcements"></a>
                       <a href="#" class="nav-owl__link nav-owl__link--img nav-owl__link--cinema-76"></a>
-                      <a href="#" class="nav-owl__link nav-owl__link--img nav-owl__link--cinema-tropa"></a>
+                      <a href="https://www.cinetropa.com/" target="_blank" class="nav-owl__link nav-owl__link--img nav-owl__link--cinema-tropa"></a>
                   </div>
                 </div>
                 <div class="visible-xs">
