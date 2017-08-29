@@ -93,12 +93,12 @@
                                             <div class="help-block" id="inquiry_email-error"></div>
                                             <input type="text" class="form-control" name="inquiry_email" id="inquiry_email" placeholder="EMAIL ADDRESS">
                                         </div>
-                                        <div class="form-group m-b-0">
+                                        <div class="form-group">
                                             <div class="help-block" id="inquiry_message-error"></div>
                                             <textarea class="form-control" name="inquiry_message" id="inquiry_message" rows="9" placeholder="MESSAGE"></textarea>
                                         </div>
                                         <div class="form-group">
-                                            <div class="help-block m-t-0" id="g-recaptcha-response-error"></div>
+                                            <div class="help-block" id="g-recaptcha-response-error" style="margin-bottom: -10px;"></div>
                                             <input type="text" name="inquiry_captcha" id="inquiry_captcha" pattern="1" style="visibility: hidden; height: 1px; border-width: 0;">
                                             <div name="recaptcha1" id="recaptcha1"></div>
                                         </div>
