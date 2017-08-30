@@ -119,27 +119,7 @@
 @endsection
 
 @section ('scripts')
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-        async defer>
-    </script>
     <script>
-
-        // var verifyCallbackCaptcha1 = function(response) {
-        //     $('#f_captcha').val(1);
-        //     $('#footerFormMessage').validator('validate');
-        // };
-
-        var widget1;
-        var onloadCallback = function() {
-                var sitekey = '6Ld6kC4UAAAAAKTXcEyXbVrr_e4UfS7dTvJqP8oh';
-                
-                if ( $('#recaptcha1').length ) {
-                    widget1 = grecaptcha.render('recaptcha1', {
-                        'sitekey': sitekey,
-                        //'callback': verifyCallbackCaptcha1
-                    });
-                }
-        };
 
         $('body').on('submit', '#form_inquiry', function (e) {
             e.preventDefault();

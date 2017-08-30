@@ -777,6 +777,24 @@ btn */
       .footer #map {
         margin-top: 20px; } }
 
+.btn__footer__mailing {
+  background-color: #fff;
+  color: #000;
+  position: relative; }
+  .btn__footer__mailing:hover {
+    opacity: .8; }
+  .btn__footer__mailing i {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    height: 100%;
+    line-height: 34px;
+    font-size: 20px;
+    color: #3c3c3c; }
+
+#modal__mailing .modal-dialog {
+  max-width: 335px; }
+
 /* Set Default */
 main {
   padding-top: 100px; }
@@ -901,7 +919,7 @@ main {
     .fotorama--homepage {
       padding-top: 50px; } }
   .fotorama--homepage .fotorama__wrap--video .fotorama__video-close {
-    background: url(http://avidaland.com/assets/img/fotorama-close.png) no-repeat;
+    background: url(../../assets/img/fotorama-close.png) no-repeat;
     top: 85px;
     right: 30px;
     width: 70px;
