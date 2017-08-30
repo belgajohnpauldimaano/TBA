@@ -12,11 +12,7 @@ class BlogController extends Controller
 {
     public function blog (Request $request)
      {
-        $Blog = PressRelease::where(function ($query) {
-            $query->where('film_id', '=', 0);
-        })
-        ->orderBy('title', 'ASC')
-        ->paginate(10);
+        $Blog = PressRelease::orderBy('created_at', 'DESC')->paginate(10);
         return view('cms.blog.index', ['Blog' => $Blog]);
     }
 
@@ -45,13 +41,8 @@ class BlogController extends Controller
         {
             $per_page = $request->per_page;
         }
-        
-        
-        $Blog = PressRelease::where(function ($query) {
-            $query->where('film_id', '=', 0);
-        })
-        ->orderBy('title', 'ASC')
-        ->paginate($per_page);
+
+        $Blog = PressRelease::orderBy('created_at', 'DESC')->paginate($per_page);
         return view('cms.blog.partials.table_blog_records', ['Blog' => $Blog, 'per_page' => $per_page, 'request' => $request]);
     }
 
@@ -163,10 +154,8 @@ class BlogController extends Controller
 
     public function blog_frontend (Request $request)
      {
-        $Blog = PressRelease::where(function ($query) {
-            $query->where('film_id', '=', 0);
-        })
-        ->orderBy('created_at', 'DESC')
+
+        $Blog = PressRelease::orderBy('created_at', 'DESC')
         ->get();
 
         $latest = $Blog->slice(0, 2);

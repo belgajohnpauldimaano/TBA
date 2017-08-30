@@ -16,6 +16,14 @@
             <input type="hidden" name="film_id" value="{{ ($Blog ? $Blog->film_id : 0) }}">
             <div class="help-block text-center" id="general-error"></div>
             
+            {{-- <select class="form-control">
+                <option value="0">Select Article Catergory</option>
+                <option value="0">General Article</option>
+                <option value="1">Film-Related Article</option>
+            </select>
+            
+            <hr> --}}
+
             <div class="form-group">
                 <label for="">Title <span class="text-danger">*</span></label>
                 <div class="input-group">

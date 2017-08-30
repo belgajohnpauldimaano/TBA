@@ -12,7 +12,7 @@
                     @foreach ($Blog->slice(0, 2) as $data)
                         <div class="col-sm-6 p-x-0">
                             <div class="blog-cover blog-cover--blog m-b-0" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
-                                <a href="blog/{{$data->id}}" class="card__blog__link card__blog__link--black">
+                                <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link card__blog__link--black">
                                     <div class="va-block">
                                         <div class="va-middle">
                                             <div class="blog-cover__content p-a-3 text-center">
@@ -39,7 +39,7 @@
                         @if (!in_array($data->id, $latest_id))
                             <div class="col-md-4">
                                 <div class="blog-cover blog-cover--blog" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
-                                    <a href="blog/{{$data->id}}" class="card__blog__link">
+                                    <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
                                         <div class="va-block">
                                             <div class="va-bottom">
                                                 <div class="blog-cover__content p-a-3">
@@ -63,7 +63,7 @@
                             @if (!in_array($data->id, $latest_id))
                                 <div class="media">
                                     <div class="media-left p-r-4">
-                                        <a href="blog/{{$data->id}}">
+                                        <a href="{{ route('blog_frontend') }}/{{$data->id}}">
                                             <div class="blog-cover blog-cover--blog m-b-0" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }}); height: 200px; width: 200px;"></div>
                                         </a>
                                     </div>
@@ -71,7 +71,7 @@
                                         <h3 class="media-heading m-t-1">{{ str_limit($data->title, $limit = 60, $end = '...') }}</h3>
                                         <p>{{ date('F d, Y', strtotime($data->created_at)) }}</p>
                                         <p>{!! str_limit($data->content, $limit = 350, $end = '...') !!}</p>
-                                        <a href="blog/{{$data->id}}" class="btn btn-default p-x-6">Read more</a>
+                                        <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="btn btn-default p-x-6">Read more</a>
                                     </div>
                                 </div>
                                 <hr>
