@@ -5,7 +5,7 @@
 @endsection
 
 @section ('page_title')
-    Blog
+    Announcement
 @endsection
 
 @section ('content')
@@ -14,10 +14,10 @@
         <div class="col-sm-12">
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Blogs</h3>
+                    <h3 class="box-title">Announcements</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-flat btn-sm btn-primary" id="btn-add-blog">
-                            <i class="fa fa-plus"></i> Add Blog
+                            <i class="fa fa-plus"></i> Add Announcement
                         </button>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                                 {{ $Blog->links() }}
                             </div>
                         </div>
-                        <pre>{{ json_encode($Blog, JSON_PRETTY_PRINT)}}</pre>
+                        {{-- <pre>{{ json_encode($Blog, JSON_PRETTY_PRINT)}}</pre> --}}
                     </div>
                 </div>
             </div>

@@ -47,4 +47,4 @@
                                 {{ $Blog->links() }}
                             </div>
                         </div>
-                        <pre>{{ json_encode($Blog, JSON_PRETTY_PRINT)}}</pre>
+                        {{-- <pre>{{ json_encode($Blog, JSON_PRETTY_PRINT)}}</pre> --}}

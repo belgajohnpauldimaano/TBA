@@ -168,7 +168,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
         
     });
 
-    Route::group(['prefix' => '/blog'], function () {
+    Route::group(['prefix' => '/announcement'], function () {
         Route::get('', 'BlogController@blog')->name('blog');
         Route::post('/show_modal_form_data', 'BlogController@show_modal_form_data')->name('show_modal_form_data');
         Route::post('/save_blog', 'BlogController@save_blog')->name('save_blog');
