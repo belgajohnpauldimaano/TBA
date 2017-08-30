@@ -5,18 +5,22 @@
     <link href="{{ asset('cms/plugins/alertifyjs/css/themes/bootstrap.min.css') }}" rel="stylesheet">
 @endsection --}}
 
+@section('page_title')
+    Inquiries and Mailing List
+@endsection
+
 @section ('content')
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">Mailing</h3>
+            <h3 class="box-title">Inquiries and Mailing List</h3>
         </div>
 
         <div class="box-body">
             <!-- Custom Tabs -->
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#mail_inquiries" data-toggle="tab">Mail Inquiries</a></li>
-              <li class=""><a href="#subscribed_mails" data-toggle="tab">Subscribed Mails</a></li>
+              <li class="active"><a href="#mail_inquiries" data-toggle="tab">Inquiries</a></li>
+              <li class=""><a href="#subscribed_mails" data-toggle="tab">Mailing List </a></li>
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="mail_inquiries">

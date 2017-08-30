@@ -158,7 +158,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
         
     });
     
-    Route::group(['middleware' => 'auth','prefix' => '/mailing'], function () {
+    Route::group(['middleware' => 'auth','prefix' => '/inquiries-and-mailing-List'], function () {
         Route::get('/', 'MailingListController@index')->name('mailing');
         Route::post('/search_inquiries', 'MailingListController@search_inquiries')->name('search_inquiries');
         Route::post('/view_inquiry', 'MailingListController@view_inquiry')->name('view_inquiry');
