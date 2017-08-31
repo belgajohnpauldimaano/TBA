@@ -277,28 +277,42 @@
              </section>
         @endif
          
-        @if ($film_info->press_release)
+        @if ($press_release)
            <div class="container">
               <div class="row">
                   <div class="col-md-8 col-md-offset-2"><hr class="m-b-0"></div>
               </div>
+              {{-- <pre>{{ json_encode($press_release, JSON_PRETTY_PRINT)}}</pre> --}}
            </div>
 
            <section class="film-press">
               <div class="container">
                  <div class="row">
                      <div class="col-md-8 col-md-offset-2">
-                          <div class="header-title">
-                              <h2 class="header-title__tag">Press Release</h2>
-                          </div>
+                         <div class="header-title">
+                             <h2 class="header-title__tag header-title__tag--no-feather">
+                                 <img role="button" class="films-press__prev" src="{{ asset('frontend/assets/img/left-arrow-title.png') }}">
+                                   Press Release
+                                 <img role="button" class="films-press__next" src="{{ asset('frontend/assets/img/right-arrow-title.png') }}">
+                             </h2>
+                         </div>
                          <div class="text-center">
-                              <h3><strong>{{ $film_info->press_release->title }}</strong></h3>
-                              <div class="h3">
-                                  <p class="m-b-6">
-                                      {!! $film_info->press_release->blurb !!}
-                                  </p>
-                                  <a href="#" class="read-more" id="readMorePR_info">[READ MORE]</a>
-                              </div>
+                            <div class="press__relesase__owl owl-carousel">
+                              @foreach($press_release as $data)
+                                 <div class="item-{{ $data->id }}">
+                                   <h3><strong>{{ $data->title }}</strong></h3>
+                                   <div class="h3">
+                                       <p class="m-b-6">
+                                           {!! $data->blurb !!}
+                                       </p>
+                                       <a href="#" class="read-more readMorePR_info m-t-6 center-block" 
+                                          data-img="{{ $data->article_image }}" 
+                                          data-title="{{ $data->title }}" 
+                                          data-content="{!! $data->content !!}">[READ MORE]</a>
+                                   </div>
+                                </div>
+                              @endforeach
+                            </div>
                          </div>
                      </div>
                  </div>
@@ -505,8 +519,35 @@
         owlGallery.trigger('next.owl.carousel');
       });
 
-      $('#readMorePR_info').on('click', function(e) {
+      $('.films-press__prev').click(function(){
+        owlPressRelease.trigger('prev.owl.carousel');
+      });
+
+      $('.films-press__next').click(function(){
+        owlPressRelease.trigger('next.owl.carousel');
+      });
+
+      var owlPressRelease = $('.press__relesase__owl');
+      owlPressRelease.owlCarousel({
+          items: 1,
+          loop: ($(".press__relesase__owl .item").length > 1) ? true : false,
+          nav: false,
+          autoplay: true,
+          autoplaySpeed: 1000,
+          autoplayTimeout: 5000
+      });
+
+      $('.readMorePR_info').on('click', function(e) {
           e.preventDefault();
+          var img = $(this).attr('data-img');
+              title = $(this).attr('data-title');
+              content = $(this).attr('data-content');
+          console.log(img, title, content);
+
+          $('#modalPressRelease img').attr('src', '{{ asset('content/film/press_release') }}/'+img);
+          $('#modalPressRelease h2').html(title);
+          $('#modalPressRelease .content').html(content);
+
           $('#modalPressRelease').modal('show');
       });
 

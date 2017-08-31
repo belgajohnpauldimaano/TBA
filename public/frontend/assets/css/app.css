@@ -1077,10 +1077,11 @@ main {
         margin-top: 0; } }
 
 #modalPressRelease .modal-content {
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff; }
+  border: 0;
+  background: #ffffff;
+  color: #333; }
   #modalPressRelease .modal-content .content {
-    color: #e6e6e6; }
+    color: #333; }
 
 /* About Page */
 @media (min-width: 768px) {
