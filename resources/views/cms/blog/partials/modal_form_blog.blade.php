@@ -13,16 +13,28 @@
         <div class="modal-body">
             {{ csrf_field() }}
             <input type="hidden" name="press_release_id" value="{{ ($Blog ? $Blog->id : '') }}">
-            <input type="hidden" name="film_id" value="{{ ($Blog ? $Blog->film_id : 0) }}">
+            {{-- <input type="hidden" name="film_id" value="{{ ($Blog ? $Blog->film_id : 0) }}"> --}}
             <div class="help-block text-center" id="general-error"></div>
             
-            {{-- <select class="form-control">
-                <option value="0">Select Article Catergory</option>
-                <option value="0">General Article</option>
-                <option value="1">Film-Related Article</option>
-            </select>
+            <div class="form-group">
+                <label for="">Select Article Category</label>
+                <select class="form-control" name="film_id" id="press_release_id_select">
+                    <option value="0" {{ ($Blog ? '' : 'selected') }}>General Article</option>
+                    <option value="{{ ($Blog ? $Blog->id : '') }}" {{ ($Blog ? 'selected' : '') }} class="press_release__film__related">Film-Related Article</option>
+                </select>
+            </div>
             
-            <hr> --}}
+            <div class="form-group collapse {{ ($Blog ? 'in' : '') }} form-group__film__categ">
+                <label for="">Select Film Category</label>
+                <select class="form-control" id="press_release_film_select" name="press_release_film_select">
+                    <option value="">-- Select --</option>
+                    @foreach($test as $item)
+                        <option value="{{ $item->film_id }}" {{ ($Blog ? 'selected' : '') }}>{!! $item->title !!}</option>
+                    @endforeach
+                </select>
+                <div class="help-block text-center" id="press_release_film_select-error"></div>
+                <hr>
+            </div>
 
             <div class="form-group">
                 <label for="">Title <span class="text-danger">*</span></label>

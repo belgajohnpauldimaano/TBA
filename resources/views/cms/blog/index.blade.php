@@ -250,5 +250,21 @@
                 }
             });
         }); 
+
+        $('body').on('change', '#press_release_id_select', function() {
+            if ($(this).val() == "" || $(this).val() != 0) {
+                $('.form-group__film__categ').collapse('show');
+            } else {
+                $('.form-group__film__categ').collapse('hide');
+            }
+        });
+
+        $('body').on('change', '#press_release_film_select', function() {
+            if ($(this).val() == "") {
+                $('.press_release__film__related').val(2);
+            } else {
+                $('.press_release__film__related').val($(this).val());
+            }
+        });
     </script>
 @endsection

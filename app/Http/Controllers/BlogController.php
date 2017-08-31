@@ -29,7 +29,10 @@ class BlogController extends Controller
                 return response()->json(['errCode' => 1, 'messages' => 'Invalid section']);
             }
         }
-        return view('cms.blog.partials.modal_form_blog', ['Blog' => $Blog])->render();
+        $test = PressRelease::where('film_id', '>', 0)
+                ->selectRaw('title, film_id')
+                ->get();
+        return view('cms.blog.partials.modal_form_blog', ['Blog' => $Blog, 'test' => $test])->render();
     }
 
     public function fetch (Request $request)
@@ -57,7 +60,8 @@ class BlogController extends Controller
             'press_release_title'           => 'required',
             'press_release_article_image'   => 'required|mimes:jpeg,png',
             'press_release_blurb'           => 'required',
-            'press_release_content'         => 'required'
+            'press_release_content'         => 'required',
+            'press_release_film_select'     => 'required'
         ];
 
         $messages = [
@@ -66,9 +70,16 @@ class BlogController extends Controller
             'press_release_article_image.required'      => 'Article image field is required.',
             'press_release_article_image.mimes'         => 'Article image should be a valid format :jpeg, png',
             'press_release_blurb.required'              => 'Blurb field is required.',
-            'press_release_content.required'            => 'Article content field is required.'
+            'press_release_content.required'            => 'Article content field is required.',
+            'press_release_film_select.required'        => 'Film category is required.'
         ];
         
+        if ($request->film_id == 0)
+        {
+            $rules['press_release_film_select'] = 'nullable';
+
+        }
+
         if ($request->press_release_id)
         {
             $rules['press_release_article_image'] = 'mimes:jpeg,png';
@@ -101,6 +112,7 @@ class BlogController extends Controller
             $PressRelease->title            = $request->press_release_title;
             $PressRelease->blurb            = $request->press_release_blurb;
             $PressRelease->content          = $request->press_release_content;
+            $PressRelease->film_id          = $request->film_id;
 
             $PressRelease->save();
 
@@ -116,8 +128,8 @@ class BlogController extends Controller
         $PressRelease->article_image    = $filename;
         $PressRelease->blurb            = $request->press_release_blurb;
         $PressRelease->content          = $request->press_release_content;
-        //$PressRelease->film_id          = $request->film_id;
-        $PressRelease->film_id          = 0;
+        $PressRelease->film_id          = $request->film_id;
+        //$PressRelease->film_id          = 0;
 
         $PressRelease->save();
 
