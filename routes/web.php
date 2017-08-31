@@ -165,6 +165,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
         Route::post('/mailing_list', 'MailingListController@mailing_list')->name('mailing_list');
         Route::post('/delete_mail', 'MailingListController@delete_mail')->name('delete_mail');
         Route::post('/mail_inquiry_export', 'MailingListController@mail_inquiry_export')->name('mail_inquiry_export');
+        Route::post('/mailing_list_export', 'MailingListController@mailing_list_export')->name('mailing_list_export');
         
     });
 

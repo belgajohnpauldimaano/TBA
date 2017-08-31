@@ -123,6 +123,15 @@
                             </div>
                         </form>
                     </div>
+                        
+                        <div class="col-sm-2">
+                            <label for="">&nbsp;</label>
+                            <div class="input-group ">
+                                <span class="input-group-btn">
+                                    <button href="#" class="btn btn-flat bg-olive btn-block js-mailing_list_export">Export to csv</button>
+                                </span>
+                            </div>
+                        </div>
                     
                     <div class="col-sm-12">
                         <div id="mail_list_data_holder" class=" box box-solid">
@@ -268,6 +277,48 @@
             });
 
         });
+
+        $('body').on('click', '.js-mailing_list_export', function (e) {
+            e.preventDefault();
+            
+            var formData = new FormData($('#form_mail_list_search')[0]);
+
+            $.ajax({
+                url : "{{ route('mailing_list_export') }}",
+                type : 'POST',
+                data : formData,
+                processData : false,
+                contentType : false,
+                success     : function (data) {
+                    //$('#mail_inquiries_data_holder').empty();
+                    //$('#mail_inquiries_data_holder').html(data);
+                    if (data.errCode == 1)
+                    {
+                        alertify.error('' + data.messages + '');
+                    }
+                    else
+                    {
+                        alertify.success('' + data.messages + '');
+                        window.location = "{{ asset('content/exported-mailing-list.csv') }}";
+                    }
+                },
+                error : function (xhr, ajaxOptions, thrownError)
+                {
+                    if (thrownError == 'Unauthorized')
+                    {
+                        window.location.reload();
+                    }
+                },
+                statusCode: {
+                    500: function(xhr) {
+                        //window.location.reload();
+                    }
+                } 
+            });
+
+        });
+
+
         function fetch_record_page_specific (page)
         {
             var formData = new FormData($('#form_mail_inquiries')[0]);

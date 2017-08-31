@@ -143,6 +143,53 @@ class MailingListController extends Controller
         return response()->json(['errCode' => 0, 'messages' => 'CSV successfully exported.']);
     }
 
+    public function mailing_list_export (Request $request)
+    {
+        $MailingList = MailingList::where(function ($q) use ($request) {
+                // $q->where('name', 'like', '%' . $request->mail_inquiry_search . '%');
+                // $q->orWhere('email', 'like', '%' . $request->mail_inquiry_search . '%');
+            })->get();
+
+        if ($MailingList->count() < 1)
+        {
+            return response()->json(['errCode' => 1, 'messages' => 'System could not able to generate CSV file because query doesn\'t have a result.']);
+        }
+        //$EMAIL_INQUIRY_TYPES = MailingList::EMAIL_INQUIRY_TYPES;
+
+        //return json_encode($MailingList);
+
+        Excel::create('exported-mailing-list', function ($excel) use ($MailingList) {
+                    
+            $excel->setTitle('Our new awesome title');
+
+            $excel->setCreator('TBA')
+                    ->setCompany('TBA');
+                    
+            $excel->setDescription('Mailing List');
+            
+            $excel->sheet('Inquiries', function ($sheet) use ($MailingList) {
+                
+                     $sheet->row(1, [
+                                'Email Address',
+                                'Date Subscribed'
+                            ]);
+                    if ($MailingList->count() > 0)
+                    {
+                        foreach ($MailingList as $key => $Mailing_list) 
+                        {
+                           $sheet->row($key + 2, [
+                                $Mailing_list->email,
+                                $Mailing_list->created_at
+                            ]);
+                        }
+                    }
+
+            }); 
+            })->store('csv', public_path('content'));
+
+        return response()->json(['errCode' => 0, 'messages' => 'CSV successfully exported.']);
+    }
+
 
 
     public function inquiry_save (Request $request)
