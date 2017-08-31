@@ -29,7 +29,7 @@
                 <select class="form-control" id="press_release_film_select" name="press_release_film_select">
                     <option value="">-- Select --</option>
                     @foreach($test as $item)
-                        <option value="{{ $item->film_id }}" {{ ($Blog ? 'selected' : '') }}>{!! $item->title !!}</option>
+                        <option value="{{ $item->film_id }}" {{ ($Blog ? ($Blog->film_id == $item->film_id ? 'selected' : '') : '') }}>{!! $item->title !!}</option>
                     @endforeach
                 </select>
                 <div class="help-block text-center" id="press_release_film_select-error"></div>
