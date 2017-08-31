@@ -4,6 +4,17 @@
 <title>About TBA</title>
 @endsection
 
+@section('styles')
+    <style>
+        .header-title{
+            text-align: left !important;
+        }
+        .header-title__tag:before, .header-title__tag:after{
+            content: none !important;
+        }
+    </style>
+@endsection
+
 @section('container')
     <main>
         <div class="tba-logo">
@@ -13,11 +24,21 @@
         <section>
             <div class="container">
                 <div class="header-title">
-                    <h2 class="header-title__tag">Mission and Vision</h2>
+                    <h2 class="header-title__tag">Vision & Mission</h2>
                 </div>
+                <h3 class="m-t-6">Vision</h3>
+                <p class="text-justify">To be the premiere independent film company  in the Philippines, TBA Studios is committed  to produce high-caliber entertaining Filipino films that push and break boundaries in the service of the new generation of audiences.</p>
 
-                <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rerum consectetur magni neque? Ullam natus consequuntur facere tenetur provident, reprehenderit inventore, unde dolorem incidunt libero, id error. Dolores aperiam id eius. Vestibulum in nunc eros. Nam tempor, mi quis efficitur condimentum, ex sem aliquam sem, id congue augue nulla eu mauris. Nullam dapibus vulputate turpis a imperdiet. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In eros velit, fermentum ut erat id, cursus volutpat mauris. Nam viverra eleifend tempus. Duis in lacus a lorem tincidunt tincidunt. Cras pretium magna at mi eleifend, a eleifend diam finibus. Curabitur quis tellus non quam euismod commodo et at nunc. Curabitur euismod porta lobortis. Nulla facilisi. Aliquam fermentum tellus eget augue viverra, eu eleifend justo eleifend. Nulla non diam leo. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Ut efficitur bibendum libero, quis mattis elit tempus at. Vestibulum purus sapien, dapibus at tortor quis, blandit porttitor dui.</p>
-                <p class="text-justify">Nam a dolor pellentesque, volutpat eros maximus, elementum nunc. Cras tincidunt, mi non aliquet lacinia, neque libero bibendum augue, ut semper erat est eu sapien. Nulla sit amet convallis sem, quis venenatis purus. Vivamus facilisis hendrerit pulvinar. In lacus libero, viverra eget ex quis, tempor mattis orci. Morbi sem quam, auctor in viverra at, interdum sagittis tortor. Aliquam consequat eleifend auctor. Pellentesque diam purus, pretium id leo in, placerat consectetur metus. Maecenas ex dolor, commodo in imperdiet mollis, tincidunt eu sapien. Phasellus nibh elit, ornare cursus efficitur vitae, blandit vitae dui. Aliquam ac orci consequat, tincidunt tortor a, varius tellus. Etiam consequat ipsum metus. Duis sit amet luctus ex.</p>
+                <h3 class="m-t-6">Mission</h3>
+                <p class="text-justify">Armed with our relentless passion to further grow the Philippine movie industry as well as to veer towards braver undertakings, TBA Studios dedicates itself to developing, producing and marketing content that touches and inspires people’s lives.</p>
+
+                <h3 class="m-t-6">Values</h3>
+                <ul class="list-unstyled">
+                    <li class="p-y-1">PASSION </li>
+                    <li class="p-y-1">PURSUIT OF EXCELLENCE</li>
+                    <li class="p-y-1">PATRIOTISM</li>
+                    <li class="p-y-1">POWERFUL STORYTELLING</li>
+                </ul>
 
                 <div class="header-title">
                     <h2 class="header-title__tag">Company Background</h2>
@@ -52,8 +73,10 @@
             </div>
         </section>
         <section>
-            <div class="header-title">
-                <h2 class="header-title__tag">The Founders</h2>
+            <div class="container">
+                <div class="header-title">
+                    <h2 class="header-title__tag">The Founders</h2>
+                </div>
             </div>
             <img src="{{ asset('frontend/assets/img/about/founders.png') }}" class="w-100">
         </section>
