@@ -277,7 +277,7 @@
              </section>
         @endif
          
-        @if ($press_release)
+        @if ($press_release->count() > 0)
            <div class="container">
               <div class="row">
                   <div class="col-md-8 col-md-offset-2"><hr class="m-b-0"></div>
