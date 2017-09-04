@@ -152,7 +152,7 @@
                     </div>
                     {{-- <div class="col-md-3 hidden-xs hidden-sm js-hashtags"> --}}
                     <div class="col-md-3">
-                        <hr class="visible-x svisible-sm">
+                        <hr class="visible-xs visible-sm">
                         <?php  
                             $for_search = '';
                             $for_display = '';
