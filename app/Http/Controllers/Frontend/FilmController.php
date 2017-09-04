@@ -102,6 +102,7 @@ class FilmController extends Controller
         $dvds = Dvd::with(['film' => function ($q) {
             $q->select(['id', 'english_title']);
         }])
+        ->where('dvd_status', 1)
         ->orderBy('name', 'ASC')
         ->orderBy('dvd_order', 'ASC')
         ->get();

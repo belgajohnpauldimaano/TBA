@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div class="col-sm-12 visible-sm"><hr></div>
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-xs-12">
                         <div class="row">
                             <div class="col-sm-6 col-md-push-6">
                                 <h4>Contact</h4>
