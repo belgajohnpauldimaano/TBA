@@ -78,7 +78,7 @@
                     <h2 class="header-title__tag">The Founders</h2>
                 </div>
             </div>
-            <img src="{{ asset('frontend/assets/img/about/founders.png') }}" class="w-100">
+            <img src="{{ asset('frontend/assets/img/about/founders.jpg') }}" class="w-100">
         </section>
     </main>
 @endsection
