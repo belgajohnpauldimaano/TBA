@@ -539,16 +539,22 @@
 
       $('.readMorePR_info').on('click', function(e) {
           e.preventDefault();
+
+          owlPressRelease.trigger('stop.owl.autoplay');
+
           var img = $(this).attr('data-img');
               title = $(this).attr('data-title');
               content = $(this).attr('data-content');
-          console.log(img, title, content);
 
           $('#modalPressRelease img').attr('src', '{{ asset('content/film/press_release') }}/'+img);
           $('#modalPressRelease h2').html(title);
           $('#modalPressRelease .content').html(content);
 
           $('#modalPressRelease').modal('show');
+      });
+
+      $('#modalPressRelease').on('hidden.bs.modal', function(e) {
+          owlPressRelease.trigger('play.owl.autoplay');
       });
 
       var gallery = {};
