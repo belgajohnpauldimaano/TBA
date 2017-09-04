@@ -613,6 +613,10 @@ btn */
   position: relative;
   z-index: 11; }
 
+@media (max-width: 767px) {
+  .main__blog h1 {
+    font-size: 24px; } }
+
 .main__blog p {
   font-family: 'Calibri';
   font-size: 16px;

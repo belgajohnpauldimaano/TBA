@@ -61,11 +61,18 @@
     }
 }
 
-.main__blog p{
-    font-family: 'Calibri';
-    font-size: 16px;
-    line-height: 24px;
-    margin-bottom: 20px;
+.main__blog{
+    h1{
+        @media (max-width: 767px){
+            font-size: 24px;
+        }
+    }
+    p{
+        font-family: 'Calibri';
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 20px;
+    }
 }
 
 .main__blog__foter{
