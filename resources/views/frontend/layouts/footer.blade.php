@@ -53,7 +53,12 @@
                     {{ csrf_field() }}
                     <div class="modal-body">
                         <div class="form-group">
-                            <input name="email" type="email" class="form-control" placeholder="Email Address" required>
+                            <label for="">Name</label>
+                            <input name="name" type="text" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Email Address</label>
+                            <input name="email" type="email" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <input type="text" name="footer__mailing_captcha" id="footer__mailing_captcha" pattern="1" style="visibility: hidden; height: 1px; border-width: 0;">

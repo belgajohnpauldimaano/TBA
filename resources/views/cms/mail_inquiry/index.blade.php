@@ -142,6 +142,7 @@
                             <div class="box-body">
                                 <table class="table table-bordered table-striped">
                                     <tr>
+                                        <th>Name</th>
                                         <th>Mail Address</th>
                                         <th>Date Subscribed</th>
                                         <th>Action</th>
@@ -150,6 +151,7 @@
                                         @if ($MailingList)
                                             @foreach ($MailingList as $mail)
                                                 <tr>
+                                                    <td><span>{{ $mail->name }}</span></td>
                                                     <td><span>{{ $mail->email }}</span></td>
                                                     <td>
                                                         {{ date('l, jS \of F Y', strtotime($mail->created_at)) }}

@@ -170,6 +170,7 @@ class MailingListController extends Controller
             $excel->sheet('Inquiries', function ($sheet) use ($MailingList) {
                 
                      $sheet->row(1, [
+                                'Name',
                                 'Email Address',
                                 'Date Subscribed'
                             ]);
@@ -178,6 +179,7 @@ class MailingListController extends Controller
                         foreach ($MailingList as $key => $Mailing_list) 
                         {
                            $sheet->row($key + 2, [
+                                $Mailing_list->name,
                                 $Mailing_list->email,
                                 $Mailing_list->created_at
                             ]);
@@ -258,6 +260,7 @@ class MailingListController extends Controller
         }
         
         $MailingList            = new MailingList();
+        $MailingList->name     = $request->name;
         $MailingList->email     = $request->email;
         $MailingList->status    = MailingList::EMAIL_STATUS_ACTIVE;
         $MailingList->save();

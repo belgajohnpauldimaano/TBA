@@ -16,6 +16,7 @@ class CreateMailingListsTable extends Migration
         Schema::create('mailing_lists', function (Blueprint $table) {
             $table->increments('id');
             $table->string('email');
+            $table->string('name')->nullable();
             $table->tinyInteger('status');
             $table->timestamps();
         });
