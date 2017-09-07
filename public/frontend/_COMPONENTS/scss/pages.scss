@@ -623,3 +623,60 @@ main{
 		}
 	}
 }
+
+.owl-gallery, .film-award-owl{
+	.owl-prev,
+	.owl-next{
+		position: absolute;
+		top: 0;
+		height: 100%;
+		font-size: 38px;
+    	padding: 0 25px;
+    	font-size: 3em;
+	}
+
+	.owl-prev{
+		left: 0;
+	}
+	.owl-next{
+		right: 0;
+	}
+
+	@media (max-width: 992px - 1){
+		padding: 0 25px;
+	}
+}
+
+.film-award-owl{
+	.owl-nav{
+		color: #e0bf5c;
+	}
+	
+	.owl-prev{
+		left: -70px;
+		@media (max-width: 991px){
+			left: -5px;
+			padding: 0;
+		}
+	}
+	.owl-next{
+		right: -70px;
+		@media (max-width: 991px){
+			right: -5px;
+			padding: 0;
+		}
+	}
+}
+
+.owl-gallery{
+	.owl-nav{
+		color: #fff;
+	}
+
+	.owl-prev{
+		left: 5px;
+	}
+	.owl-next{
+		right: 5px;
+	}
+}

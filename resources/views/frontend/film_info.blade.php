@@ -206,10 +206,8 @@
             <section class="film-award">
                 <div class="container">
                     <div class="header-title">
-                        <h2 class="header-title__tag header-title__tag--no-feather">
-                            <img role="button" class="film-award__prev" src="{{ asset('frontend/assets/img/left-arrow-title.png') }}">
+                        <h2 class="header-title__tag">
                               Awards / Festivals
-                            <img role="button" class="film-award__next" src="{{ asset('frontend/assets/img/right-arrow-title.png') }}">
                         </h2>
                     </div>
                     <div class="row">
@@ -232,10 +230,8 @@
         @if ($film_info->photos)
             <section class="films-gallery">
                 <div class="header-title">
-                    <h2 class="header-title__tag header-title__tag--no-feather">
-                        <img role="button" class="films-gallery__prev" src="{{ asset('frontend/assets/img/left-arrow-title.png') }}">
+                    <h2 class="header-title__tag">
                           Gallery
-                        <img role="button" class="films-gallery__next" src="{{ asset('frontend/assets/img/right-arrow-title.png') }}">
                     </h2>
                 </div>
                 <div class="owl-gallery owl-carousel">
@@ -280,12 +276,14 @@
         @endif
          
         @if ($film_info->press_release)
+          @if ($film_info->quotes->count() > 0)
            <div class="container">
               <div class="row">
                   <div class="col-md-8 col-md-offset-2"><hr class="m-b-0"></div>
               </div>
               {{-- <pre>{{ json_encode($press_release, JSON_PRETTY_PRINT)}}</pre> --}}
            </div>
+        @endif
 
            <section class="film-press">
               <div class="container">
@@ -438,7 +436,9 @@
           //loop: true,
           loop: ($(".film-award-owl .item").length > 4) ? true : false,
           margin: 30,
-          nav: false,
+          nav: true,
+          navText: ['<span class="va-block"><span class="va-middle"><i class="fa fa-angle-left"></i></span></span>', '<span class="va-block"><span class="va-middle"><i class="fa fa-angle-right"></i></span></span>'],
+          loop: ($(".owl-gallery .item").length > 4) ? true : false,
           autoplay: true,
           autoplaySpeed: 1000,
           autoplayTimeout: 5000,
@@ -451,19 +451,13 @@
               }
           }
       });
-
-      $('.film-award__prev').click(function(){
-        owlFilmAward.trigger('prev.owl.carousel');
-      });
-
-      $('.film-award__next').click(function(){
-        owlFilmAward.trigger('next.owl.carousel');
-      });
       
       var owlGallery = $('.owl-gallery');
       options = {
           items: 4,
           //loop: true,
+          nav: true,
+          navText: ['<span class="va-block"><span class="va-middle"><i class="fa fa-angle-left"></i></span></span>', '<span class="va-block"><span class="va-middle"><i class="fa fa-angle-right"></i></span></span>'],
           loop: ($(".owl-gallery .item").length > 4) ? true : false,
           margin: 1,
           autoplay: true,
@@ -497,15 +491,6 @@
 
       $('.films-quotes__next').click(function(){
         owlFilmQuotes.trigger('next.owl.carousel');
-      });
-
-
-      $('.films-gallery__prev').click(function(){
-        owlGallery.trigger('prev.owl.carousel');
-      });
-
-      $('.films-gallery__next').click(function(){
-        owlGallery.trigger('next.owl.carousel');
       });
 
       $('#readMorePR_info').on('click', function(e) {

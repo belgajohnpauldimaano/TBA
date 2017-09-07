@@ -1274,3 +1274,49 @@ main {
 @media (max-width: 412px) {
   .dvd__cd {
     padding-top: 50px; } }
+
+.owl-gallery .owl-prev,
+.owl-gallery .owl-next, .film-award-owl .owl-prev,
+.film-award-owl .owl-next {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  font-size: 38px;
+  padding: 0 25px;
+  font-size: 3em; }
+
+.owl-gallery .owl-prev, .film-award-owl .owl-prev {
+  left: 0; }
+
+.owl-gallery .owl-next, .film-award-owl .owl-next {
+  right: 0; }
+
+@media (max-width: 991px) {
+  .owl-gallery, .film-award-owl {
+    padding: 0 25px; } }
+
+.film-award-owl .owl-nav {
+  color: #e0bf5c; }
+
+.film-award-owl .owl-prev {
+  left: -70px; }
+  @media (max-width: 991px) {
+    .film-award-owl .owl-prev {
+      left: -5px;
+      padding: 0; } }
+
+.film-award-owl .owl-next {
+  right: -70px; }
+  @media (max-width: 991px) {
+    .film-award-owl .owl-next {
+      right: -5px;
+      padding: 0; } }
+
+.owl-gallery .owl-nav {
+  color: #fff; }
+
+.owl-gallery .owl-prev {
+  left: 5px; }
+
+.owl-gallery .owl-next {
+  right: 5px; }
