@@ -260,8 +260,16 @@
                                     <div class="item">
                                         <p><i>“{{ $data->main_quote }}”</i></p>
                                         <p class="m-y-6"><strong>-{{ $data->name_of_person }}</strong></p>
+                                        @php
+                                          function addhttp($url) {
+                                              if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+                                                  $url = "http://" . $url;
+                                              }
+                                              return $url;
+                                          }
+                                        @endphp
                                         @if ($data->url)
-                                            <a href="{{ $data->url }}" target="_blank" class="read-more">[READ MORE]</a>
+                                            <a href="{{ addhttp($data->url) }}" target="_blank" class="read-more">[READ MORE]</a>
                                         @endif
                                     </div>
                                   @endforeach
