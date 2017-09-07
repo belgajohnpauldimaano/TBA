@@ -624,7 +624,7 @@ main{
 	}
 }
 
-.owl-gallery, .film-award-owl{
+.owl-gallery, .film-award-owl, .film-quotes-owl{
 	.owl-prev,
 	.owl-next{
 		position: absolute;
@@ -632,7 +632,7 @@ main{
 		height: 100%;
 		font-size: 38px;
     	padding: 0 25px;
-    	font-size: 3em;
+    	font-size: 46px;
 	}
 
 	.owl-prev{
@@ -647,7 +647,7 @@ main{
 	}
 }
 
-.film-award-owl{
+.film-award-owl, .film-quotes-owl{
 	.owl-nav{
 		color: #e0bf5c;
 	}

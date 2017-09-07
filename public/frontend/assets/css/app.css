@@ -1277,38 +1277,39 @@ main {
 
 .owl-gallery .owl-prev,
 .owl-gallery .owl-next, .film-award-owl .owl-prev,
-.film-award-owl .owl-next {
+.film-award-owl .owl-next, .film-quotes-owl .owl-prev,
+.film-quotes-owl .owl-next {
   position: absolute;
   top: 0;
   height: 100%;
   font-size: 38px;
   padding: 0 25px;
-  font-size: 3em; }
+  font-size: 46px; }
 
-.owl-gallery .owl-prev, .film-award-owl .owl-prev {
+.owl-gallery .owl-prev, .film-award-owl .owl-prev, .film-quotes-owl .owl-prev {
   left: 0; }
 
-.owl-gallery .owl-next, .film-award-owl .owl-next {
+.owl-gallery .owl-next, .film-award-owl .owl-next, .film-quotes-owl .owl-next {
   right: 0; }
 
 @media (max-width: 991px) {
-  .owl-gallery, .film-award-owl {
+  .owl-gallery, .film-award-owl, .film-quotes-owl {
     padding: 0 25px; } }
 
-.film-award-owl .owl-nav {
+.film-award-owl .owl-nav, .film-quotes-owl .owl-nav {
   color: #e0bf5c; }
 
-.film-award-owl .owl-prev {
+.film-award-owl .owl-prev, .film-quotes-owl .owl-prev {
   left: -70px; }
   @media (max-width: 991px) {
-    .film-award-owl .owl-prev {
+    .film-award-owl .owl-prev, .film-quotes-owl .owl-prev {
       left: -5px;
       padding: 0; } }
 
-.film-award-owl .owl-next {
+.film-award-owl .owl-next, .film-quotes-owl .owl-next {
   right: -70px; }
   @media (max-width: 991px) {
-    .film-award-owl .owl-next {
+    .film-award-owl .owl-next, .film-quotes-owl .owl-next {
       right: -5px;
       padding: 0; } }
 

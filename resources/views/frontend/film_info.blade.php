@@ -250,10 +250,8 @@
                    <div class="row">
                        <div class="col-md-8 col-md-offset-2">
                             <div class="header-title">
-                                <h2 class="header-title__tag header-title__tag--no-feather">
-                                    <img role="button" class="films-quotes__prev" src="{{ asset('frontend/assets/img/left-arrow-title.png') }}">
+                                <h2 class="header-title__tag">
                                       Quotes
-                                    <img role="button" class="films-quotes__next" src="{{ asset('frontend/assets/img/right-arrow-title.png') }}">
                                 </h2>
                             </div>
                            <div class="text-center h3">
@@ -477,20 +475,12 @@
       var owlFilmQuotes = $('.film-quotes-owl');
       owlFilmQuotes.owlCarousel({
           items: 1,
-          loop: ($(".film-award-owl .item").length > 1) ? true : false,
+          nav: true,
+          navText: ['<span class="va-block"><span class="va-middle"><i class="fa fa-angle-left"></i></span></span>', '<span class="va-block"><span class="va-middle"><i class="fa fa-angle-right"></i></span></span>'],
           margin: 30,
-          nav: false,
           autoplay: true,
           autoplaySpeed: 1000,
           autoplayTimeout: 5000
-      });
-
-      $('.films-quotes__prev').click(function(){
-        owlFilmQuotes.trigger('prev.owl.carousel');
-      });
-
-      $('.films-quotes__next').click(function(){
-        owlFilmQuotes.trigger('next.owl.carousel');
       });
 
       $('#readMorePR_info').on('click', function(e) {
