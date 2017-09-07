@@ -1004,8 +1004,8 @@ main {
         .film__item__link--active .film__item__link__title {
           margin-top: 0; }
   .film__title {
-    padding: 10px;
-    min-height: 55px;
+    padding: 10px 10px 0 10px;
+    min-height: 63px;
     margin: 0;
     font-size: 16px;
     text-transform: none; }

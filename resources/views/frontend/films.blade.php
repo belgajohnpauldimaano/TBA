@@ -8,7 +8,7 @@
         
     <main class="m-b-6">
         @include('frontend.layouts.film_categ')
-        <section>
+        {{-- <section>
             <div class="container">
                 <div class="header-title">
                     <h2 class="header-title__tag"><span class="text-calibri">{{ date("Y") - 1 }} - {{ date("Y") }}</span> Film Line Up</h2>
@@ -77,7 +77,7 @@
                 </div>
 
             </div>
-        </section>
+        </section> --}}
         
         <section>
             <div class="header-title">

@@ -25,7 +25,7 @@
 		<section>
             <div class="container">
                 @if ($film_trailer->count() > 0)
-		            <div class="header-title">
+		            {{-- <div class="header-title">
 		                <h2 class="header-title__tag"><span class="text-calibri">{{ date("Y") - 1 }} - {{ date("Y") }}</span> Film Line Up</h2>
 		            </div>
 	            	<div class="row">
@@ -47,7 +47,7 @@
 				            	</div>
 	                    	@endforeach
 	                    @endforeach
-	            	</div>
+	            	</div> --}}
 	            	
 		            <div class="header-title">
 		                <h2 class="header-title__tag">Film Catalogue</h2>
