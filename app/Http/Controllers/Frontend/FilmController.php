@@ -75,13 +75,13 @@ class FilmController extends Controller
         )
         ->where('id', $request->id)->first();
 
-        $press_release = PressRelease::where('film_id', $request->id)->get();
+        //$press_release = PressRelease::where('film_id', $request->id)->get();
 
         // echo json_encode($film_info->posters->where('featured', 1));
         // $a =  $film_info->posters->where('featured', 1);
         // echo $a;
         // return;
-        return view('frontend.film_info', ['film_info' => $film_info, 'press_release' => $press_release]);
+        return view('frontend.film_info', ['film_info' => $film_info]);
     }
     public function trailers(){
         $film_trailer = Film::with(
