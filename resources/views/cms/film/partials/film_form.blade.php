@@ -61,7 +61,9 @@
                             <option value="">Choose applicable</option>
                             <?php array_shift($film_status); ?>
                             @foreach ($film_status as $key => $value)
-                                <option value="{{ $key + 1 }}" {{ ($Film  ? ( $Film->release_status ==  ($key + 1) ? 'selected' : '') : '') }}>{{ $value }}</option>
+                                @if($value != 'Current Line-up')
+                                    <option value="{{ $key + 1 }}" {{ ($Film  ? ( $Film->release_status ==  ($key + 1) ? 'selected' : '') : '') }}>{{ $value }}</option>
+                                @endif
                             @endforeach
                         </select>
                         <div class="help-block text-center" id="release_status-error"></div>
