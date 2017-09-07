@@ -1,7 +1,7 @@
 @extends('frontend.layouts.main')
 
 @section('page_title')
-<title>Contact TBA</title>
+<title>TBA Studios Contact Details, Map, Inquiry Form - Tuko Film Productions, Buchi Boy Entertainment, Artikulo Uno, Cinema 76, Cinetropa</title>
 @endsection
 
 @section('styles')

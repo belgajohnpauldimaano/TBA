@@ -1,7 +1,7 @@
 @extends('frontend.layouts.main')
 
 @section('page_title')
-<title>Film Line-Up by TBA</title>
+<title>TBA Studios Film List, Trailers, On DVD</title>
 @endsection
 
 @section('container')

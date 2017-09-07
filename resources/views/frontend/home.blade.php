@@ -5,7 +5,7 @@
 @endsection
 
 @section('page_title')
-<title>TBA - Bringing the filipino audience back to the cinema</title>
+    <title>TBA Studios - Bringing the Filipino audience back to the cinema - Tuko Film Productions, Buchi Boy Entertainment, Artikulo Uno, Cinema 76, Cinetropa</title>
 @endsection
 
 @section('container')

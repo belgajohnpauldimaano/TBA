@@ -1,7 +1,7 @@
 @extends('frontend.layouts.main')
 
 @section('page_title')
-<title>TBA Blog</title>
+<title>Announcements - TBA Studios, Tuko Film Productions, Buchi Boy Entertainment, Artikulo Uno, Cinema 76, Cinetropa</title>
 @endsection
 
 @section('container')

@@ -1,7 +1,7 @@
 @extends('frontend.layouts.main')
 
 @section('page_title')
-<title>{{ $film_info->title }}, a film by TBA</title>
+<title>{{ $film_info->title }}, by TBA Studios</title>
 @endsection
 
 @section ('styles')
