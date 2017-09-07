@@ -24,6 +24,7 @@
                                         languages="{{ $data->languages }}"
                                         subtitles="{{ $data->subtitles }}"
                                         trt="{{ $data->running_time }}"
+                                        desc="{!! str_limit($data->description, 120) !!}"
                                         class="dvd__block">
                                         <img src="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" class="img-responsive center-block">
                                     </a>
@@ -80,11 +81,13 @@
                                     </li>
                                 </ul>
                                 <ul class="list-inline">
-                                    <li class="p-r-0"><strong class="text-uppercase">TRT:</strong></li>
+                                    <li class="p-r-0"><strong class="text-uppercase">Total Running Time:</strong></li>
                                     <li>
                                         <div class="dvd__trt"></div>
                                     </li>
                                 </ul>
+                                <p class="m-t-3 dvd__description"></p>
+                                <p class="m-t-3" style="color: #ccc;">For more information on this DVD, please <a href="{{ route('contact') }}" style="color: #fff;"><u>contact us</u></a> directly. </p>
                             </div>
                         </div>
                     </div>
@@ -108,6 +111,7 @@
                 languages = $(this).attr('languages');
                 subtitles = $(this).attr('subtitles');
                 trt = $(this).attr('trt');
+                desc = $(this).attr('desc');
 
                 $('.dvd__cover').attr('src', img);
                 $('.dvd__cd').attr('src', imgCircle);
@@ -116,6 +120,7 @@
                 $('.dvd__languages').text(languages);
                 $('.dvd__subtitles').text(subtitles);
                 $('.dvd__trt').text(trt + ' minutes');
+                $('.dvd__description').html(desc);
 
                 e.preventDefault();
             });

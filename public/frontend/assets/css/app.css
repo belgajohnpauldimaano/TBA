@@ -1265,7 +1265,11 @@ main {
 
 @media (min-width: 992px) {
   .dvd__content {
-    padding-top: 85px; } }
+    padding-top: 30px; } }
+
+.dvd__description {
+  border-left: 3px solid #ddd;
+  padding-left: 10px; }
 
 @media (max-width: 991px) {
   .dvd__content {
