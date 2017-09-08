@@ -12,6 +12,9 @@
 			    width: 1200px;
 			}
 		}
+		.film-categ{
+    		padding-bottom: 55px;
+		}
 	</style>
 @endsection
 
@@ -48,17 +51,14 @@
 	                    	@endforeach
 	                    @endforeach
 	            	</div> --}}
-	            	
-		            <div class="header-title">
-		                <h2 class="header-title__tag">Film Catalogue</h2>
-		            </div>
 	            	<div class="row">
-	                    @foreach ($film_trailer->where('release_status', 3) as $trailer)
-	                    	@foreach ($trailer->trailers->where('trailer_show', 1) as $show)
+            			@foreach($film_trailer as $data)
+	                    	@if ($data->trailers['trailer_show'] == 2)
+            					{{-- <pre>{{ json_encode($data->trailers, JSON_PRETTY_PRINT)}}</pre> --}}
 	                    		<div class="col-sm-6">
 					            	<div class="trailer">
-						            	<a href="{{ $show->trailer_url }}" caption="{{ $trailer->title }}" class="trailer__block">
-		                                    <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}" class="w-100 t-ease">
+						            	<a href="{{ $data->trailers->trailer_url }}" caption="{{ $data->title }}" class="trailer__block">
+		                                    <img src="{{ asset('content/film/trailers/' . $data->trailers->image_preview) }}" class="w-100 t-ease">
 		                                    <div class="trailer__block__play">
 		                                          <div class="va-block">
 		                                              <div class="va-middle">
@@ -69,8 +69,8 @@
 						            	</a>
 					            	</div>
 				            	</div>
-	                    	@endforeach
-	                    @endforeach
+	                    	@endif
+            			@endforeach
 	            	</div>
                 @endif
             </div>

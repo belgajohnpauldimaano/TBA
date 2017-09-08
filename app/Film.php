@@ -57,7 +57,7 @@ class Film extends Model
 
     public function trailers ()
     {
-        return $this->hasMany(Trailer::class, 'film_id', 'id');
+        return $this->hasOne(Trailer::class, 'film_id', 'id');
     }
 
     public function links ()

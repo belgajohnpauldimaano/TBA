@@ -45,6 +45,7 @@ class FilmController extends Controller
                     //$q->where('trailer_show' , 1);
                     $q->orderBy('trailer_show', 'ASC');
                     $q->orderBy('trailer_image_sorter', 'ASC');
+                    $q->where('trailer_show' , 2);
                 },
                 'photos' => function ($q) {
                     $q->where('featured' , 1);
@@ -92,7 +93,7 @@ class FilmController extends Controller
                 }
             ]
         )
-        //->where('release_status', 1)
+        ->where('release_status', '>', 0)
         ->get();
 
         return view('frontend.trailers', ['film_trailer' => $film_trailer]);

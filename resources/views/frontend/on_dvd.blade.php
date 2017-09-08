@@ -24,7 +24,7 @@
                                         languages="{{ $data->languages }}"
                                         subtitles="{{ $data->subtitles }}"
                                         trt="{{ $data->running_time }}"
-                                        desc="{!! str_limit($data->description, 120) !!}"
+                                        desc="{!! str_limit(strip_tags($data->description), 120) !!}"
                                         class="dvd__block">
                                         <img src="{{ asset('content/film/dvds/' . $data->dvd_case_cover) }}" class="img-responsive center-block">
                                     </a>

@@ -201,7 +201,8 @@
                     <a href="#" class="box-header__toggle"><i class="fa fa-caret-square-o-down" aria-hidden="true"></i></a>
                     <h3 class="box-title">Trailers</h3>
                     <div class="box-tools">
-                        <button class="btn btn-sm btn-flat btn-primary js-trailer_add_form"><i class="fa fa-edit"></i> Update</button>
+                    {{-- js-trailer_add_form --}}
+                        <button class="btn btn-sm btn-flat btn-primary js-edit_trailer" data-id="{{ ($Film->trailers ? $Film->trailers->id : '') }}"><i class="fa fa-edit"></i> Update</button>
                     </div>
                 </div>
                 <div class="collapse">
@@ -210,43 +211,45 @@
                             <div class="overlay hidden">
                                 <i class="fa fa-refresh fa-spin"></i>
                             </div>
+                            {{-- <pre>{{ json_encode($Film->trailers, JSON_PRETTY_PRINT)}}</pre> --}}
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>Featured</th>
+                                    {{-- <th>Featured</th> --}}
                                     <th>Preview Image</th>
                                     <th>URL</th>
-                                    <th>Actions</th>
+                                    <th>Action</th>
                                 </tr>
-                                <tbody class="js-sortable_container">
-                                    @if($Film->trailers)
-                                        @foreach($Film->trailers as $trailer)
-                                            @if($trailer->trailer_show != 0)
-                                                <tr data-id="{{$trailer->id}}">
-                                                    <td>
+                                <tbody aclass="js-sortable_container">
+                                    {{-- @if($Film->trailers) --}}
+                                        {{-- @foreach($Film->trailers as $trailer) --}}
+                                            @if($Film->trailers)
+                                                <tr data-id="{{$Film->trailers->id}}">
+                                                    {{-- <td>
                                                         <label>
                                                             <input type="checkbox" class="minimal-green js-check_hide_show" {{ ($trailer->trailer_show == 1 ? 'checked' : '') }} > 
                                                         </label>
-                                                    </td>
-                                                    <td><img class="media-object" width="160" height="90" src="{{ asset('content/film/trailers/' . $trailer->image_preview) }}" alt="..."></td>
-                                                    <td> <a href="{{$trailer->trailer_url}}" target="_blank">{{ str_limit($trailer->trailer_url, 60) }}</a> </td>
+                                                    </td> --}}
+                                                    <td><img class="media-object" width="160" height="90" src="{{ asset('content/film/trailers/' . $Film->trailers->image_preview) }}" alt="..."></td>
+                                                    <td> <a href="{{$Film->trailers->trailer_url}}" target="_blank">{{ str_limit($Film->trailers->trailer_url, 60) }}</a> </td>
                                                     <td>
                                                         <!-- Single button -->
-                                                        <div class="btn-group">
+                                                        {{-- <div class="btn-group">
                                                             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 Action <span class="caret"></span>
                                                             </button>
                                                             <ul class="dropdown-menu">
-                                                                <li><a href="#" class="js-edit_trailer" data-id="{{ $trailer->id }}">Edit</a></li>
-                                                                <li><a href="#" class="js-delete_trailer" data-id="{{ $trailer->id }}">Delete</a></li>
-                                                                {{-- <li role="separator" class="divider"></li>
-                                                                <li><a href="#">View</a></li> --}}
+                                                                <li><a href="#" class="js-edit_trailer" data-id="{{ $Film->trailers->id }}">Edit</a></li>
+                                                                <li><a href="#" class="js-delete_trailer" data-id="{{ $Film->trailers->id }}">Delete</a></li>
+                                                                <li role="separator" class="divider"></li>
+                                                                <li><a href="#">View</a></li>
                                                             </ul>
-                                                        </div>  
+                                                        </div>   --}}
+                                                        <a class="btn btn-danger js-delete_trailer" data-id="{{ $Film->trailers->id }}">Delete</a>
                                                     </td>
                                                 </tr>
                                             @endif
-                                        @endforeach
-                                    @endif
+                                        {{-- @endforeach --}}
+                                    {{-- @endif --}}
                                 </tbody>
                             </table>
                         </div>
@@ -254,8 +257,8 @@
                             <div class="callout callout-success">
                                 <h5>Instructions : </h5>
                                 <ol>
-                                    <li>Tick/untick the checkbox to show/hide the trailer in the Trailers Page of the website, respectively.</li>
-                                    <li>Drag the row to arrange the order of the trailers of how it will appear in the website.</li>
+                                    {{-- <li>Tick/untick the checkbox to show/hide the trailer in the Trailers Page of the website, respectively.</li>
+                                    <li>Drag the row to arrange the order of the trailers of how it will appear in the website.</li> --}}
                                     <li>Accepted File Types: JPG / JPEG / PNG</li>
                                     <li>Maximum File Size: 1 MB</li>
                                     <li>Required Dimensions: 1600 x 900 pixels (width x height)</li>

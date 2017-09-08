@@ -17,33 +17,24 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-9">
-                        @if ($film_info->trailers->count() > 0)
-                          <div class="film-trailers-owl owl-carousel">
-                              @foreach ($film_info->trailers->where('trailer_show', 1) as $show)
-                                  <a href="{{ $show->trailer_url }}" class="film-trailers-owl__item" caption="{{ $film_info->title }}">
-                                      <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}">
-                                      <div class="film-trailers-owl__item__play">
-                                          <div class="va-block">
-                                              <div class="va-middle">
-                                                  <div class="play-icon"></div>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </a>
-                              @endforeach
+                    {{-- <pre>{{ json_encode($film_info->trailers, JSON_PRETTY_PRINT)}}</pre> --}}
+                        @if ($film_info->trailers)
+                          {{-- <div class="film-trailers-owl owl-carousel">
                               @foreach ($film_info->trailers->where('trailer_show', 2) as $show)
-                                  <a href="{{ $show->trailer_url }}" class="film-trailers-owl__item" caption="{{ $film_info->title }}">
-                                      <img src="{{ asset('content/film/trailers/' . $show->image_preview) }}">
-                                      <div class="film-trailers-owl__item__play">
-                                          <div class="va-block">
-                                              <div class="va-middle">
-                                                  <div class="play-icon"></div>
-                                              </div>
+                              @endforeach
+                          </div> --}}
+                            <div class="film-trailers-owl owl-carousel">
+                              <a href="{{ $film_info->trailers->trailer_url }}" class="film-trailers-owl__item" caption="{{ $film_info->title }}">
+                                  <img src="{{ asset('content/film/trailers/' . $film_info->trailers->image_preview) }}">
+                                  <div class="film-trailers-owl__item__play">
+                                      <div class="va-block">
+                                          <div class="va-middle">
+                                              <div class="play-icon"></div>
                                           </div>
                                       </div>
-                                  </a>
-                              @endforeach
-                          </div>
+                                  </div>
+                              </a>
+                            </div>
                         @endif
                         <div class="row">
                            <div class="{{ $film_info->posters->count() < 1 ? 'hidden' : 'col-md-4 col-sm-5' }}">
