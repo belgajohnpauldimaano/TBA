@@ -75,6 +75,8 @@
         browseLabel : 'Add Carousel Image',
         msgImageWidthSmall: 'Image must be 1600 x 900 pixels (width x height)',
         msgImageHeightSmall: false,
+        showRemove: false,
+        showUpload: false,
         dragIcon : '',
         dragClass : '',
         showClose : '',

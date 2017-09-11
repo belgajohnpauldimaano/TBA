@@ -5,14 +5,14 @@
     
     <link href="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/css/fileinput.css') }}" media="all" rel="stylesheet" type="text/css"/>
     <style>
-        .file-drag-handle, .btn.kv-file-zoom, .file-preview-error, .file-upload-indicator, .kv-file-upload{
+        .file-drag-handle, .btn.kv-file-zoom, .file-preview-error, .file-upload-indicator{
             display: none !important;
         }
     </style>
 @endsection
 
 @section ('page_title')
-    TBA Home Page Carousel – Manage Carousel Order and Details
+    Home Page Carousel
 @endsection
 
 @section ('content')
@@ -31,13 +31,27 @@
                     </div>
                 </div>
             </div> --}}
+
+            <div class="row">
+                <div class="col-sm-12 conatiner">
+
+                    <div class="callout callout-success">
+                        <h4>Requirements</h4>
+                        <ul>
+                            <li>Drag & drop thumbnails to re-order slides in the HOME PAGE</li>
+                            <li>DOUBLE-CLICK an image to add a Video Caption and/or URL</li>
+                            <li>When done, click SAVE CAROUSEL Details, in the green button below</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
             <ul class="timeline">
                 <li>
                     <div class="timeline-item">
                         <span class="time">
                             
                         </span>
-                        <h3 class="timeline-header">TBA Reel</h3>
+                        <h3 class="timeline-header">TBA Home Page Carousel – Manage Carousel Order and Details</h3>
                         <div class="timeline-body js-image_container box" style="border-top:0">
                             <div class="overlay hidden">
                                 <i class="fa fa-refresh fa-spin"></i>
@@ -52,16 +66,16 @@
                                                     @if($image->caption)
                                                         <h4>{{ $image->caption }}</h4>
                                                     @else
-                                                        <h4>No caption added</h4>
+                                                        <h4 class="text-muted">No caption added</h4>
                                                     @endif
 
-                                                    <p>
+                                                    {{-- <p>
                                                         @if($image->url)
                                                             <a href="{{ $image->url }}" target="_blank">Watch video</a>
                                                         @else
                                                             <p>No link added</p>
                                                         @endif
-                                                    </p>
+                                                    </p> --}}
                                                 </span>
                                             </div>
                                         </div>
@@ -72,31 +86,25 @@
                         </div>
 
                         <div class="timeline-footer">
-                            <button class="btn btn-flat btn-primary" id="js-show_modal_uploader">Manage Uploads</button>
                             <button class="btn btn-flat btn-success js-reorder_toggle" data-type="1" id="js-save_reorder_image">Save Order</button>
                         </div>
                     </div>
                 </li>
             </ul>
 
-            <div class="row">
-                <div class="col-sm-12 conatiner">
-
-                    <div class="callout callout-success">
-                        <h4>Requirements</h4>
-                        <ul>
-                            {{-- <li>Accepted File Types: JPG / JPEG / PNG</li>
-                            <li>Maximum File Size: 1 MB</li>
-                            <li>Required Dimensions: 1600 x 900 pixels (width x height)</li> --}}
-
-                            <li>Drag & drop thumbnails to re-order slides in the HOME PAGE></li>
-                            <li>DOUBLE-CLICK an image to add a Video Caption and/or URL></li>
-                            <li>When done, click SAVE CAROUSEL Details, in the green button below></li>
-
-                        </ul>
+            <ul class="timeline">
+                <li>
+                    <div class="timeline-item">
+                        <span class="time">
+                            
+                        </span>
+                        <h3 class="timeline-header">Add/Delete Carousel Images</h3>
+                        <div class="timeline-footer">
+                            <button class="btn btn-flat btn-primary" id="js-show_modal_uploader">Add/Delete Images</button>
+                        </div>
                     </div>
-                </div>
-            </div>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -180,6 +188,7 @@
                     }
 
                     $('input[name=inlineUrlOptions]:radio').change(function() {
+                        $('#url').attr('disabled', false);
                         if (this.value == 'youTube') {
                             console.log("youTube");
                             $('#collpaseTarget').addClass('hidden');

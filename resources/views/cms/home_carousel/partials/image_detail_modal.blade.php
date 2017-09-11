@@ -39,7 +39,9 @@
                                         <input type="radio" name="inlineUrlOptions" id="websiteUrl" value="website"> Website URL
                                     </label>
                                 </div>
-
+                            </div>
+                            
+                            <div class="form-group">
                                 <div class="hidden" id="collpaseTarget">
 
                                     <div style="margin: 15px 0;">
@@ -52,7 +54,7 @@
                                     </div>
                                 </div>
 
-                                <input type="text" name="url" id="url" class="form-control" value="{{ $Carousel->url }}">
+                                <input type="text" name="url" id="url" class="form-control" value="{{ $Carousel->url }}" {{ $Carousel->url ? '' : 'disabled="disabled"'}}>
                                 <span class="hidden data__url" data-url="{{ $Carousel->url }}"></span>
                                 <div class="help-block text-center" id="url-error"></div>
                             </div>

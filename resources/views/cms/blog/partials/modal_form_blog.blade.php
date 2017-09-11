@@ -16,7 +16,7 @@
             {{-- <input type="hidden" name="film_id" value="{{ ($Blog ? $Blog->film_id : 0) }}"> --}}
             <div class="help-block text-center" id="general-error"></div>
             
-            <div class="form-group">
+            {{-- <div class="form-group">
                 <label for="">Select Article Category</label>
                 <select class="form-control" name="film_id" id="press_release_id_select">
                     <option value="0" {{ ($Blog ? '' : 'selected') }}>General Article</option>
@@ -34,6 +34,16 @@
                 </select>
                 <div class="help-block text-center" id="press_release_film_select-error"></div>
                 <hr>
+            </div> --}}
+            
+            <div class="form-group">
+                <label for="">Select Article Category</label>
+                <select class="form-control" name="film_id" id="press_release_id_select">
+                    {{-- <option value="0" {{ ($Blog ? '' : 'selected') }}>General Article</option> --}}
+                    <option value="">-</option>
+                    <option value="0" {{ ($Blog->film_id == 0 ? 'selected' : '') }}>Latest Articles</option>
+                    <option value="00" {{ ($Blog->film_id == 00 ? 'selected' : '') }}>Company News</option>
+                </select>
             </div>
 
             <div class="form-group">

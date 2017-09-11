@@ -17,6 +17,7 @@ class CreateCarouselsTable extends Migration
             $table->increments('id');
             $table->string('image', 50);
             $table->string('url');
+            $table->string('new_window')->nullable();
             $table->string('caption', 100);
             $table->tinyInteger('carousels_sorter')->nullable();
             $table->timestamps();

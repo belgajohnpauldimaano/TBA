@@ -252,19 +252,19 @@
         }); 
 
         $('body').on('change', '#press_release_id_select', function() {
-            if ($(this).val() == "" || $(this).val() != 0) {
-                $('.form-group__film__categ').collapse('show');
+            if ($(this).val() === '' || $(this).val() === '0') {
+                $('#collapse_press_release_source').collapse('hide');
             } else {
-                $('.form-group__film__categ').collapse('hide');
+                $('#collapse_press_release_source').collapse('show');
             }
         });
 
-        $('body').on('change', '#press_release_film_select', function() {
-            if ($(this).val() == "") {
-                $('.press_release__film__related').val(2);
-            } else {
-                $('.press_release__film__related').val($(this).val());
-            }
-        });
+        // $('body').on('change', '#press_release_film_select', function() {
+        //     if ($(this).val() == "") {
+        //         $('.press_release__film__related').val(2);
+        //     } else {
+        //         $('.press_release__film__related').val($(this).val());
+        //     }
+        // });
     </script>
 @endsection

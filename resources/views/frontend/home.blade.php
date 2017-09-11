@@ -2,6 +2,37 @@
 
 @section('styles')
     <link  href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+    <style>
+        .fotorama__img{
+            top: 0 !important;
+        }
+        @media (min-width: 768px){
+            .fotorama__wrap{
+                top: 70px;
+                -moz-transition: all 200ms ease-in-out;
+                -o-transition: all 200ms ease-in-out;
+                -webkit-transition: all 200ms ease-in-out;
+                transition: all 200ms ease-in-out; 
+            }
+            .fotorama__wrap--video{
+                top: 0 !important;
+            }
+            .fotorama__nav-wrap{
+                position: relative;
+                top: -70px;
+            }
+        } 
+        .fotorama__html div,
+        .fotorama__html a {
+            display: block;
+            height: 100%;
+            /* Transparent links are not clickable in IE,
+               but non-existent background fixes this.
+              (Put an empty 1×1 image here to avoid
+               errors in console.) */
+            background: url(_.gif);
+        }
+    </style>
 @endsection
 
 @section('page_title')
@@ -9,7 +40,6 @@
 @endsection
 
 @section('container')
-
     <div class="fotorama fotorama--homepage"
         data-fit="cover"
         data-width="100%"
@@ -18,16 +48,23 @@
         data-max-height="100%" 
         data-arrows="always"
         data-nav="dots">
+
         @if($Carousel)
-            @foreach ($Carousel as $Carousel)
-                @if($Carousel)
-                    <a href="{{ $Carousel->url }}">
-                        <img src="{{ asset('content/carousel/'.$Carousel->image) }}">
+            @foreach ($Carousel as $item)
+                @if($item->new_window === NULL)
+                    <a href="{{ $item->url }}">
+                        <img src="{{ asset('content/carousel/'.$item->image) }}">
                     </a>
+                @else
+                    <div data-img="{{ asset('content/carousel/'.$item->image) }}">
+                        <a href="{{ $item->url }}" {{ $item->new_window == NULL ? 'target="_blank"' : '' }}></a>
+                    </div>
                 @endif
             @endforeach
         @endif
     </div>
+    {{-- <pre>{{ json_encode($Carousel, JSON_PRETTY_PRINT)}}</pre> --}}
+
 @endsection
 
 @section('scripts')
