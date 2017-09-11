@@ -4,16 +4,21 @@
 @section ('styles')
     
     <link href="{{ asset('cms/plugins/kartik-v-bootstrap-fileinput/css/fileinput.css') }}" media="all" rel="stylesheet" type="text/css"/>
+    <style>
+        .file-drag-handle, .btn.kv-file-zoom, .file-preview-error, .file-upload-indicator, .kv-file-upload{
+            display: none !important;
+        }
+    </style>
 @endsection
 
 @section ('page_title')
-    Home Page Carousel
+    TBA Home Page Carousel – Manage Carousel Order and Details
 @endsection
 
 @section ('content')
     <div class="row">
         <div class="col-sm-12">
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-sm-12 conatiner">
 
                     <div class="callout callout-success">
@@ -25,7 +30,7 @@
 
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <ul class="timeline">
                 <li>
                     <div class="timeline-item">
@@ -68,7 +73,7 @@
 
                         <div class="timeline-footer">
                             <button class="btn btn-flat btn-primary" id="js-show_modal_uploader">Manage Uploads</button>
-                            <button class="btn btn-flat btn-primary js-reorder_toggle" data-type="1" id="js-save_reorder_image">Save Order</button>
+                            <button class="btn btn-flat btn-success js-reorder_toggle" data-type="1" id="js-save_reorder_image">Save Order</button>
                         </div>
                     </div>
                 </li>
@@ -80,9 +85,14 @@
                     <div class="callout callout-success">
                         <h4>Requirements</h4>
                         <ul>
-                            <li>Accepted File Types: JPG / JPEG / PNG</li>
+                            {{-- <li>Accepted File Types: JPG / JPEG / PNG</li>
                             <li>Maximum File Size: 1 MB</li>
-                            <li>Required Dimensions: 1600 x 900 pixels (width x height)</li>
+                            <li>Required Dimensions: 1600 x 900 pixels (width x height)</li> --}}
+
+                            <li>Drag & drop thumbnails to re-order slides in the HOME PAGE></li>
+                            <li>DOUBLE-CLICK an image to add a Video Caption and/or URL></li>
+                            <li>When done, click SAVE CAROUSEL Details, in the green button below></li>
+
                         </ul>
                     </div>
                 </div>
@@ -140,6 +150,12 @@
 
             show_message ('Order successfully arranged.', 'success') 
         })
+
+        function ytVidId(url) {
+            var p = /^(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?(?=.*v=((\w|-){11}))(?:\S+)?$/;
+            return (url.match(p)) ? RegExp.$1 : false;
+        }
+
         $('body').on('dblclick', '.js-image_item', function () {
             var id = $(this).data('id');
             $('.js-image_container .overlay').removeClass('hidden');
@@ -151,6 +167,39 @@
                     $('#js-modal_holder').append(data);
                     $('#js-image_details').modal({ keyboard : false, backdrop : 'static' });
                     $('.js-image_container .overlay').addClass('hidden');
+
+                    var url = $('#url').val();
+                    if (ytVidId(url) !== false) {
+                        $('#youtubeUrl').attr('checked', true);
+                    }else if(url !== '') {
+                        $('#websiteUrl').attr('checked', true);
+                        $('#collpaseTarget').removeClass('hidden');
+                    }else{
+                        $('#youtubeUrl').attr('checked', false);
+                        $('#websiteUrl').attr('checked', false);
+                    }
+
+                    $('input[name=inlineUrlOptions]:radio').change(function() {
+                        if (this.value == 'youTube') {
+                            console.log("youTube");
+                            $('#collpaseTarget').addClass('hidden');
+                            if (ytVidId(url) !== false) {
+                                $('#url').val($('.data__url').attr('data-url'));
+                            }else{
+                                $('#url').val('');
+                            }
+                        }
+                        else if (this.value == 'website') {
+                            console.log("website");
+                            $('#collpaseTarget').removeClass('hidden');
+                            if (ytVidId(url) === false) {
+                                $('#url').val($('.data__url').attr('data-url'));
+                            }else{
+                                $('#url').val('');
+                            }
+                        }
+                    });
+                    
                 },
                 error : function (xhr, ajaxOptions, thrownError)
                 {

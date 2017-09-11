@@ -1,5 +1,5 @@
 <div class="modal fade" id="js-image_details" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-sm  " role="document">
+  <div class="modal-dialog" role="document">
     <div class="modal-content box box-solid">
         <div class="overlay hidden">
             <i class="fa fa-refresh fa-spin"></i>
@@ -28,9 +28,32 @@
                             
                             <div class="form-group">
                                 <label for="">
-                                    URL
+                                    Add URL
                                 </label>
+
+                                <div style="margin-bottom: 5px;">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineUrlOptions" id="youtubeUrl" value="youTube"> YouTube URL
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="inlineUrlOptions" id="websiteUrl" value="website"> Website URL
+                                    </label>
+                                </div>
+
+                                <div class="hidden" id="collpaseTarget">
+
+                                    <div style="margin: 15px 0;">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="openUrlOptions" id="openUrlNew" value="0" {{ $Carousel->new_window === 0 ? 'checked="checked"' : '' }}> Open URL in NEW Window
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="openUrlOptions" id="openUrlSame" value="1" {{ $Carousel->new_window === 1 ? 'checked="checked"' : '' }}> Open URL is SAME Window
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <input type="text" name="url" id="url" class="form-control" value="{{ $Carousel->url }}">
+                                <span class="hidden data__url" data-url="{{ $Carousel->url }}"></span>
                                 <div class="help-block text-center" id="url-error"></div>
                             </div>
                     @else

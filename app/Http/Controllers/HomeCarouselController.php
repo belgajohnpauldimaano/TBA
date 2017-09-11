@@ -109,9 +109,10 @@ class HomeCarouselController extends Controller
         {
             return response()->json(['errCode' => 1, 'messages' => $validator->getMessageBag()]);
         }
-        $Carousel           = Carousel::where('id', $request->image_id)->first();
-        $Carousel->caption  = $request->caption;
-        $Carousel->url      = $request->url;
+        $Carousel               = Carousel::where('id', $request->image_id)->first();
+        $Carousel->caption      = $request->caption;
+        $Carousel->url          = $request->url;
+        $Carousel->new_window   = $request->openUrlOptions;
         $Carousel->save();
         return response()->json(['errCode' => 0, 'messages' => 'Image details successfully updated.']);
     }

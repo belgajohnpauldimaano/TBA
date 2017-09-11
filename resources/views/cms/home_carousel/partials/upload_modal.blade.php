@@ -6,6 +6,11 @@
         <h4 class="modal-title">Manage Photos</h4>
       </div>
       <div class="modal-body">
+            <div class="callout callout-success">
+                <h4>Instructions</h4>
+                <li>Click the TRASH Icon to delete a Carousel Image</li>
+                <li>To add a new Carousel Image, click the ADD CAROUSEL IMAGE Button below</li>
+            </div>  
             <div class="form-group aa" id="upload-container">
                 <input id="file-uploader" name="photo" class="" type="file" data-allowedFileExtensions='["jpg", "png"]' multiple >
             </div>
@@ -67,6 +72,9 @@
         uploadExtraData: {_token: "{{ csrf_token() }}"},
         uploadUrl: "{{ route('image_upload_save') }}",
         showUploadedThumbs : false,
+        browseLabel : 'Add Carousel Image',
+        msgImageWidthSmall: 'Image must be 1600 x 900 pixels (width x height)',
+        msgImageHeightSmall: false,
         dragIcon : '',
         dragClass : '',
         showClose : '',
