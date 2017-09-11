@@ -1172,6 +1172,13 @@ class FilmController extends Controller
     
     public function film_press_release_save (Request $request)
     {
+
+        // $uniqueFileName = uniqid() . $request->get('press_release_pdf')->getClientOriginalName() . '.' . $request->get('press_release_pdf')->getClientOriginalExtension();
+        // $request->get('press_release_pdf')->move(public_path('/content/upload/') . $uniqueFileName);
+
+        $pdf = uniqid().'.'.$request->press_release_pdf->getClientOriginalExtension();
+        $request->press_release_pdf->move(public_path('content/upload/'), $pdf);
+
         $rules = [
             'film_id'                       => 'required',
             'press_release_title'           => 'required',
@@ -1221,6 +1228,7 @@ class FilmController extends Controller
             $PressRelease->title            = $request->press_release_title;
             $PressRelease->blurb            = $request->press_release_blurb;
             $PressRelease->content          = $request->press_release_content;
+            $PressRelease->pdf              = $pdf;
 
             $PressRelease->save();
 
@@ -1236,6 +1244,7 @@ class FilmController extends Controller
         $PressRelease->article_image    = $filename;
         $PressRelease->blurb            = $request->press_release_blurb;
         $PressRelease->content          = $request->press_release_content;
+        $PressRelease->pdf              = $pdf;
         $PressRelease->film_id          = $request->film_id;
 
         $PressRelease->save();
@@ -1274,6 +1283,18 @@ class FilmController extends Controller
         $PressRelease->delete();
 
         return response()->json(['errCode' => 0, 'messages' => 'Press release details successfully deleted.']);
+    }
+
+
+    public function film_press_release_delete_pdf (Request $request)
+    {
+        $PressRelease = PressRelease::where('film_id', $request->id)->first();
+
+        File::delete(public_path('content\\upload\\' . $PressRelease->pdf));
+        $PressRelease->pdf = NULL;
+        $PressRelease->save();
+
+        return response()->json(['errCode' => 0, 'messages' => 'Press release pdf successfully deleted.']);
     }
 
 

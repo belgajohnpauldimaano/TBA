@@ -19,6 +19,7 @@ class CreatePressReleasesTable extends Migration
             $table->string('article_image');
             $table->text('blurb');
             $table->text('content');
+            $table->string('pdf')->nullable();
             $table->integer('film_id')->unsigned();
             $table->timestamps();
         });

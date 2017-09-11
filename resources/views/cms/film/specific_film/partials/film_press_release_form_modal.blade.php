@@ -8,7 +8,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title">Press Release</h4>
       </div>
-      <form id="js-frm_press_release">
+      <form id="js-frm_press_release" enctype="multipart/form-data">
         <div class="modal-body">
             {{ csrf_field() }}
             <input type="hidden" name="press_release_id" value="{{ ($PressRelease ? $PressRelease->id : '') }}">
@@ -56,6 +56,25 @@
                 <div class="help-block text-center" id="press_release_content-error"></div>
             </div>
 
+            <div class="form-group">
+                <label for="">
+                    Upload File (pdf only) 
+                    @if($PressRelease->pdf)
+                        <a href="#" class="text-danger btn__delete__press__release__pdf" data-id="{{ $PressRelease->id }}"><u>Delete PDF</u></a>
+                    @endif
+                </label>
+                <div class="input-group">
+                    <div class="input-group-btn">
+                        <input type="file" name="press_release_pdf" id="press_release_pdf" class="hidden">
+                        <button type="button" class="btn btn-default btn-flat btn-block btn__add__press__release__pdf">
+                            <i class="fa fa-file-pdf-o"></i>
+                            Click to upload PDF
+                            <span id="js-text_press_release_article_image"><i>{{ ($PressRelease->pdf ? ' - Has uploaded file' : '') }}</i></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="help-block text-center" id="press_release_pdf-error"></div>
+            </div>
         </div>
         <div class="modal-footer">
             <div class="pull-left">

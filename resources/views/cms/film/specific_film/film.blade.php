@@ -507,7 +507,7 @@
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
                     </div>
                 </div>
-                <div class="collapse">
+                <div class="acollapse">
                     <div class="box-body js-film_press_release_content_holder box box-solid">
                         <div class="overlay hidden">
                             <i class="fa fa-refresh fa-spin"></i>
@@ -534,6 +534,7 @@
                                         </div>
                                     </li>
                                 </ul>
+                                <hr>
                                 <div>
                                     <label for="">Main Content</label>
                                     <div class="margin">
@@ -1969,6 +1970,30 @@
             goToByScroll(id);
             e.preventDefault();
         });
+
+        $('body').on('click', '.btn__add__press__release__pdf', function(e){
+            $('#press_release_pdf').trigger('click');
+        });
+
+        $('body').on('click', '.btn__delete__press__release__pdf', function(e){
+            e.preventDefault();
+            alert('Press release PDF successfully deleted.');
+            deletePressReleasePDF($(this).data('id'));
+        });
+
+
+        function deletePressReleasePDF(id) {
+            var formData = {_token : '{{ csrf_token() }}'};
+            $.ajax({
+                url: '{{ route('film_press_release_delete_pdf', $Film->id) }}',
+                type : 'POST',
+                data : formData,
+                success: function(result) {
+                    console.log(result);
+                    //window.location.reload();
+                }
+            });
+        }
     </script>
 @endsection
 

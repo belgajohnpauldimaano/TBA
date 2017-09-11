@@ -139,6 +139,7 @@ Route::group(['middleware' => 'auth', 'prefix' => '/cms'], function () {
             Route::post('/film_press_release_save', 'FilmController@film_press_release_save')->name('film_press_release_save');
             Route::post('/film_press_release_fetch/{id}', 'FilmController@film_press_release_fetch')->name('film_press_release_fetch');
             Route::post('/film_press_release_delete', 'FilmController@film_press_release_delete')->name('film_press_release_delete');
+            Route::post('/film_press_release_delete_pdf/{id}', 'FilmController@film_press_release_delete_pdf')->name('film_press_release_delete_pdf');
             
         });
         Route::group(['prefix' => '/film_crew'], function () {
