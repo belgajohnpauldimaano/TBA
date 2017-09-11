@@ -2,8 +2,7 @@
                             <div class="overlay hidden">
                                 <i class="fa fa-refresh fa-spin"></i>
                             </div>
-                            <div class="row sortable-container">
-                            
+                            <div class="row sortable-container ">
                                 @if($Carousel)
                                     @foreach($Carousel as $image)
                                         <div class="col-xs-6 col-md-3">
@@ -13,16 +12,16 @@
                                                     @if($image->caption)
                                                         <h4>{{ $image->caption }}</h4>
                                                     @else
-                                                        <h4>No caption added</h4>
+                                                        <h4 class="text-muted">No caption added</h4>
                                                     @endif
 
-                                                    <p>
+                                                    {{-- <p>
                                                         @if($image->url)
                                                             <a href="{{ $image->url }}" target="_blank">Watch video</a>
                                                         @else
                                                             <p>No link added</p>
                                                         @endif
-                                                    </p>
+                                                    </p> --}}
                                                 </span>
                                             </div>
                                         </div>
