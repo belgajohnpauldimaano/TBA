@@ -154,7 +154,6 @@
         <li class="film">
           <a href="{{ route('film') }}"><i class="fa fa-circle-o text-yellow"></i> <span>Films</span></a>
         </li>
-        <li class="blog"><a href="{{ route('blog') }}"><i class="fa fa-circle-o text-aqua"></i> <span>Announcements</span></a></li>
 
         @if (request()->segment(count(request()->segments())) == 'view')
           <li class="scroll-section active">
@@ -171,6 +170,8 @@
             </ul>
           </li>
         @endif
+        
+        <li class="blog"><a href="{{ route('blog') }}"><i class="fa fa-circle-o text-aqua"></i> <span>Announcements</span></a></li>
 
         <li class="mailing"><a href="{{ route('mailing') }}"><i class="fa fa-circle-o text-aqua"></i> <span>Inquiries and Mailing List</span></a></li>
         
