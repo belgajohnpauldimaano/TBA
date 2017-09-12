@@ -60,8 +60,7 @@ class BlogController extends Controller
             'press_release_title'           => 'required',
             'press_release_article_image'   => 'required|mimes:jpeg,png',
             'press_release_blurb'           => 'required',
-            'press_release_content'         => 'required',
-            'press_release_film_select'     => 'required'
+            'press_release_content'         => 'required'
         ];
 
         $messages = [
@@ -70,8 +69,7 @@ class BlogController extends Controller
             'press_release_article_image.required'      => 'Article image field is required.',
             'press_release_article_image.mimes'         => 'Article image should be a valid format :jpeg, png',
             'press_release_blurb.required'              => 'Blurb field is required.',
-            'press_release_content.required'            => 'Article content field is required.',
-            'press_release_film_select.required'        => 'Film category is required.'
+            'press_release_content.required'            => 'Article content field is required.'
         ];
         
         if ($request->film_id == 0)
