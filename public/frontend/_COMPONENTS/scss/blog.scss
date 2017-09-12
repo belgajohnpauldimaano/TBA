@@ -1,3 +1,10 @@
+.blog-page{
+    .header-title__tag:before, 
+    .header-title__tag:after{
+        content: none;
+    }
+}
+
 .blog-cover{
     background-color: #666;
     background-position: center center;
@@ -14,8 +21,8 @@
     }
 
     &--blog-thumb{
-        height: 250px;
-        margin-bottom: 30px;
+        height: 230px;
+        margin-bottom: 14px;
     }
 }
 .card__blog__link{
@@ -30,7 +37,7 @@
         bottom: 0;
         content: "";
         display: block;
-        height: 70%;
+        height: 100%;
         width: 100%;
         position: absolute;
         z-index: 1;
@@ -84,4 +91,15 @@
     .blog-cover{
         height: 200px;
     }   
+}
+
+.col-latest-news{
+    @media (min-width: 768px){
+        padding-right: 15px;
+    }
+}
+.col-company-news{
+    @media (min-width: 768px){
+        padding-left: 15px;
+    }
 }

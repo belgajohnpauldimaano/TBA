@@ -259,9 +259,9 @@
 
         $('body').on('change', '#press_release_id_select', function() {
             if ($(this).val() === '' || $(this).val() === '0') {
-                $('#collapse_press_release_source').collapse('hide');
-            } else {
                 $('#collapse_press_release_source').collapse('show');
+            } else {
+                $('#collapse_press_release_source').collapse('hide');
             }
         });
 

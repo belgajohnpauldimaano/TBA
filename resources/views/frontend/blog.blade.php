@@ -5,7 +5,7 @@
 @endsection
 
 @section('container')
-    <main>
+    <main class="blog-page">
 
         {{-- @foreach($Blog->where('film_id', '==', -1)->slice(0, 1) as $item)
             <pre>{{ json_encode($item, JSON_PRETTY_PRINT)}}</pre>
@@ -54,60 +54,64 @@
 
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <div class="header-title">
                         <h2 class="header-title__tag">Latest Articles</h2>
                     </div>
 
-                    <div class="row">
-                        @if ($latest_news->count() > 0)
-                            @foreach ($latest_news as $data)
-                                @if (!in_array($data->id, $latest_id))
-                                    <div class="col-md-4">
-                                        <div class="blog-cover blog-cover--blog-thumb" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
-                                            <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
-                                                <div class="va-block">
-                                                    <div class="va-bottom">
-                                                        <div class="blog-cover__content p-a-3">
-                                                            <h4>{{ str_limit($data->title, $limit = 60, $end = '...') }}</h4>
-                                                            <span>{{ date('F d, Y', strtotime($data->created_at)) }}</span>
+                    <div class="col-latest-news">
+                        <div class="row row-gap">
+                            @if ($latest_news->count() > 0)
+                                @foreach ($latest_news as $data)
+                                    @if ($latest_news->first()->id != $data->id)
+                                        <div class="col-xs-4 col-md-4 col-lg-4 col-xs-6 col-xss-12 col-gap">
+                                            <div class="blog-cover blog-cover--blog-thumb" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
+                                                <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
+                                                    <div class="va-block">
+                                                        <div class="va-bottom">
+                                                            <div class="blog-cover__content p-a-3">
+                                                                <h5><strong>{{ str_limit($data->title, $limit = 60, $end = '...') }}</strong></h5>
+                                                                <span>{{ date('F d, Y', strtotime($data->created_at)) }}</span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </a>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        @endif
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <div class="header-title">
                         <h2 class="header-title__tag">Company News</h2>
                     </div>
 
-                    <div class="row">
-                        @if ($latest_news->count() > 0)
-                            @foreach ($company_news as $data)
-                                @if (!in_array($data->id, $latest_id))
-                                    <div class="col-md-4">
-                                        <div class="blog-cover blog-cover--blog-thumb" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
-                                            <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
-                                                <div class="va-block">
-                                                    <div class="va-bottom">
-                                                        <div class="blog-cover__content p-a-3">
-                                                            <h4>{{ str_limit($data->title, $limit = 60, $end = '...') }}</h4>
-                                                            <span>{{ date('F d, Y', strtotime($data->created_at)) }}</span>
+                    <div class="col-company-news">
+                        <div class="row row-gap">
+                            @if ($latest_news->count() > 0)
+                                @foreach ($company_news as $data)
+                                    @if ($company_news->first()->id != $data->id)
+                                        <div class="col-xs-4 col-md-4 col-lg-4 col-xs-6 col-xss-12 col-gap">
+                                            <div class="blog-cover blog-cover--blog-thumb" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
+                                                <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
+                                                    <div class="va-block">
+                                                        <div class="va-bottom">
+                                                            <div class="blog-cover__content p-a-3">
+                                                                <h5><strong>{{ str_limit($data->title, $limit = 60, $end = '...') }}</strong></h5>
+                                                                <span>{{ date('F d, Y', strtotime($data->created_at)) }}</span>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </a>
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
-                                @endif
-                            @endforeach
-                        @endif
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

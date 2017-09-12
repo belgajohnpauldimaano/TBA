@@ -1,7 +1,7 @@
 @extends('frontend.layouts.main')
 
 @section('page_title')
-<title>TBA Blog</title>
+<title>{{ $Blog_info->title }}</title>
 @endsection
 
 @section('container')
