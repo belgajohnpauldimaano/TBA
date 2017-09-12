@@ -7,6 +7,9 @@
             top: 0 !important;
         }
         @media (min-width: 768px){
+            .fotorama__video-play{
+                margin-top: -108px;
+            }
             .fotorama__wrap{
                 top: 70px;
                 -moz-transition: all 200ms ease-in-out;
