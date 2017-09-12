@@ -2,6 +2,7 @@
 
 @section ('styles')
     <link rel="stylesheet" href="{{ asset('cms/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.css') }}">
+    <link rel="stylesheet" href="{{ asset('cms/plugins/datepicker/datepicker3.css') }}">
 @endsection
 
 @section ('page_title')
@@ -109,6 +110,7 @@
 
 @section ('scripts')
     <script src="{{ asset('cms/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.js') }}"></script>
+    <script src="{{ asset('cms/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
 
     <script>
         $('body').on('click', '#btn-add-blog', function () {

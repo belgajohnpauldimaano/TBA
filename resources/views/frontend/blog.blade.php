@@ -28,32 +28,64 @@
                 @endif
             </div>
         </div>
-        <div class="container">
-            <div class="header-title">
-                <h2 class="header-title__tag">{{-- <span class="text-calibri">2016 - 2017</span>  --}}Latest Articles</h2>
-            </div>
-
+        <div class="container-fluid">
             <div class="row">
-                @if ($Blog->count() > 0)
-                    @foreach ($Blog as $data)
-                        @if (!in_array($data->id, $latest_id))
-                            <div class="col-md-4">
-                                <div class="blog-cover blog-cover--blog" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
-                                    <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
-                                        <div class="va-block">
-                                            <div class="va-bottom">
-                                                <div class="blog-cover__content p-a-3">
-                                                    <h4>{{ str_limit($data->title, $limit = 60, $end = '...') }}</h4>
-                                                    <span>{{ date('F d, Y', strtotime($data->created_at)) }}</span>
+                <div class="col-md-6">
+                    <div class="header-title">
+                        <h2 class="header-title__tag">{{-- <span class="text-calibri">2016 - 2017</span>  --}}Latest Articles</h2>
+                    </div>
+
+                    <div class="row">
+                        @if ($Blog->count() > 0)
+                            @foreach ($Blog as $data)
+                                @if (!in_array($data->id, $latest_id))
+                                    <div class="col-md-4">
+                                        <div class="blog-cover blog-cover--blog" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
+                                            <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
+                                                <div class="va-block">
+                                                    <div class="va-bottom">
+                                                        <div class="blog-cover__content p-a-3">
+                                                            <h4>{{ str_limit($data->title, $limit = 60, $end = '...') }}</h4>
+                                                            <span>{{ date('F d, Y', strtotime($data->created_at)) }}</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </div>
-                                    </a>
-                                </div>
-                            </div>
+                                    </div>
+                                @endif
+                            @endforeach
                         @endif
-                    @endforeach
-                @endif
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="header-title">
+                        <h2 class="header-title__tag">{{-- <span class="text-calibri">2016 - 2017</span>  --}}Company News</h2>
+                    </div>
+
+                    <div class="row">
+                        @if ($Blog->count() > 0)
+                            @foreach ($Blog as $data)
+                                @if (!in_array($data->id, $latest_id))
+                                    <div class="col-md-4">
+                                        <div class="blog-cover blog-cover--blog" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
+                                            <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
+                                                <div class="va-block">
+                                                    <div class="va-bottom">
+                                                        <div class="blog-cover__content p-a-3">
+                                                            <h4>{{ str_limit($data->title, $limit = 60, $end = '...') }}</h4>
+                                                            <span>{{ date('F d, Y', strtotime($data->created_at)) }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
             </div>
 
             {{-- @if ($Blog->count() > 0)

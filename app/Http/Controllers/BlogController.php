@@ -19,7 +19,7 @@ class BlogController extends Controller
     public function show_modal_form_data (Request $request)
     {
 
-        $Blog = '';
+        $Blog = NULL;
         if ($request->id)
         {
             $Blog = PressRelease::where('id', $request->id)->first();
@@ -94,6 +94,9 @@ class BlogController extends Controller
         }
 
         $PressRelease = PressRelease::where('id', $request->press_release_id)->first();
+
+        $d = date('Y-m-d H:i:s', strtotime($request->pr_posting_date));
+
         if ($PressRelease != null)
         {
 
@@ -113,6 +116,8 @@ class BlogController extends Controller
             $PressRelease->blurb            = $request->press_release_blurb;
             $PressRelease->content          = $request->press_release_content;
             $PressRelease->film_id          = $request->film_id;
+            $PressRelease->article_source   = $request->press_release_article_source;
+            $PressRelease->created_at       = $d;
 
             $PressRelease->save();
 
@@ -129,6 +134,8 @@ class BlogController extends Controller
         $PressRelease->blurb            = $request->press_release_blurb;
         $PressRelease->content          = $request->press_release_content;
         $PressRelease->film_id          = $request->film_id;
+        $PressRelease->article_source   = $request->press_release_article_source;
+        $PressRelease->created_at       = $d;
         //$PressRelease->film_id          = 0;
 
         $PressRelease->save();

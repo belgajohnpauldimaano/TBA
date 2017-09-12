@@ -39,11 +39,16 @@
             <div class="form-group">
                 <label for="">Select Article Category</label>
                 <select class="form-control" name="film_id" id="press_release_id_select">
-                    {{-- <option value="0" {{ ($Blog ? '' : 'selected') }}>General Article</option> --}}
-                    <option value="">-</option>
-                    <option value="0" {{ ($Blog->film_id == 0 ? 'selected' : '') }}>Latest Articles</option>
-                    <option value="00" {{ ($Blog->film_id == 00 ? 'selected' : '') }}>Company News</option>
+                    <option value="0" {{ $Blog ? ($Blog->film_id == 0 ? 'selected' : '') : '' }}>Latest Articles</option>
+                    <option value="-1" {{ $Blog ? ($Blog->film_id == -1 ? 'selected' : '') : '' }}>Company News</option>
                 </select>
+            </div>
+            
+            <div class="collapse {{ ($Blog ? 'in' : '') }}" id="collapse_press_release_source">
+                <div class="form-group">
+                    <label for="">Source / Website URL</label>
+                    <input type="text" class="form-control" name="press_release_article_source" id="press_release_article_source" value="{{ ($Blog ? $Blog->article_source : '') }}">
+                </div>
             </div>
 
             <div class="form-group">
@@ -86,6 +91,11 @@
                 <textarea class="form-control" name="press_release_content" id="press_release_content" cols="30" rows="15">{{ ($Blog ? $Blog->content : '') }}</textarea>
                 <div class="help-block text-center" id="press_release_content-error"></div>
             </div>
+            
+            <div class="form-group">
+                <label for="">Posting Date</label>
+                <input type="text" name="pr_posting_date" id="pr_posting_date" class="form-control date-picker" placeholder="mm/dd/yyyy" value="{{ ($Blog ? Date('m/d/Y', strtotime($Blog->created_at)) : '') }}">
+            </div>
 
         </div>
         <div class="modal-footer">
@@ -102,3 +112,8 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<script>
+    $('.date-picker').datepicker({ autoClose:true });
+</script>
