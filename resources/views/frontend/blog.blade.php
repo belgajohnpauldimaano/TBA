@@ -7,6 +7,8 @@
 @section('container')
     <main class="blog-page">
 
+        {{-- <pre>{{ json_encode($Blog, JSON_PRETTY_PRINT) }}</pre> --}}
+
         {{-- @foreach($Blog->where('film_id', '==', -1)->slice(0, 1) as $item)
             <pre>{{ json_encode($item, JSON_PRETTY_PRINT)}}</pre>
         @endforeach --}}
@@ -21,33 +23,37 @@
         <div class="container-fluid m-b-6" style="margin-top: -30px">
             <div class="row">
                 <div class="col-sm-6 p-x-0">
-                    <div class="blog-cover blog-cover--blog m-b-0" style="background-image: url({{ asset('content/film/press_release/'.$latest_news->first()->article_image) }});">
-                        <a href="{{ route('blog_frontend') }}/{{$latest_news->first()->id}}" class="card__blog__link card__blog__link--black">
-                            <div class="va-block">
-                                <div class="va-middle">
-                                    <div class="blog-cover__content p-a-3 text-center">
-                                        <h3>{{ str_limit($latest_news->first()->title, $limit = 60, $end = '...') }}</h3>
-                                        <span>{{ date('F d, Y', strtotime($latest_news->first()->created_at)) }}</span>
+                    @if($latest_news->count() > 0)
+                        <div class="blog-cover blog-cover--blog m-b-0" style="background-image: url({{ asset('content/film/press_release/'.$latest_news->first()->article_image) }});">
+                            <a href="{{ route('blog_frontend') }}/{{$latest_news->first()->id}}" class="card__blog__link card__blog__link--black">
+                                <div class="va-block">
+                                    <div class="va-middle">
+                                        <div class="blog-cover__content p-a-3 text-center">
+                                            <h3>{{ str_limit($latest_news->first()->title, $limit = 60, $end = '...') }}</h3>
+                                            <span>{{ date('F d, Y', strtotime($latest_news->first()->created_at)) }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="col-sm-6 p-x-0">
-                    <div class="blog-cover blog-cover--blog m-b-0" style="background-image: url({{ asset('content/film/press_release/'.$company_news->first()->article_image) }});">
-                        <a href="{{ route('blog_frontend') }}/{{$company_news->first()->id}}" class="card__blog__link card__blog__link--black">
-                            <div class="va-block">
-                                <div class="va-middle">
-                                    <div class="blog-cover__content p-a-3 text-center">
-                                        <h3>{{ str_limit($company_news->first()->title, $limit = 60, $end = '...') }}</h3>
-                                        <span>{{ date('F d, Y', strtotime($company_news->first()->created_at)) }}</span>
+                    @if($company_news->count() > 0)
+                        <div class="blog-cover blog-cover--blog m-b-0" style="background-image: url({{ asset('content/film/press_release/'.$company_news->first()->article_image) }});">
+                            <a href="{{ route('blog_frontend') }}/{{$company_news->first()->id}}" class="card__blog__link card__blog__link--black">
+                                <div class="va-block">
+                                    <div class="va-middle">
+                                        <div class="blog-cover__content p-a-3 text-center">
+                                            <h3>{{ str_limit($company_news->first()->title, $limit = 60, $end = '...') }}</h3>
+                                            <span>{{ date('F d, Y', strtotime($company_news->first()->created_at)) }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -55,13 +61,13 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6">
-                    <div class="header-title">
-                        <h2 class="header-title__tag">Latest Articles</h2>
-                    </div>
+                    @if ($latest_news->count() > 1)
+                        <div class="header-title">
+                            <h2 class="header-title__tag">Latest Articles</h2>
+                        </div>
 
-                    <div class="col-latest-news">
-                        <div class="row row-gap">
-                            @if ($latest_news->count() > 0)
+                        <div class="col-latest-news">
+                            <div class="row row-gap">
                                 @foreach ($latest_news as $data)
                                     @if ($latest_news->first()->id != $data->id)
                                         <div class="col-xs-4 col-md-4 col-lg-4 col-xs-6 col-xss-12 col-gap">
@@ -80,18 +86,18 @@
                                         </div>
                                     @endif
                                 @endforeach
-                            @endif
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
                 <div class="col-lg-6">
-                    <div class="header-title">
-                        <h2 class="header-title__tag">Company News</h2>
-                    </div>
+                    @if ($company_news->count() > 1)
+                        <div class="header-title">
+                            <h2 class="header-title__tag">Company News</h2>
+                        </div>
 
-                    <div class="col-company-news">
-                        <div class="row row-gap">
-                            @if ($latest_news->count() > 0)
+                        <div class="col-company-news">
+                            <div class="row row-gap">
                                 @foreach ($company_news as $data)
                                     @if ($company_news->first()->id != $data->id)
                                         <div class="col-xs-4 col-md-4 col-lg-4 col-xs-6 col-xss-12 col-gap">
@@ -110,9 +116,9 @@
                                         </div>
                                     @endif
                                 @endforeach
-                            @endif
+                            </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
 

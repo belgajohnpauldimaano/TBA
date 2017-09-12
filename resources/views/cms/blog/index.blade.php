@@ -57,7 +57,7 @@
                                         <th>Title</th>
                                         <th>Blurb</th>
                                         <th>Category</th>
-                                        <th>Date Created</th>
+                                        <th>Date Posted</th>
                                         <th>Date Updated</th>
                                         <th>Action</th>
                                     </tr>
@@ -71,8 +71,9 @@
                                                 <td width="150">
                                                     {!! $data->film_id === 0 ? '<label class="label bg-purple">Latest News</label>' : '<label class="label bg-primary">Company News</label>' !!}
                                                 </td>
-                                                <td>{!! $data->created_at !!}</td>
-                                                <td>{!! $data->updated_at !!}</td>
+                                                <td width="150">{!!  date('F d, Y', strtotime($data->created_at)) !!}</td>
+                                                <td width="150">{!!  date('F d, Y', strtotime($data->updated_at)) !!}</td>
+                                                {{-- <td>{!! $data->updated_at !!}</td> --}}
                                                 <td>
                                                     <!-- Single button -->
                                                     <div class="btn-group">
