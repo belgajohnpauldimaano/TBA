@@ -13,6 +13,12 @@
                     <h1>{{ $Blog_info->title }}</h1>
                     <p class="text-muted">{{ date('F d, Y', strtotime($Blog_info->created_at)) }}</p>
                     <p>{!! $Blog_info->content !!}</p>
+
+                    @if($Blog_info->article_source || $Blog_info->article_source != NULL)
+                        <hr>
+                        <p class="m-b-0">Source:</p>
+                        <p><a href="{{ $Blog_info->article_source }}" target="_blank" style="font-size: 16px;"><u>{{ $Blog_info->article_source }}</u></a></p>
+                    @endif
                 </div>
                 <div class="col-md-4">
                     @if ($Blog->count() > 0)
@@ -29,7 +35,7 @@
     </main>
     <hr class="m-y-6 invisible">
 
-    <div class="main__blog__foter">
+    {{-- <div class="main__blog__foter">
         <div class="container-fluid">
             <div class="row">
                 @if ($Blog->count() > 0)
@@ -52,5 +58,5 @@
                 @endif
             </div>
         </div>
-    </div>
+    </div> --}}
 @endsection

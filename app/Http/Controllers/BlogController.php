@@ -170,12 +170,15 @@ class BlogController extends Controller
     */
 
     public function blog_frontend (Request $request)
-     {
+    {
 
         $Blog = PressRelease::orderBy('created_at', 'DESC')
         ->get();
 
         $latest = $Blog->slice(0, 2);
+
+        $latest_news = $Blog->where('film_id', 0)->take(4);
+        $company_news = $Blog->where('film_id', -1)->take(4);
 
         $latest_id = [];
 
@@ -183,7 +186,12 @@ class BlogController extends Controller
             $latest_id[] = $data->id;
         }
 
-        return view('frontend.blog', ['Blog' => $Blog, 'latest_id' => $latest_id]);
+        return view('frontend.blog', [
+                'Blog' => $Blog, 
+                'latest_id'     => $latest_id, 
+                'latest_news'   => $latest_news,
+                'company_news'  => $company_news
+            ]);
     }
 
     public function blog_info_frontend (Request $request)

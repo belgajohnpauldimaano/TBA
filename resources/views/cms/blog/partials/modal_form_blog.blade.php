@@ -44,7 +44,7 @@
                 </select>
             </div>
             
-            <div class="collapse {{ ($Blog ? 'in' : '') }}" id="collapse_press_release_source">
+            <div class="collapse {{ $Blog ? ($Blog->film_id === 0 ? 'in' : '') : '' }}" id="collapse_press_release_source">
                 <div class="form-group">
                     <label for="">Source / Website URL</label>
                     <input type="text" class="form-control" name="press_release_article_source" id="press_release_article_source" value="{{ ($Blog ? $Blog->article_source : '') }}">

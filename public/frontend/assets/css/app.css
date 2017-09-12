@@ -573,6 +573,9 @@ btn */
   .blog-cover--blog {
     height: 345px;
     margin-bottom: 30px; }
+  .blog-cover--blog-thumb {
+    height: 250px;
+    margin-bottom: 30px; }
 
 .card__blog__link {
   position: absolute;
