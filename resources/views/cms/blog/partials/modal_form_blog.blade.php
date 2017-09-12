@@ -94,7 +94,7 @@
             
             <div class="form-group">
                 <label for="">Posting Date</label>
-                <input type="text" name="pr_posting_date" id="pr_posting_date" class="form-control date-picker" placeholder="mm/dd/yyyy" value="{{ ($Blog ? Date('m/d/Y', strtotime($Blog->created_at)) : '') }}">
+                <input type="text" name="pr_posting_date" id="pr_posting_date" class="form-control date-picker" placeholder="mm/dd/yyyy" value="{{ ($Blog ?  Date('m/d/Y', strtotime($Blog->created_at)) : date('m/d/Y')) }}">
             </div>
 
         </div>
