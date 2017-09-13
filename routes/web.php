@@ -54,6 +54,8 @@ Route::group(['prefix' => '/contact'], function () {
 
 Route::group(['prefix' => '/announcement'], function () {
     Route::get('/', 'BlogController@blog_frontend')->name('blog_frontend');
+    Route::get('/latest_articles', 'BlogController@latest_articles')->name('latest_articles');
+    Route::get('/company_news', 'BlogController@company_news')->name('company_news');
     Route::get('/{id}', 'BlogController@blog_info_frontend')->name('blog_info_frontend');
 });
 

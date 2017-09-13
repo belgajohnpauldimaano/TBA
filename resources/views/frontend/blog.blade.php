@@ -76,7 +76,7 @@
                             </div>
 
                             @if($load_more->where('film_id', 0)->count() > 4)
-                                <a href="http://tba.app/announcement" class="btn btn-default btn-default-black center-block text-uppercase m-t-4">View All</a>
+                                <a href="{{ route('latest_articles') }}" class="btn btn-default btn-default-black center-block text-uppercase m-t-4">View All</a>
                             @endif
                         </div>
                     @endif
@@ -109,7 +109,7 @@
                                 @endforeach
                             </div>
                             @if($load_more->where('film_id', -1)->count() > 4)
-                                <a href="http://tba.app/announcement" class="btn btn-default btn-default-black center-block text-uppercase m-t-4">View All</a>
+                                <a href="{{ route('company_news') }}" class="btn btn-default btn-default-black center-block text-uppercase m-t-4">View All</a>
                             @endif
                         </div>
                     @endif
