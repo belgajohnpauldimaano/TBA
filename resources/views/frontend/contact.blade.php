@@ -121,8 +121,13 @@
 @section ('scripts')
     <script>
 
+        function submitLoading(text){
+            $('.btn-submit').html('<i class="fa fa-spinner fa-spin m-r-2" aria-hidden="true"></i>' + text).attr('disabled', true);
+        }
+
         $('body').on('submit', '#form_inquiry', function (e) {
             e.preventDefault();
+            submitLoading('Submitting...');
             var formData = new FormData($(this)[0]);
             $.ajax({
                 url : "{{ route('inquiry_save') }}",
@@ -144,12 +149,14 @@
                             $('#' + err).parents('.form-group').addClass('has-error');
                             $('#'+ err + '-error').html('<code>' + errMessages + '</code>'); {{-- add error text to inputs --}}
                         }
+                        $('.btn-submit').html('Submit').attr('disabled', false);
                     }
                     else
                     {
                             alertify.success('' + data.messages + '');
                             swal("Success", data.messages, "success");
                             $('#form_inquiry')[0].reset();
+                            $('.btn-submit').html('Submit').attr('disabled', false);
                     }
                 }
             });
