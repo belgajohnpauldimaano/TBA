@@ -68,7 +68,7 @@ class MailingListController extends Controller
         }
 
         $MailingList->status = 0;
-        $MailingList->save();
+        $MailingList->delete();
 
         return response()->json(['errCode' => 0, 'messages' => 'Email address successfully removed.']);
 
