@@ -70,7 +70,7 @@
                             <div class="row row-gap">
                                 @foreach ($latest_news as $data)
                                     @if ($latest_news->first()->id != $data->id)
-                                        <div class="col-xs-4 col-md-4 col-lg-4 col-xs-6 col-xss-12 col-gap">
+                                        <div class="col-xs-6 col-md-4 col-lg-4 col-xs-6 col-xss-12 col-gap">
                                             <div class="blog-cover blog-cover--blog-thumb" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
                                                 <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
                                                     <div class="va-block">
@@ -100,7 +100,7 @@
                             <div class="row row-gap">
                                 @foreach ($company_news as $data)
                                     @if ($company_news->first()->id != $data->id)
-                                        <div class="col-xs-4 col-md-4 col-lg-4 col-xs-6 col-xss-12 col-gap">
+                                        <div class="col-xs-6 col-md-4 col-lg-4 col-xs-6 col-xss-12 col-gap">
                                             <div class="blog-cover blog-cover--blog-thumb" style="background-image: url({{ asset('content/film/press_release/'.$data->article_image) }});">
                                                 <a href="{{ route('blog_frontend') }}/{{$data->id}}" class="card__blog__link">
                                                     <div class="va-block">

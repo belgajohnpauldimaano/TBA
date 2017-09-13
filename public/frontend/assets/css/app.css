@@ -642,12 +642,10 @@ btn */
   height: 200px; }
 
 @media (min-width: 768px) {
-  .col-latest-news {
-    padding-right: 15px; } }
-
-@media (min-width: 768px) {
-  .col-company-news {
-    padding-left: 15px; } }
+  .col-latest-news, .col-company-news {
+    padding: 0 15px; }
+    .col-latest-news .blog-cover--blog-thumb, .col-company-news .blog-cover--blog-thumb {
+      height: 185px; } }
 
 .navbar {
   border-radius: 0;

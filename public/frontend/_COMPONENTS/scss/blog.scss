@@ -93,13 +93,11 @@
     }   
 }
 
-.col-latest-news{
+.col-latest-news, .col-company-news{
     @media (min-width: 768px){
-        padding-right: 15px;
-    }
-}
-.col-company-news{
-    @media (min-width: 768px){
-        padding-left: 15px;
+        padding: 0 15px;
+        .blog-cover--blog-thumb{
+            height: 185px;
+        }
     }
 }
