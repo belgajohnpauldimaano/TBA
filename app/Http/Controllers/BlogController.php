@@ -219,7 +219,7 @@ class BlogController extends Controller
     public function latest_articles (Request $request)
     {
         $Blog = PressRelease::orderBy('created_at', 'DESC')->get();
-        $blog_all = $Blog->where('film_id', 0);
+        $blog_all = $Blog->where('film_id', '!=', -1);
 
         return view('frontend.blog_all', ['blog_all'   => $blog_all]);
     }
@@ -227,7 +227,7 @@ class BlogController extends Controller
     public function company_news (Request $request)
     {
         $Blog = PressRelease::orderBy('created_at', 'DESC')->get();
-        $blog_all = $Blog->where('film_id', -1);
+        $blog_all = $Blog->where('film_id', '!=', 0);
 
         return view('frontend.blog_all', ['blog_all'   => $blog_all]);
     }
