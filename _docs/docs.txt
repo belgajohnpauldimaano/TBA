@@ -1,0 +1,1 @@
+- for godaddy hosting use "sendmail" instead of "smtp"
