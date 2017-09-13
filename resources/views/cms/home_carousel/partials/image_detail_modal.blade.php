@@ -43,7 +43,7 @@
                             
                             <div class="form-group">
                                 <div class="hidden" id="collpaseTarget">
-
+                                    <hr>
                                     <div style="margin: 15px 0;">
                                         <label class="radio-inline">
                                             <input type="radio" name="openUrlOptions" id="openUrlNew" value="0" {{ $Carousel->new_window === 0 ? 'checked="checked"' : '' }}> Open URL in NEW Window
