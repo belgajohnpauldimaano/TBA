@@ -89,7 +89,7 @@
                                                     <td>
 
                                                         <p class="label label-{{ App\MailInquiry::EMAIL_INQUIRY_TYPES_STYLE[$inquiry->inquiry_type] }}">
-                                                            {{ $EMAIL_INQUIRY_TYPES[$inquiry->inquiry_type]['type'] }}
+                                                            {{ $EMAIL_INQUIRY_TYPES[$inquiry->inquiry_type - 1]['type'] }}
                                                         </p>
                                                     </td>
                                                     <td>
