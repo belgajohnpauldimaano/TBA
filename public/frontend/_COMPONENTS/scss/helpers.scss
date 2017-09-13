@@ -156,3 +156,28 @@ btn */
     padding-left: 7px;
     padding-right: 7px;
 }
+
+
+.btn-default-black{
+    width: 140px;
+    background-color: #000 !important;
+    color: #fff !important;
+
+    &:hover{
+        opacity: .8;
+    }
+}
+
+
+.thin-line{
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        top: -1px;
+        left: 0;
+        height: 1px;
+        width: 50px;
+        background: #333;
+    }
+}

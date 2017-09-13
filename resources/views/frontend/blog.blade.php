@@ -7,19 +7,6 @@
 @section('container')
     <main class="blog-page">
 
-        {{-- <pre>{{ json_encode($Blog, JSON_PRETTY_PRINT) }}</pre> --}}
-
-        {{-- @foreach($Blog->where('film_id', '==', -1)->slice(0, 1) as $item)
-            <pre>{{ json_encode($item, JSON_PRETTY_PRINT)}}</pre>
-        @endforeach --}}
-
-        {{-- @foreach($latest_news as $item)
-            <pre>{{ json_encode($item, JSON_PRETTY_PRINT)}}</pre>
-        @endforeach --}}
-
-        {{-- <pre>{{ json_encode($latest_news->first(), JSON_PRETTY_PRINT)}}</pre> --}}
-        {{-- <pre>{{ json_encode($company_news->first(), JSON_PRETTY_PRINT)}}</pre> --}}
-
         <div class="container-fluid m-b-6" style="margin-top: -30px">
             <div class="row">
                 <div class="col-sm-6 p-x-0">
@@ -87,6 +74,10 @@
                                     @endif
                                 @endforeach
                             </div>
+
+                            @if($load_more->where('film_id', 0)->count() > 4)
+                                <a href="http://tba.app/announcement" class="btn btn-default btn-default-black center-block text-uppercase m-t-4">View All</a>
+                            @endif
                         </div>
                     @endif
                 </div>
@@ -117,6 +108,9 @@
                                     @endif
                                 @endforeach
                             </div>
+                            @if($load_more->where('film_id', -1)->count() > 4)
+                                <a href="http://tba.app/announcement" class="btn btn-default btn-default-black center-block text-uppercase m-t-4">View All</a>
+                            @endif
                         </div>
                     @endif
                 </div>

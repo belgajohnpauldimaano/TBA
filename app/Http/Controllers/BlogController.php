@@ -177,6 +177,8 @@ class BlogController extends Controller
 
         //$latest = $Blog->slice(0, 2);
 
+        $load_more = $Blog->where('film_id', '<=', 0);
+
         $latest_news = $Blog->where('film_id', 0)->take(4);
         $company_news = $Blog->where('film_id', -1)->take(4);
 
@@ -192,11 +194,10 @@ class BlogController extends Controller
         // }
 
         return view('frontend.blog', [
-                'Blog' => $Blog, 
-                // 'latest_id_latest'  => $latest_id_latest, 
-                // 'latest_id_company' => $latest_id_company, 
-                'latest_news'       => $latest_news,
-                'company_news'      => $company_news
+                'Blog'          => $Blog, 
+                'load_more'     => $load_more, 
+                'latest_news'   => $latest_news,
+                'company_news'  => $company_news
             ]);
     }
 
@@ -205,7 +206,7 @@ class BlogController extends Controller
         $Blog_info = PressRelease::where('id', '=', $request->id)->first();
 
         $Blog = PressRelease::where(function ($query) {
-            $query->where('film_id', '=', 0);
+            $query->where('film_id', '<=', 0);
         })
         //->orderBy('created_at', 'DESC')
         ->inRandomOrder()
