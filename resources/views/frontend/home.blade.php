@@ -44,6 +44,7 @@
 
 @section('container')
     <div class="fotorama fotorama--homepage"
+        data-loop="true"
         data-fit="cover"
         data-width="100%"
         data-ratio="16/9"
@@ -72,4 +73,10 @@
 
 @section('scripts')
     <script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+
+    <script>
+        $('.fotorama').fotorama({
+            swipe: false
+        });
+    </script>
 @endsection
