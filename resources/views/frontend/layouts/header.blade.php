@@ -58,8 +58,8 @@
                         <li><a href="{{ route('about') }}"><img src="{{ asset('frontend/assets/img/About.png') }}" class="center-block"></a></li>
                         <li><a href="{{ route('contact') }}"><img src="{{ asset('frontend/assets/img/Contact.png') }}" class="center-block"></a></li>
                         <li><a href="{{ route('blog_frontend') }}"><img src="{{ asset('frontend/assets/img/Announcements.png') }}" class="center-block"></a></li>
-                        <li><a href="#"><img src="{{ asset('frontend/assets/img/CInema-76.png') }}" class="center-block"></a></li>
-                        <li><a href="#"><img src="{{ asset('frontend/assets/img/Cinetropa.png') }}" class="center-block"></a></li>
+                        <li><a href="https://www.facebook.com/cinema76fs/" target="_blank"><img src="{{ asset('frontend/assets/img/CInema-76.png') }}" class="center-block"></a></li>
+                        <li><a href="https://www.cinetropa.com/" target="_blank"><img src="{{ asset('frontend/assets/img/Cinetropa.png') }}" class="center-block"></a></li>
                     </ul>
                 </div>
             </div>
