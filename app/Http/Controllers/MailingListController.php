@@ -110,7 +110,7 @@ class MailingListController extends Controller
                 {
                     $q->where('inquiry_type', '=', $request->mail_inquiry_type);
                 }
-            })->get(['name', 'email', 'message', 'inquiry_type']);
+            })->get(['name', 'email', 'message', 'inquiry_type', 'created_at']);
 
         if ($MailInquiry->count() < 1)
         {
@@ -130,7 +130,7 @@ class MailingListController extends Controller
             $excel->sheet('Inquiries', function ($sheet) use ($MailInquiry, $EMAIL_INQUIRY_TYPES) {
                 
                      $sheet->row(1, [
-                                'Name', 'Email Address', 'Message', 'Inquiry Type'
+                                'Name', 'Email Address', 'Message', 'Inquiry Type', 'Inquiry Date'
                             ]);
                     if ($MailInquiry->count() > 0)
                     {
@@ -140,7 +140,8 @@ class MailingListController extends Controller
                                 $mail_inquiry->name, 
                                 $mail_inquiry->email, 
                                 $mail_inquiry->message,
-                                $EMAIL_INQUIRY_TYPES[$mail_inquiry->inquiry_type]['type'] 
+                                $EMAIL_INQUIRY_TYPES[$mail_inquiry->inquiry_type]['type'],
+                                $mail_inquiry->created_at
                             ]);
                         }
                     }
