@@ -22,11 +22,34 @@ class MailingListController extends Controller
 
         $MailingList = MailingList::where('status', 1)->paginate(10);
 
-        return view('cms.mail_inquiry.index', ['MailInquiry' => $MailInquiry, 'EMAIL_INQUIRY_TYPES' => $EMAIL_INQUIRY_TYPES, 'MailingList' => $MailingList]);
+        $inquiry_table_headers = [
+            ['header_text' => 'Name'],
+            ['header_text' => 'Email Address'],
+            ['header_text' => 'Message'],
+            ['header_text' => 'Inquiry Type'],
+            ['header_text' => 'Inquiry Date'],
+        ];
+
+        return view('cms.mail_inquiry.index', ['MailInquiry' => $MailInquiry, 'EMAIL_INQUIRY_TYPES' => $EMAIL_INQUIRY_TYPES, 'MailingList' => $MailingList, 'inquiry_table_headers' => $inquiry_table_headers]);
     }
 
     public function search_inquiries (Request $request)
     {
+
+        $sort_column = [
+            'name ',
+            'email ',
+            'message ',
+            'inquiry_type ',
+            'created_at '
+        ];
+        $selected_sort = $sort_column[4] . $request->sort;
+
+        if ($request->column)
+        {
+            $selected_sort = $sort_column[$request->column] . $request->sort;
+        }
+
         $MailInquiry = MailInquiry::where(function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->mail_inquiry_search . '%');
                 $q->orWhere('email', 'like', '%' . $request->mail_inquiry_search . '%');
@@ -37,10 +60,19 @@ class MailingListController extends Controller
                     $q->where('inquiry_type', '=', $request->mail_inquiry_type);
                 }
             })
+            ->orderByRaw($selected_sort)
             ->paginate(10);
         $EMAIL_INQUIRY_TYPES = MailInquiry::EMAIL_INQUIRY_TYPES;
 
-        return view('cms.mail_inquiry.partials.search_inquiry_data', ['MailInquiry' => $MailInquiry, 'EMAIL_INQUIRY_TYPES' => $EMAIL_INQUIRY_TYPES, 'request' => $request->all()])->render();
+        $inquiry_table_headers = [
+            ['header_text' => 'Name'],
+            ['header_text' => 'Email Address'],
+            ['header_text' => 'Message'],
+            ['header_text' => 'Inquiry Type'],
+            ['header_text' => 'Inquiry Date'],
+        ];
+
+        return view('cms.mail_inquiry.partials.search_inquiry_data', ['MailInquiry' => $MailInquiry, 'EMAIL_INQUIRY_TYPES' => $EMAIL_INQUIRY_TYPES, 'request' => $request->all(), 'inquiry_table_headers' => $inquiry_table_headers])->render();
     }
 
     public function mailing_list (Request $request)

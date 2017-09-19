@@ -70,13 +70,18 @@
                             </div>
                             <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
                             <div class="box-body">
-                                <table class="table table-bordered table-striped">
-                                    <tr>
+                                <table class="table table-bordered table-striped js-table_inquiry">
+                                    {{--  <tr>
                                         <th>Name</th>
                                         <th>Email Address</th>
                                         <th>Message</th>
                                         <th>Inquiry Type</th>
                                         <th>inquire Date</th>
+                                    </tr>  --}}
+                                    <tr>
+                                    @foreach ($inquiry_table_headers as $key => $htext)
+                                        <th role="button" class="js-inquiry_sortable_header" data-sort="" data-column="{{ $key }}">{{ $htext['header_text'] }}</th>
+                                    @endforeach
                                         <th>Action</th>
                                     </tr>
                                     <tbody>
@@ -336,6 +341,8 @@
         {
             var formData = new FormData($('#form_mail_inquiries')[0]);
             formData.append('page', page);
+            formData.append('sort', sort);
+            formData.append('column', column);
             $('#mail_inquiries_data_holder .overlay').removeClass('hidden');
 
             $.ajax({
@@ -347,7 +354,8 @@
                 success     : function (data) {
                     $('#mail_inquiries_data_holder').empty();
                     $('#mail_inquiries_data_holder').html(data);
-                },
+                }
+                /*,
                 error : function (xhr, ajaxOptions, thrownError)
                 {
                     if (thrownError == 'Unauthorized')
@@ -359,7 +367,7 @@
                     500: function(xhr) {
                         window.location.reload();
                     }
-                } 
+                } */
             });
         }
 
@@ -546,5 +554,31 @@
         });
         
         $('.mailing').addClass('active');
+        var sort = 'asc';
+        var column = 4;
+        $('body').on('click', '.js-inquiry_sortable_header', function (e) {
+            sort = $(this).data('sort');
+            column = $(this).data('column');
+            if (sort == '')
+            {
+                sort = 'asc';
+            }
+            else
+            {
+                if (sort == 'asc')
+                {
+                    sort = 'desc';
+                }
+                else
+                {
+                    sort = 'asc';
+                }
+            }
+            $('.js-inquiry_sortable_header').data('sort', ''); 
+            $(this).data('sort', sort);
+            console.log(sort);
+            console.log(column);
+            fetch_record_page_specific(1)
+        })
     </script>
 @endsection
