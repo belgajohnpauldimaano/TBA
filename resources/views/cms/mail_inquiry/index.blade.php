@@ -76,6 +76,7 @@
                                         <th>Email Address</th>
                                         <th>Message</th>
                                         <th>Inquiry Type</th>
+                                        <th>inquire Date</th>
                                         <th>Action</th>
                                     </tr>
                                     <tbody>
@@ -92,8 +93,18 @@
                                                             {{ $EMAIL_INQUIRY_TYPES[$inquiry->inquiry_type - 1]['type'] }}
                                                         </p>
                                                     </td>
+                                                    <td>{{ Date('Y-m-d', strtotime($inquiry->created_at)) }}</td>
                                                     <td>
-                                                        <button data-id="{{ $inquiry->id }}" class="btn btn-flat btn-block bg-olive btn-xs js-btn_view_inquiry">View</button>
+                                                        <!-- Single button -->
+                                                        <div class="btn-group">
+                                                            <button type="button" class="btn btn-default btn-flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                Action <span class="caret"></span>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-right dropdown-menu__action">
+                                                                <li><a href="#" class="js-btn_view_inquiry" data-id="{{ $inquiry->id }}">View</a></li>
+                                                                <li><a href="#" class="js-delete_inquiry" data-id="{{ $inquiry->id }}">Delete</a></li>
+                                                            </ul>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -479,6 +490,58 @@
                 } 
             }).always(function (jqXHR) {
                 console.log(jqXHR.status);
+            });
+        });
+
+
+
+        $('body').on('click','.js-delete_inquiry', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            console.log(id);
+
+            bootbox.confirm({
+                title: "Confirm",
+                message: "Are you sure you want to delete?",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> Cancel'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> Confirm'
+                    }
+                },
+                callback: function (result) {
+                    if (result)
+                    {
+                        $.ajax({
+                            url : "{{ route('delete_inquiry') }}",
+                            type : 'POST',
+                            data : { id :  id, _token : '{{ csrf_token() }}'},
+                            success     : function (data) {
+                                window.location.reload();
+                            }
+                            ,
+                            error : function (xhr, ajaxOptions, thrownError)
+                            {
+                                console.log(thrownError);
+
+                                if (thrownError == 'Unauthorized')
+                                {
+                                    window.location.reload();
+                                }
+                            },
+                            statusCode: {
+                                500: function(xhr) {
+                                    if(window.console) console.log(xhr.responseText);
+                                        alert('error');
+                                }
+                            } 
+                        }).always(function (jqXHR) {
+                            console.log(jqXHR.status);
+                        }); 
+                    }
+                }
             });
         });
         

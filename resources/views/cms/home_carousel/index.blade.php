@@ -289,18 +289,18 @@
                         $('#js-image_details').modal('hide');
                     }
                 },
-                error : function (xhr, ajaxOptions, thrownError)
-                {
-                    if (thrownError == 'Unauthorized')
-                    {
-                        window.location.reload();
-                    }
-                },
-                statusCode: {
-                    500: function(xhr) {
-                        window.location.reload();
-                    }
-                } 
+                // error : function (xhr, ajaxOptions, thrownError)
+                // {
+                //     if (thrownError == 'Unauthorized')
+                //     {
+                //         window.location.reload();
+                //     }
+                // },
+                // statusCode: {
+                //     500: function(xhr) {
+                //         window.location.reload();
+                //     }
+                // } 
             });
         });
 

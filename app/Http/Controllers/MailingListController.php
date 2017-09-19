@@ -91,6 +91,14 @@ class MailingListController extends Controller
         return response()->json(['errCode' => 0, 'messages' => 'successfully fetched.', 'MailInquiry' => $MailInquiry, 'EMAIL_INQUIRY_TYPES' => MailInquiry::EMAIL_INQUIRY_TYPES, 'EMAIL_INQUIRY_TYPES_STYLE' => MailInquiry::EMAIL_INQUIRY_TYPES_STYLE]);
     }
 
+    public function delete_inquiry (Request $request)
+    {
+        $MailInquiry = MailInquiry::where('id', $request->id)->first();
+        $MailInquiry->delete();
+
+        return response()->json(['errCode' => 0, 'messages' => 'Email address successfully removed.']);
+    }
+
     public function mail_inquiry_export (Request $request)
     {
         $MailInquiry = MailInquiry::where(function ($q) use ($request) {
