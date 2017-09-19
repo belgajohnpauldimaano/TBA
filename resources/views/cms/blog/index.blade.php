@@ -69,7 +69,7 @@
                                                 <td>{{ $data->title }}</td>
                                                 <td>{!! $data->blurb !!}</td>
                                                 <td width="150">
-                                                    {!! $data->film_id == 0 ? '<label class="label bg-purple">Latest News</label>' : '<label class="label bg-primary">Company News</label>' !!}
+                                                    {!! $data->film_id == 0 ? '<label class="label bg-purple">Latest Article</label>' : '<label class="label bg-primary">Company News</label>' !!}
                                                 </td>
                                                 <td width="150">{!!  date('F d, Y', strtotime($data->created_at)) !!}</td>
                                                 <td width="150">{!!  date('F d, Y', strtotime($data->updated_at)) !!}</td>
