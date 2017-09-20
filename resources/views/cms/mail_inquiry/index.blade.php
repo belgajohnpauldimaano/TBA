@@ -64,11 +64,11 @@
                     </form>
                     
                     <div class="col-sm-12">
-                        <div id="mail_inquiries_data_holder" class=" box box-solid">
+                        <div class=" box box-solid">
                             <div class="pull-right">
                                 {{ $MailInquiry->links() }}
                             </div>
-                            <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
+                            <div class="mail_inquiries_data_holder overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
                             <div class="box-body">
                                 <table class="table table-bordered table-striped js-table_inquiry">
                                     {{--  <tr>
@@ -80,11 +80,16 @@
                                     </tr>  --}}
                                     <tr>
                                     @foreach ($inquiry_table_headers as $key => $htext)
-                                        <th role="button" class="js-inquiry_sortable_header" data-sort="" data-column="{{ $key }}">{{ $htext['header_text'] }}</th>
+                                        <th role="button" class="js-inquiry_sortable_header" data-sort="" data-column="{{ $key }}">
+                                            <span class="pull-left">{{ $htext['header_text'] }}</span>
+                                            <span class="pull-right"><i class="fa fa-sort text-muted" aria-hidden="true"></i></span>
+
+                                            {{-- <pre>{{ json_encode($inquiry_table_headers, JSON_PRETTY_PRINT)}}</pre> --}}
+                                        </th>
                                     @endforeach
                                         <th>Action</th>
                                     </tr>
-                                    <tbody>
+                                    <tbody id="mail_inquiries_data_holder">
                                         @if ($MailInquiry)
                                             @foreach ($MailInquiry as $inquiry)
                                                 <tr>
@@ -343,7 +348,7 @@
             formData.append('page', page);
             formData.append('sort', sort);
             formData.append('column', column);
-            $('#mail_inquiries_data_holder .overlay').removeClass('hidden');
+            $('.mail_inquiries_data_holder.overlay').removeClass('hidden');
 
             $.ajax({
                 url : "{{ route('search_inquiries') }}",
@@ -354,6 +359,7 @@
                 success     : function (data) {
                     $('#mail_inquiries_data_holder').empty();
                     $('#mail_inquiries_data_holder').html(data);
+                    $('.mail_inquiries_data_holder.overlay').addClass('hidden');
                 }
                 /*,
                 error : function (xhr, ajaxOptions, thrownError)
@@ -559,19 +565,25 @@
         $('body').on('click', '.js-inquiry_sortable_header', function (e) {
             sort = $(this).data('sort');
             column = $(this).data('column');
+
+            $('.js-inquiry_sortable_header i').removeClass().addClass('fa fa-sort text-muted');
+
             if (sort == '')
             {
-                sort = 'asc';
+                sort = 'desc';
+                $(this).find('i').removeClass().addClass('fa fa-sort-desc text-muted');
             }
             else
             {
-                if (sort == 'asc')
+                if (sort == 'desc')
                 {
-                    sort = 'desc';
+                    sort = 'asc';
+                    $(this).find('i').removeClass().addClass('fa fa-sort-asc text-muted');
                 }
                 else
                 {
-                    sort = 'asc';
+                    sort = 'desc';
+                    $(this).find('i').removeClass().addClass('fa fa-sort-desc text-muted');
                 }
             }
             $('.js-inquiry_sortable_header').data('sort', ''); 

@@ -1,17 +1,3 @@
-                            
-                            <div class="pull-right">
-                                {{ $MailInquiry->links() }}
-                            </div>
-                            <div class="overlay hidden"><i class="fa fa-refresh fa-spin"></i></div>
-                            <div class="box-body">
-                                <table class="table table-bordered table-striped js-table_inquiry">
-                                    <tr>
-                                        @foreach ($inquiry_table_headers as $key => $htext)
-                                            <th role="button" class="js-inquiry_sortable_header" data-sort="{{ ( $request['column'] == $key ? $request['sort'] : '' ) }}" data-column='{{ $key }}'>{{ $htext['header_text'] }}</th>
-                                        @endforeach
-                                        <th>Action</th>
-                                    </tr>
-                                    <tbody>
                                         @if ($MailInquiry)
                                             @foreach ($MailInquiry as $inquiry)
                                                 <tr>
@@ -43,6 +29,3 @@
                                         @else
                                             <tr><td col-span="5">No data found</td></tr>
                                         @endif
-                                    </tbody>
-                                </table>
-                            </div>
