@@ -113,3 +113,12 @@
         }
     }
 }
+
+.main__blog__sidebar{
+    @media (min-width: 992px){
+        background: -webkit-linear-gradient(left, #f9f9f9, #fff 20px);
+        background: -o-linear-gradient(left, #f9f9f9, #fff 20px);
+        background: linear-gradient(to right, #f9f9f9, #fff 20px);
+        padding-left: 30px;
+    }
+}
