@@ -65,7 +65,7 @@ class FilmController extends Controller
                     $q->select(['main_quote', 'name_of_person', 'url', 'film_id']);
                 },
                 'press_release'  => function ($q) {
-                    $q->select(['id', 'title', 'article_image', 'blurb', 'content', 'film_id']);
+                    $q->select(['id', 'title', 'article_image', 'blurb', 'content', 'film_id', 'pdf']);
                 },
                 'posters' => function ($q) {
                     $q->where('featured', 1);

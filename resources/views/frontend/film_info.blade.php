@@ -143,6 +143,7 @@
                     </div>
                     {{-- <div class="col-md-3 hidden-xs hidden-sm js-hashtags"> --}}
                     <div class="col-md-3">
+                        {{-- <iframe src="http://social.tba.ph/test/index.php?id=1" frameborder="0" height=500"></iframe> --}}
                         <hr class="visible-xs visible-sm">
                         <?php  
                             $for_search = '';
@@ -316,6 +317,9 @@
                             <h2>{{ $film_info->press_release->title }}</h2>
                             <div class="content">
                                 {!! $film_info->press_release->content !!}
+                                @if($film_info->press_release->pdf)
+                                  <a href="{{ asset('content/upload/'.$film_info->press_release->pdf) }}" download class="btn btn-default m-y-3">Download PDF</a>
+                                @endif
                             </div>
                          </div>
                       </div>
