@@ -143,7 +143,9 @@
                     </div>
                     {{-- <div class="col-md-3 hidden-xs hidden-sm js-hashtags"> --}}
                     <div class="col-md-3">
-                        {{-- <iframe src="http://social.tba.ph/test/index.php?id=1" frameborder="0" height=500"></iframe> --}}
+                      @if($film_info->hash_tag_id)
+                        <iframe src="http://social.tba.ph/test/index.php?id={{ $film_info->hash_tag_id }}" frameborder="0" height=500"></iframe>
+                      @endif
                         <hr class="visible-xs visible-sm">
                         <?php  
                             $for_search = '';

@@ -137,6 +137,11 @@
                             <div class="help-block text-center" id="hashtags-error"></div>
                         </div>
                     </div>
+                    
+                    <div class="form-group">
+                        <label for="">Hashtag ID</label>
+                        <input type="number" class="form-control" id="hash_id" name="hash_id" value="{{ ($Film ? $Film->hash_tag_id : '') }}">
+                    </div>
 
                     
                     <div class="form-group">

@@ -197,6 +197,7 @@ class FilmController extends Controller
             $Film->rating           = $request->rating;
             $Film->running_time     = $request->running_time;
             $Film->hash_tags        = $request->hashtags;
+            $Film->hash_tag_id      = $request->hash_id;
             
             $filename = '';
             if ($request->hasFile('sellsheet'))
