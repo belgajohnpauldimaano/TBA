@@ -1240,8 +1240,12 @@ class FilmController extends Controller
             return response()->json(['errCode' => 0, 'messages' => 'Press release successfully updated.']);
         }
 
-        $pdf = uniqid().'.'.$request->press_release_pdf->getClientOriginalExtension();
-        $request->press_release_pdf->move(public_path('content/upload/'), $pdf);
+        if ($request->press_release_id){
+            $pdf = uniqid().'.'.$request->press_release_pdf->getClientOriginalExtension();
+            $request->press_release_pdf->move(public_path('content/upload/'), $pdf);
+        }else{
+            $pdf = NULL;
+        }
 
         $ext = $request->press_release_article_image->getClientOriginalExtension(); // get the file extension name
         $filename   = str_random(100) . '.' . $ext; // generate random filename and append the extension
