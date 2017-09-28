@@ -1176,9 +1176,6 @@ class FilmController extends Controller
         // $uniqueFileName = uniqid() . $request->get('press_release_pdf')->getClientOriginalName() . '.' . $request->get('press_release_pdf')->getClientOriginalExtension();
         // $request->get('press_release_pdf')->move(public_path('/content/upload/') . $uniqueFileName);
 
-        $pdf = uniqid().'.'.$request->press_release_pdf->getClientOriginalExtension();
-        $request->press_release_pdf->move(public_path('content/upload/'), $pdf);
-
         $rules = [
             'film_id'                       => 'required',
             'press_release_title'           => 'required',
@@ -1224,16 +1221,27 @@ class FilmController extends Controller
                 $PressRelease->article_image    = $filename;
             }
 
+            if ($request->hasFile('press_release_pdf'))
+            {
+                File::delete(public_path('content\\upload\\' . $PressRelease->pdf));
+                $pdf = uniqid().'.'.$request->press_release_pdf->getClientOriginalExtension();
+                $request->press_release_pdf->move(public_path('content/upload/'), $pdf);
+
+                $PressRelease->pdf = $pdf;
+            }
+
 
             $PressRelease->title            = $request->press_release_title;
             $PressRelease->blurb            = $request->press_release_blurb;
             $PressRelease->content          = $request->press_release_content;
-            $PressRelease->pdf              = $pdf;
 
             $PressRelease->save();
 
             return response()->json(['errCode' => 0, 'messages' => 'Press release successfully updated.']);
         }
+
+        $pdf = uniqid().'.'.$request->press_release_pdf->getClientOriginalExtension();
+        $request->press_release_pdf->move(public_path('content/upload/'), $pdf);
 
         $ext = $request->press_release_article_image->getClientOriginalExtension(); // get the file extension name
         $filename   = str_random(100) . '.' . $ext; // generate random filename and append the extension

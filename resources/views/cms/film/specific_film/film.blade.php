@@ -507,7 +507,7 @@
                         {{-- <button class="btn btn-sm btn-flat btn-primary js-manage_photo_multi">Manage Multiple Photo</button> --}}
                     </div>
                 </div>
-                <div class="acollapse">
+                <div class="collapse">
                     <div class="box-body js-film_press_release_content_holder box box-solid">
                         <div class="overlay hidden">
                             <i class="fa fa-refresh fa-spin"></i>
