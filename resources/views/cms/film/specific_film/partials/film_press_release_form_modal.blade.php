@@ -59,9 +59,9 @@
             <div class="form-group">
                 <label for="">
                     Upload File (pdf only) 
-                    @if($PressRelease->pdf)
-                        <a href="#" class="text-danger btn__delete__press__release__pdf" data-id="{{ $PressRelease->id }}"><u>Delete PDF</u></a>
-                    @endif
+                    <span class="{{ $PressRelease ? ($PressRelease->pdf ? '' : 'hidden') : 'hidden' }}">
+                        <a href="#" class="text-danger btn__delete__press__release__pdf" data-id="{{ $PressRelease ? $PressRelease->id : '' }}"><u>Delete PDF</u></a>
+                    </span>
                 </label>
                 <div class="input-group">
                     <div class="input-group-btn">
@@ -69,7 +69,7 @@
                         <button type="button" class="btn btn-default btn-flat btn-block btn__add__press__release__pdf">
                             <i class="fa fa-file-pdf-o"></i>
                             Click to upload PDF
-                            <span id="js-text_press_release_article_image"><i>{{ ($PressRelease->pdf ? ' - Has uploaded file' : '') }}</i></span>
+                            <span id="js-text_press_release_article_image"><i>{{ $PressRelease ? ($PressRelease->pdf ? ' - Has uploaded file' : '') : '' }}</i></span>
                         </button>
                     </div>
                 </div>
