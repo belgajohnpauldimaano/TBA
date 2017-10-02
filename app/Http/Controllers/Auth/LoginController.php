@@ -39,7 +39,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/cms';
+    protected $redirectTo = '/cms/carousel/home_page_carousel';
     protected $logoutRedirectPath  = '/login';
     /**
      * Create a new controller instance.
