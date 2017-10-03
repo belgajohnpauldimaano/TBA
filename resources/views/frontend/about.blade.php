@@ -43,7 +43,7 @@
                 <div class="header-title">
                     <h2 class="header-title__tag">Company Background</h2>
                 </div>
-                <p class="text-justify">TBA Studios (Tuko Film Productions, Buchi Boy Entertainment, and Artikulo Uno Productions) is an independent film production company dedicated to making high quality films and promoting Filipino filmmakers worldwide. The company is spearheaded by Fernando Ortigas and Eduardo Rocha as Executive Producers and Vincent Nebrida as President. TBA has made a mark in the local industry for producing the award winning, critically–acclaimed, and box office hit, “Heneral Luna”. The historical epic directed by Jerrold Tarog is currently the highest grossing independent and historical film in the Philippines.</p>
+                <p class="text-justify">TBA Studios (Tuko Film Productions, Buchi Boy Entertainment, and Artikulo Uno Productions) is an independent film production company dedicated to making high quality films and promoting Filipino filmmakers worldwide. The company is spearheaded by Fernando Ortigas and Eduardo Rocha as Executive Producers and Vincent Nebrida as President. TBA has made a mark in the local industry for producing the award winning, critically–acclaimed, and box office hit, “Heneral Luna”. The historical epic directed by Jerrold Tarog is currently the highest grossing historical film in the Philippines.</p>
                 <div class="media-block">
                     <div class="media">
                         <div class="media-left media-middle p-r-5">
